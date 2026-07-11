@@ -1,0 +1,1989 @@
+{
+ "info": {
+  "name": "Hubstaff API",
+  "description": "Hubstaff API v2 - time tracking, timesheets, workforce management, and project management data. Base URL: https://api.hubstaff.com (paths include /v2). Auth: OAuth 2.0 / OpenID Connect via account.hubstaff.com, or a personal access token (developer.hubstaff.com/personal_access_tokens) exchanged for an access token via the OAuth refresh-token grant. Send the access token as a Bearer token. Rate limit: 1,000 requests/hour per app.",
+  "schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json"
+ },
+ "auth": {
+  "type": "bearer",
+  "bearer": [
+   {
+    "key": "token",
+    "value": "{{accessToken}}",
+    "type": "string"
+   }
+  ]
+ },
+ "variable": [
+  {
+   "key": "baseUrl",
+   "value": "https://api.hubstaff.com",
+   "type": "string"
+  },
+  {
+   "key": "accessToken",
+   "value": "",
+   "type": "string"
+  }
+ ],
+ "item": [
+  {
+   "name": "Organizations",
+   "item": [
+    {
+     "name": "List organizations",
+     "request": {
+      "method": "GET",
+      "header": [],
+      "url": {
+       "raw": "{{baseUrl}}/v2/organizations",
+       "host": [
+        "{{baseUrl}}"
+       ],
+       "path": [
+        "v2",
+        "organizations"
+       ]
+      },
+      "description": "Returns a collection of organizations the authenticated user is an active member of."
+     }
+    },
+    {
+     "name": "Create organization",
+     "request": {
+      "method": "POST",
+      "header": [
+       {
+        "key": "Content-Type",
+        "value": "application/json"
+       }
+      ],
+      "url": {
+       "raw": "{{baseUrl}}/v2/organizations",
+       "host": [
+        "{{baseUrl}}"
+       ],
+       "path": [
+        "v2",
+        "organizations"
+       ]
+      },
+      "description": "Creates a new organization.\n\nReturns the created organization.",
+      "body": {
+       "mode": "raw",
+       "raw": "{}"
+      }
+     }
+    },
+    {
+     "name": "Get organization",
+     "request": {
+      "method": "GET",
+      "header": [],
+      "url": {
+       "raw": "{{baseUrl}}/v2/organizations/:organization_id",
+       "host": [
+        "{{baseUrl}}"
+       ],
+       "path": [
+        "v2",
+        "organizations",
+        ":organization_id"
+       ],
+       "variable": [
+        {
+         "key": "organization_id",
+         "value": ""
+        }
+       ]
+      },
+      "description": "Returns the organization with the given ID."
+     }
+    },
+    {
+     "name": "Get organization seats",
+     "request": {
+      "method": "GET",
+      "header": [],
+      "url": {
+       "raw": "{{baseUrl}}/v2/organizations/:organization_id/seats",
+       "host": [
+        "{{baseUrl}}"
+       ],
+       "path": [
+        "v2",
+        "organizations",
+        ":organization_id",
+        "seats"
+       ],
+       "variable": [
+        {
+         "key": "organization_id",
+         "value": ""
+        }
+       ]
+      },
+      "description": "Returns billing seat counters for the specified organization.\n\n- Paid seats are the total number of seats you are currently paying for.\n- Occupied is the total number of seats that are currently filled.\n- Open seats will be filled automatically when new members are added.\n  Any open seats will be removed automatically when a new billing cycle starts,\n  bringing down the number of paid seats to match the number of seats occupied."
+     }
+    }
+   ]
+  },
+  {
+   "name": "Members",
+   "item": [
+    {
+     "name": "List organization members",
+     "request": {
+      "method": "GET",
+      "header": [],
+      "url": {
+       "raw": "{{baseUrl}}/v2/organizations/:organization_id/members",
+       "host": [
+        "{{baseUrl}}"
+       ],
+       "path": [
+        "v2",
+        "organizations",
+        ":organization_id",
+        "members"
+       ],
+       "variable": [
+        {
+         "key": "organization_id",
+         "value": ""
+        }
+       ]
+      },
+      "description": "Returns a collection of members for the given organization.\n\nResults can be filtered by search, user IDs, membership role, and date range.\n\n*trackable* - Whether the user can track time.  This is one of 3 values\n- *false* -- meaning tracking has been explicitly disabled for this user regardless of their role\n- *true* -- meaning they are allowed to track time\n- *viewer* -- meaning they are allowed to track time, however as they are only a project viewer (or no\n  memberships) they implicitly can n"
+     }
+    },
+    {
+     "name": "Create organization member",
+     "request": {
+      "method": "POST",
+      "header": [
+       {
+        "key": "Content-Type",
+        "value": "application/json"
+       }
+      ],
+      "url": {
+       "raw": "{{baseUrl}}/v2/organizations/:organization_id/members",
+       "host": [
+        "{{baseUrl}}"
+       ],
+       "path": [
+        "v2",
+        "organizations",
+        ":organization_id",
+        "members"
+       ],
+       "variable": [
+        {
+         "key": "organization_id",
+         "value": ""
+        }
+       ]
+      },
+      "description": "Creates a new user and adds them to the organization as a member.\n\nReturns the created member.\n\nAvailable roles:\n- organization_manager - Organization manager\n- project_manager - Project manager\n- project_user - Project user\n- project_viewer - Project viewer\n\nAvailable pay periods:\n- none - Disables automatic payments\n- weekly - Pay users weekly\n- twice_per_month - Pay users twice a month\n- biweekly - Pay users bi-weekly\n- monthly - Pay users monthly",
+      "body": {
+       "mode": "raw",
+       "raw": "{}"
+      }
+     }
+    },
+    {
+     "name": "Update organization members",
+     "request": {
+      "method": "PUT",
+      "header": [
+       {
+        "key": "Content-Type",
+        "value": "application/json"
+       }
+      ],
+      "url": {
+       "raw": "{{baseUrl}}/v2/organizations/:organization_id/update_members",
+       "host": [
+        "{{baseUrl}}"
+       ],
+       "path": [
+        "v2",
+        "organizations",
+        ":organization_id",
+        "update_members"
+       ],
+       "variable": [
+        {
+         "key": "organization_id",
+         "value": ""
+        }
+       ]
+      },
+      "description": "Updates organization members.\n\nReturns {success: true} on success.\n\nOnly pass in the members you want to change.\n\nAvailable roles:\n- user - Member role determined by project membership\n- manager - Organization manager\n- owner - Organization owner\n- remove - Removes user from organization (and all projects/teams)\n\nLimits: Specify full limits config. Missing limits will be removed. Empty \"limits\" removes all limits.\n\nProjects: Specify project memberships to change. Available project roles: viewer,",
+      "body": {
+       "mode": "raw",
+       "raw": "{}"
+      }
+     }
+    },
+    {
+     "name": "List team members",
+     "request": {
+      "method": "GET",
+      "header": [],
+      "url": {
+       "raw": "{{baseUrl}}/v2/teams/:team_id/members",
+       "host": [
+        "{{baseUrl}}"
+       ],
+       "path": [
+        "v2",
+        "teams",
+        ":team_id",
+        "members"
+       ],
+       "variable": [
+        {
+         "key": "team_id",
+         "value": ""
+        }
+       ]
+      },
+      "description": "Returns a collection of members for the given team.\n\nMembership roles:\n- manager - Can track time, view all data, change settings, and manage membership\n- user - Can track time and view only their own data\n- viewer - Can view reports but cannot make changes"
+     }
+    },
+    {
+     "name": "List project members",
+     "request": {
+      "method": "GET",
+      "header": [],
+      "url": {
+       "raw": "{{baseUrl}}/v2/projects/:project_id/members",
+       "host": [
+        "{{baseUrl}}"
+       ],
+       "path": [
+        "v2",
+        "projects",
+        ":project_id",
+        "members"
+       ],
+       "variable": [
+        {
+         "key": "project_id",
+         "value": ""
+        }
+       ]
+      },
+      "description": "Returns a collection of members for the given project.\n\nResults can be filtered by search, user IDs, membership role, and date range.\n\n*membership_role* - The permission role the member has in this project\n- *manager* - An manager can track time, see data for any member within the project, can change settings, and manage membership within the project\n- *user* - A user can track time against the project and see only their own data within the project\n- *viewer* - A viewer can access reports based "
+     }
+    }
+   ]
+  },
+  {
+   "name": "Invites",
+   "item": [
+    {
+     "name": "List organization invites",
+     "request": {
+      "method": "GET",
+      "header": [],
+      "url": {
+       "raw": "{{baseUrl}}/v2/organizations/:organization_id/invites",
+       "host": [
+        "{{baseUrl}}"
+       ],
+       "path": [
+        "v2",
+        "organizations",
+        ":organization_id",
+        "invites"
+       ],
+       "variable": [
+        {
+         "key": "organization_id",
+         "value": ""
+        }
+       ]
+      },
+      "description": "Returns a collection of invites for the given organization.\n\nResults can be filtered by email and status."
+     }
+    },
+    {
+     "name": "Create invite",
+     "request": {
+      "method": "POST",
+      "header": [
+       {
+        "key": "Content-Type",
+        "value": "application/json"
+       }
+      ],
+      "url": {
+       "raw": "{{baseUrl}}/v2/organizations/:organization_id/invites",
+       "host": [
+        "{{baseUrl}}"
+       ],
+       "path": [
+        "v2",
+        "organizations",
+        ":organization_id",
+        "invites"
+       ],
+       "variable": [
+        {
+         "key": "organization_id",
+         "value": ""
+        }
+       ]
+      },
+      "description": "Creates a new invite.\n\nReturns the created invite.\n\nNote: If there is an account for the email in Hubstaff, the invite will be auto accepted.\nNote: There is a rate limit on how many invites you may create.\n\nAvailable roles:\n- organization_manager - Invited as an organization manager\n- project_manager - Invited as a project manager\n- project_user - Invited as a project user\n- project_viewer - Invited as a project viewer\n\nIf no project_ids are set, any project_* role will default to project_viewer",
+      "body": {
+       "mode": "raw",
+       "raw": "{}"
+      }
+     }
+    }
+   ]
+  },
+  {
+   "name": "Teams",
+   "item": [
+    {
+     "name": "List organization teams",
+     "request": {
+      "method": "GET",
+      "header": [],
+      "url": {
+       "raw": "{{baseUrl}}/v2/organizations/:organization_id/teams",
+       "host": [
+        "{{baseUrl}}"
+       ],
+       "path": [
+        "v2",
+        "organizations",
+        ":organization_id",
+        "teams"
+       ],
+       "variable": [
+        {
+         "key": "organization_id",
+         "value": ""
+        }
+       ]
+      },
+      "description": "Returns a collection of teams for the given organization."
+     }
+    },
+    {
+     "name": "Create team",
+     "request": {
+      "method": "POST",
+      "header": [
+       {
+        "key": "Content-Type",
+        "value": "application/json"
+       }
+      ],
+      "url": {
+       "raw": "{{baseUrl}}/v2/organizations/:organization_id/teams",
+       "host": [
+        "{{baseUrl}}"
+       ],
+       "path": [
+        "v2",
+        "organizations",
+        ":organization_id",
+        "teams"
+       ],
+       "variable": [
+        {
+         "key": "organization_id",
+         "value": ""
+        }
+       ]
+      },
+      "description": "Creates a new team.\n\nReturns the created team.\n\nOnly name is required. Members can optionally be added with roles: viewer, user, or manager.\n\nNote: When a member lead is set to true, the role is forced to manager.",
+      "body": {
+       "mode": "raw",
+       "raw": "{}"
+      }
+     }
+    },
+    {
+     "name": "Get team",
+     "request": {
+      "method": "GET",
+      "header": [],
+      "url": {
+       "raw": "{{baseUrl}}/v2/teams/:team_id",
+       "host": [
+        "{{baseUrl}}"
+       ],
+       "path": [
+        "v2",
+        "teams",
+        ":team_id"
+       ],
+       "variable": [
+        {
+         "key": "team_id",
+         "value": ""
+        }
+       ]
+      },
+      "description": "Returns the team with the given ID."
+     }
+    }
+   ]
+  },
+  {
+   "name": "Users",
+   "item": [
+    {
+     "name": "Get current user",
+     "request": {
+      "method": "GET",
+      "header": [],
+      "url": {
+       "raw": "{{baseUrl}}/v2/users/me",
+       "host": [
+        "{{baseUrl}}"
+       ],
+       "path": [
+        "v2",
+        "users",
+        "me"
+       ]
+      },
+      "description": "Returns the authenticated user."
+     }
+    },
+    {
+     "name": "Get user",
+     "request": {
+      "method": "GET",
+      "header": [],
+      "url": {
+       "raw": "{{baseUrl}}/v2/users/:user_id",
+       "host": [
+        "{{baseUrl}}"
+       ],
+       "path": [
+        "v2",
+        "users",
+        ":user_id"
+       ],
+       "variable": [
+        {
+         "key": "user_id",
+         "value": ""
+        }
+       ]
+      },
+      "description": "Returns the user with the given ID."
+     }
+    }
+   ]
+  },
+  {
+   "name": "Activities",
+   "item": [
+    {
+     "name": "List organization activities",
+     "request": {
+      "method": "GET",
+      "header": [],
+      "url": {
+       "raw": "{{baseUrl}}/v2/organizations/:organization_id/activities?time_slot[start]=&time_slot[stop]=",
+       "host": [
+        "{{baseUrl}}"
+       ],
+       "path": [
+        "v2",
+        "organizations",
+        ":organization_id",
+        "activities"
+       ],
+       "variable": [
+        {
+         "key": "organization_id",
+         "value": ""
+        }
+       ],
+       "query": [
+        {
+         "key": "time_slot[start]",
+         "value": "",
+         "description": "Start time (ISO 8601)"
+        },
+        {
+         "key": "time_slot[stop]",
+         "value": "",
+         "description": "Stop time (ISO 8601, Exclusive)"
+        }
+       ]
+      },
+      "description": "Returns a collection of activities (10-minute time blocks) for the given organization.\n\nResults can be filtered by user, task, project, and time range (time_slot[start], time_slot[stop]).\n\nFor aggregated daily data, use the daily_activities endpoint instead.\n\nNote: Data may be delayed up to 20 minutes.\nNote: Date range limit is 7 days. Earliest date is 6 months ago."
+     }
+    },
+    {
+     "name": "List organization daily activities",
+     "request": {
+      "method": "GET",
+      "header": [],
+      "url": {
+       "raw": "{{baseUrl}}/v2/organizations/:organization_id/activities/daily?date[start]=&date[stop]=",
+       "host": [
+        "{{baseUrl}}"
+       ],
+       "path": [
+        "v2",
+        "organizations",
+        ":organization_id",
+        "activities",
+        "daily"
+       ],
+       "variable": [
+        {
+         "key": "organization_id",
+         "value": ""
+        }
+       ],
+       "query": [
+        {
+         "key": "date[start]",
+         "value": "",
+         "description": "Start date (ISO 8601)"
+        },
+        {
+         "key": "date[stop]",
+         "value": "",
+         "description": "Stop date (ISO 8601, Inclusive)"
+        }
+       ]
+      },
+      "description": "Returns daily aggregated time tracking data for the given organization.\n\nResults can be filtered by user_ids[], task_ids[], project_ids[], and date[start]/[stop]. Data is aggregated by organization timezone date.\n\nNote: Date range limit is 31 days. Earliest date is 3 years ago."
+     }
+    },
+    {
+     "name": "List organization last activities",
+     "request": {
+      "method": "GET",
+      "header": [],
+      "url": {
+       "raw": "{{baseUrl}}/v2/organizations/:organization_id/last_activities",
+       "host": [
+        "{{baseUrl}}"
+       ],
+       "path": [
+        "v2",
+        "organizations",
+        ":organization_id",
+        "last_activities"
+       ],
+       "variable": [
+        {
+         "key": "organization_id",
+         "value": ""
+        }
+       ]
+      },
+      "description": "Returns the most recent activity for each member in the organization."
+     }
+    },
+    {
+     "name": "List project activities",
+     "request": {
+      "method": "GET",
+      "header": [],
+      "url": {
+       "raw": "{{baseUrl}}/v2/projects/:project_id/activities?time_slot[start]=&time_slot[stop]=",
+       "host": [
+        "{{baseUrl}}"
+       ],
+       "path": [
+        "v2",
+        "projects",
+        ":project_id",
+        "activities"
+       ],
+       "variable": [
+        {
+         "key": "project_id",
+         "value": ""
+        }
+       ],
+       "query": [
+        {
+         "key": "time_slot[start]",
+         "value": "",
+         "description": "Start time (ISO 8601)"
+        },
+        {
+         "key": "time_slot[stop]",
+         "value": "",
+         "description": "Stop time (ISO 8601, Exclusive)"
+        }
+       ]
+      },
+      "description": "Returns a collection of activities (10-minute time blocks) for the given project.\n\nResults can be filtered by user, task, project, and time range (time_slot[start], time_slot[stop]).\n\nFor aggregated daily data, use the daily_activities endpoint instead.\n\nNote: Data may be delayed up to 20 minutes.\nNote: Date range limit is 7 days. Earliest date is 6 months ago."
+     }
+    },
+    {
+     "name": "List project daily activities",
+     "request": {
+      "method": "GET",
+      "header": [],
+      "url": {
+       "raw": "{{baseUrl}}/v2/projects/:project_id/activities/daily?date[start]=&date[stop]=",
+       "host": [
+        "{{baseUrl}}"
+       ],
+       "path": [
+        "v2",
+        "projects",
+        ":project_id",
+        "activities",
+        "daily"
+       ],
+       "variable": [
+        {
+         "key": "project_id",
+         "value": ""
+        }
+       ],
+       "query": [
+        {
+         "key": "date[start]",
+         "value": "",
+         "description": "Start date (ISO 8601)"
+        },
+        {
+         "key": "date[stop]",
+         "value": "",
+         "description": "Stop date (ISO 8601, Inclusive)"
+        }
+       ]
+      },
+      "description": "Returns daily aggregated time tracking data for the given project.\n\nResults can be filtered by user_ids[], task_ids[], project_ids[], and date[start]/[stop]. Data is aggregated by organization timezone date.\n\nNote: Date range limit is 31 days. Earliest date is 3 years ago."
+     }
+    }
+   ]
+  },
+  {
+   "name": "Time Entries",
+   "item": [
+    {
+     "name": "Create time entry",
+     "request": {
+      "method": "POST",
+      "header": [
+       {
+        "key": "Content-Type",
+        "value": "application/json"
+       }
+      ],
+      "url": {
+       "raw": "{{baseUrl}}/v2/users/:user_id/time_entries",
+       "host": [
+        "{{baseUrl}}"
+       ],
+       "path": [
+        "v2",
+        "users",
+        ":user_id",
+        "time_entries"
+       ],
+       "variable": [
+        {
+         "key": "user_id",
+         "value": ""
+        }
+       ]
+      },
+      "description": "Creates a new time entry.\n\nReturns {success: true} on success.\n\nNote: Manual time entries that require approval cannot be added through the API.",
+      "body": {
+       "mode": "raw",
+       "raw": "{}"
+      }
+     }
+    }
+   ]
+  },
+  {
+   "name": "Timesheets",
+   "item": [
+    {
+     "name": "List organization timesheets",
+     "request": {
+      "method": "GET",
+      "header": [],
+      "url": {
+       "raw": "{{baseUrl}}/v2/organizations/:organization_id/timesheets",
+       "host": [
+        "{{baseUrl}}"
+       ],
+       "path": [
+        "v2",
+        "organizations",
+        ":organization_id",
+        "timesheets"
+       ],
+       "variable": [
+        {
+         "key": "organization_id",
+         "value": ""
+        }
+       ]
+      },
+      "description": "Returns a collection of timesheets (aggregate approval records) for the given organization.\n\nResults can be filtered by date[start]/[stop], approved[start], and status.\n\nNote: Timesheets are aggregate records used by the timesheet approval system, not individual time entries."
+     }
+    },
+    {
+     "name": "Update timesheet status",
+     "request": {
+      "method": "PUT",
+      "header": [
+       {
+        "key": "Content-Type",
+        "value": "application/json"
+       }
+      ],
+      "url": {
+       "raw": "{{baseUrl}}/v2/timesheets/:timesheet_id",
+       "host": [
+        "{{baseUrl}}"
+       ],
+       "path": [
+        "v2",
+        "timesheets",
+        ":timesheet_id"
+       ],
+       "variable": [
+        {
+         "key": "timesheet_id",
+         "value": ""
+        }
+       ]
+      },
+      "description": "Updates a timesheet status or updates the denial reason on an already denied timesheet.\n\nAllowed statuses are open, submitted, approved, and denied. A denial_reason is required when transitioning a timesheet to denied.\n\nApproving a timesheet can require explicit confirmation when the period has pending manual time requests or pending time off requests.\nIf pending manual time requests would be denied, the endpoint returns 422 with error_code 14905; repeat the request with confirm_pending_manual_t",
+      "body": {
+       "mode": "raw",
+       "raw": "{}"
+      }
+     }
+    }
+   ]
+  },
+  {
+   "name": "Time Edit Logs",
+   "item": [
+    {
+     "name": "List organization time edit logs",
+     "request": {
+      "method": "GET",
+      "header": [],
+      "url": {
+       "raw": "{{baseUrl}}/v2/organizations/:organization_id/time_edit_logs?created[start]=&created[stop]=",
+       "host": [
+        "{{baseUrl}}"
+       ],
+       "path": [
+        "v2",
+        "organizations",
+        ":organization_id",
+        "time_edit_logs"
+       ],
+       "variable": [
+        {
+         "key": "organization_id",
+         "value": ""
+        }
+       ],
+       "query": [
+        {
+         "key": "created[start]",
+         "value": "",
+         "description": "Start time (ISO 8601)"
+        },
+        {
+         "key": "created[stop]",
+         "value": "",
+         "description": "Stop time (ISO 8601, exclusive)"
+        }
+       ]
+      },
+      "description": "Returns a collection of time edit logs (manual time additions/edits/deletions) for the given organization.\n\nResults can be filtered by created[start]/[stop], user_ids[], task_ids[], and project_ids[].\n\nNote: Date range limit is 31 days. Earliest date is 3 years ago."
+     }
+    }
+   ]
+  },
+  {
+   "name": "Projects",
+   "item": [
+    {
+     "name": "List organization projects",
+     "request": {
+      "method": "GET",
+      "header": [],
+      "url": {
+       "raw": "{{baseUrl}}/v2/organizations/:organization_id/projects",
+       "host": [
+        "{{baseUrl}}"
+       ],
+       "path": [
+        "v2",
+        "organizations",
+        ":organization_id",
+        "projects"
+       ],
+       "variable": [
+        {
+         "key": "organization_id",
+         "value": ""
+        }
+       ]
+      },
+      "description": "Returns a collection of projects for the given organization.\n\nResults can be filtered by status (active/archived/all) and project_ids[]."
+     }
+    },
+    {
+     "name": "Create project",
+     "request": {
+      "method": "POST",
+      "header": [
+       {
+        "key": "Content-Type",
+        "value": "application/json"
+       }
+      ],
+      "url": {
+       "raw": "{{baseUrl}}/v2/organizations/:organization_id/projects",
+       "host": [
+        "{{baseUrl}}"
+       ],
+       "path": [
+        "v2",
+        "organizations",
+        ":organization_id",
+        "projects"
+       ],
+       "variable": [
+        {
+         "key": "organization_id",
+         "value": ""
+        }
+       ]
+      },
+      "description": "Creates a new project.\n\nReturns the created project.\n\nOnly name is required. Members can optionally be added with roles: viewer, user, or manager.",
+      "body": {
+       "mode": "raw",
+       "raw": "{}"
+      }
+     }
+    },
+    {
+     "name": "Get project",
+     "request": {
+      "method": "GET",
+      "header": [],
+      "url": {
+       "raw": "{{baseUrl}}/v2/projects/:project_id",
+       "host": [
+        "{{baseUrl}}"
+       ],
+       "path": [
+        "v2",
+        "projects",
+        ":project_id"
+       ],
+       "variable": [
+        {
+         "key": "project_id",
+         "value": ""
+        }
+       ]
+      },
+      "description": "Returns the project with the given ID."
+     }
+    },
+    {
+     "name": "Update project",
+     "request": {
+      "method": "PUT",
+      "header": [
+       {
+        "key": "Content-Type",
+        "value": "application/json"
+       }
+      ],
+      "url": {
+       "raw": "{{baseUrl}}/v2/projects/:project_id",
+       "host": [
+        "{{baseUrl}}"
+       ],
+       "path": [
+        "v2",
+        "projects",
+        ":project_id"
+       ],
+       "variable": [
+        {
+         "key": "project_id",
+         "value": ""
+        }
+       ]
+      },
+      "description": "Updates a project.\n\nReturns the updated project.\n\nOnly pass in the fields you want to change. To unset the budget, specify null. To update the budget, you must specify the complete budget configuration.\n\nWhen restoring an archived project, you can only change the status column.\n\nRate handling for pay_rate and bill_rate:\n- To remove a rate, pass null (e.g., pay_rate: null)\n- Custom user rates take precedence over default project rates\n- To apply default project rate to a user, remove their custom",
+      "body": {
+       "mode": "raw",
+       "raw": "{}"
+      }
+     }
+    }
+   ]
+  },
+  {
+   "name": "Tasks",
+   "item": [
+    {
+     "name": "List organization tasks",
+     "request": {
+      "method": "GET",
+      "header": [],
+      "url": {
+       "raw": "{{baseUrl}}/v2/organizations/:organization_id/tasks",
+       "host": [
+        "{{baseUrl}}"
+       ],
+       "path": [
+        "v2",
+        "organizations",
+        ":organization_id",
+        "tasks"
+       ],
+       "variable": [
+        {
+         "key": "organization_id",
+         "value": ""
+        }
+       ]
+      },
+      "description": "Returns a collection of tasks (to-dos) for the given organization.\n\nResults can be filtered by status[] (active/completed/deleted), user_ids[], project_ids[], and global_todo_ids[]."
+     }
+    },
+    {
+     "name": "List project tasks",
+     "request": {
+      "method": "GET",
+      "header": [],
+      "url": {
+       "raw": "{{baseUrl}}/v2/projects/:project_id/tasks",
+       "host": [
+        "{{baseUrl}}"
+       ],
+       "path": [
+        "v2",
+        "projects",
+        ":project_id",
+        "tasks"
+       ],
+       "variable": [
+        {
+         "key": "project_id",
+         "value": ""
+        }
+       ]
+      },
+      "description": "Returns a collection of tasks (to-dos) for the given project.\n\nResults can be filtered by status[] (active/completed/deleted), user_ids[], project_ids[], and global_todo_ids[]."
+     }
+    },
+    {
+     "name": "Create task",
+     "request": {
+      "method": "POST",
+      "header": [
+       {
+        "key": "Content-Type",
+        "value": "application/json"
+       }
+      ],
+      "url": {
+       "raw": "{{baseUrl}}/v2/projects/:project_id/tasks",
+       "host": [
+        "{{baseUrl}}"
+       ],
+       "path": [
+        "v2",
+        "projects",
+        ":project_id",
+        "tasks"
+       ],
+       "variable": [
+        {
+         "key": "project_id",
+         "value": ""
+        }
+       ]
+      },
+      "description": "Creates a new task for this project.\n\nReturns the created task.\n\nNote: If this project is integrated with a 3rd party tool, you must create the task in that tool instead.",
+      "body": {
+       "mode": "raw",
+       "raw": "{}"
+      }
+     }
+    },
+    {
+     "name": "Get task",
+     "request": {
+      "method": "GET",
+      "header": [],
+      "url": {
+       "raw": "{{baseUrl}}/v2/tasks/:task_id",
+       "host": [
+        "{{baseUrl}}"
+       ],
+       "path": [
+        "v2",
+        "tasks",
+        ":task_id"
+       ],
+       "variable": [
+        {
+         "key": "task_id",
+         "value": ""
+        }
+       ]
+      },
+      "description": "Returns the task with the given ID."
+     }
+    },
+    {
+     "name": "Update task",
+     "request": {
+      "method": "PUT",
+      "header": [
+       {
+        "key": "Content-Type",
+        "value": "application/json"
+       }
+      ],
+      "url": {
+       "raw": "{{baseUrl}}/v2/tasks/:task_id",
+       "host": [
+        "{{baseUrl}}"
+       ],
+       "path": [
+        "v2",
+        "tasks",
+        ":task_id"
+       ],
+       "variable": [
+        {
+         "key": "task_id",
+         "value": ""
+        }
+       ]
+      },
+      "description": "Updates a task.\n\nReturns the updated task.\n\nOnly pass in the fields you want to change. Requires passing lock_version from the task fetch.\n\nNote: Only simple todos can be updated. 3rd party tasks must be updated in their system.",
+      "body": {
+       "mode": "raw",
+       "raw": "{}"
+      }
+     }
+    },
+    {
+     "name": "Delete task",
+     "request": {
+      "method": "DELETE",
+      "header": [],
+      "url": {
+       "raw": "{{baseUrl}}/v2/tasks/:task_id",
+       "host": [
+        "{{baseUrl}}"
+       ],
+       "path": [
+        "v2",
+        "tasks",
+        ":task_id"
+       ],
+       "variable": [
+        {
+         "key": "task_id",
+         "value": ""
+        }
+       ]
+      },
+      "description": "Deletes a task.\n\nNote: Only simple todos can be deleted. 3rd party tasks must be deleted in their system."
+     }
+    }
+   ]
+  },
+  {
+   "name": "Clients",
+   "item": [
+    {
+     "name": "List organization clients",
+     "request": {
+      "method": "GET",
+      "header": [],
+      "url": {
+       "raw": "{{baseUrl}}/v2/organizations/:organization_id/clients",
+       "host": [
+        "{{baseUrl}}"
+       ],
+       "path": [
+        "v2",
+        "organizations",
+        ":organization_id",
+        "clients"
+       ],
+       "variable": [
+        {
+         "key": "organization_id",
+         "value": ""
+        }
+       ]
+      },
+      "description": "Returns a collection of clients for the given organization.\n\nResults can be filtered by status."
+     }
+    },
+    {
+     "name": "Create client",
+     "request": {
+      "method": "POST",
+      "header": [
+       {
+        "key": "Content-Type",
+        "value": "application/json"
+       }
+      ],
+      "url": {
+       "raw": "{{baseUrl}}/v2/organizations/:organization_id/clients",
+       "host": [
+        "{{baseUrl}}"
+       ],
+       "path": [
+        "v2",
+        "organizations",
+        ":organization_id",
+        "clients"
+       ],
+       "variable": [
+        {
+         "key": "organization_id",
+         "value": ""
+        }
+       ]
+      },
+      "description": "Creates a new client.\n\nReturns the created client.",
+      "body": {
+       "mode": "raw",
+       "raw": "{}"
+      }
+     }
+    },
+    {
+     "name": "Get client",
+     "request": {
+      "method": "GET",
+      "header": [],
+      "url": {
+       "raw": "{{baseUrl}}/v2/clients/:client_id",
+       "host": [
+        "{{baseUrl}}"
+       ],
+       "path": [
+        "v2",
+        "clients",
+        ":client_id"
+       ],
+       "variable": [
+        {
+         "key": "client_id",
+         "value": ""
+        }
+       ]
+      },
+      "description": "Returns the client with the given ID."
+     }
+    },
+    {
+     "name": "Update client",
+     "request": {
+      "method": "PUT",
+      "header": [
+       {
+        "key": "Content-Type",
+        "value": "application/json"
+       }
+      ],
+      "url": {
+       "raw": "{{baseUrl}}/v2/clients/:client_id",
+       "host": [
+        "{{baseUrl}}"
+       ],
+       "path": [
+        "v2",
+        "clients",
+        ":client_id"
+       ],
+       "variable": [
+        {
+         "key": "client_id",
+         "value": ""
+        }
+       ]
+      },
+      "description": "Updates a client.\n\nReturns the updated client.\n\nOnly pass in the fields you want to change. To unset the budget, specify null as the value. To update the budget, you must specify the complete budget configuration. To clear invoice_notes or net_terms (to use organization defaults), specify null as the value.",
+      "body": {
+       "mode": "raw",
+       "raw": "{}"
+      }
+     }
+    }
+   ]
+  },
+  {
+   "name": "Client Invoices",
+   "item": [
+    {
+     "name": "List organization client invoices",
+     "request": {
+      "method": "GET",
+      "header": [],
+      "url": {
+       "raw": "{{baseUrl}}/v2/organizations/:organization_id/client_invoices",
+       "host": [
+        "{{baseUrl}}"
+       ],
+       "path": [
+        "v2",
+        "organizations",
+        ":organization_id",
+        "client_invoices"
+       ],
+       "variable": [
+        {
+         "key": "organization_id",
+         "value": ""
+        }
+       ]
+      },
+      "description": "Returns invoices sent to clients for the given organization.\n\nResults can be filtered by client_ids[], issue_date[start]/[stop], and status. Use include_line_items=true to include invoice line items."
+     }
+    }
+   ]
+  },
+  {
+   "name": "Team Payments",
+   "item": [
+    {
+     "name": "List organization team payments",
+     "request": {
+      "method": "GET",
+      "header": [],
+      "url": {
+       "raw": "{{baseUrl}}/v2/organizations/:organization_id/team_payments",
+       "host": [
+        "{{baseUrl}}"
+       ],
+       "path": [
+        "v2",
+        "organizations",
+        ":organization_id",
+        "team_payments"
+       ],
+       "variable": [
+        {
+         "key": "organization_id",
+         "value": ""
+        }
+       ]
+      },
+      "description": "Returns a collection of team payments (payroll disbursements) for the given organization.\n\nResults can be filtered by created[start]/[stop], user_ids[], and project_ids[].\n\nNote: If date filters are not provided, defaults to the last 3 years. Earliest date is 3 years ago."
+     }
+    }
+   ]
+  },
+  {
+   "name": "Time Off",
+   "item": [
+    {
+     "name": "List organization time off requests",
+     "request": {
+      "method": "GET",
+      "header": [],
+      "url": {
+       "raw": "{{baseUrl}}/v2/organizations/:organization_id/time_off_requests",
+       "host": [
+        "{{baseUrl}}"
+       ],
+       "path": [
+        "v2",
+        "organizations",
+        ":organization_id",
+        "time_off_requests"
+       ],
+       "variable": [
+        {
+         "key": "organization_id",
+         "value": ""
+        }
+       ]
+      },
+      "description": "Returns a collection of time off requests for the given organization.\n\nResults can be filtered by created[start]/[stop], starts_at[start]/[stop], approved_at[start]/[stop], and user_ids[].\n\nUse include[] to sideload related users and time_off_policies."
+     }
+    },
+    {
+     "name": "Create time off request",
+     "request": {
+      "method": "POST",
+      "header": [
+       {
+        "key": "Content-Type",
+        "value": "application/json"
+       }
+      ],
+      "url": {
+       "raw": "{{baseUrl}}/v2/organizations/:organization_id/time_off_requests",
+       "host": [
+        "{{baseUrl}}"
+       ],
+       "path": [
+        "v2",
+        "organizations",
+        ":organization_id",
+        "time_off_requests"
+       ],
+       "variable": [
+        {
+         "key": "organization_id",
+         "value": ""
+        }
+       ]
+      },
+      "description": "Creates a new time off request.\n\nReturns the created time off request with a balance_preview showing the policy balance impact.\n\ntime_off_request_days must include one entry for every date from starts_at to stops_at. Each entry requires a date and amount_used in seconds (typically 28800 for an 8-hour day). Set amount_used to 0 for excluded weekend or holiday days.\n\nSet require_no_shift_overlap to true to reject the request if it overlaps with scheduled attendance shifts.\n\nremove_shifts deletes o",
+      "body": {
+       "mode": "raw",
+       "raw": "{}"
+      }
+     }
+    },
+    {
+     "name": "Get time off request",
+     "request": {
+      "method": "GET",
+      "header": [],
+      "url": {
+       "raw": "{{baseUrl}}/v2/time_off_requests/:time_off_request_id",
+       "host": [
+        "{{baseUrl}}"
+       ],
+       "path": [
+        "v2",
+        "time_off_requests",
+        ":time_off_request_id"
+       ],
+       "variable": [
+        {
+         "key": "time_off_request_id",
+         "value": ""
+        }
+       ]
+      },
+      "description": "Returns the time off request with the given ID.\n\nIncludes time_off_request_days with per-day breakdown of dates, amounts, and holiday/paid status.\n\nAlso includes balance_preview showing the policy balance impact."
+     }
+    },
+    {
+     "name": "Update time off request",
+     "request": {
+      "method": "PUT",
+      "header": [
+       {
+        "key": "Content-Type",
+        "value": "application/json"
+       }
+      ],
+      "url": {
+       "raw": "{{baseUrl}}/v2/time_off_requests/:time_off_request_id",
+       "host": [
+        "{{baseUrl}}"
+       ],
+       "path": [
+        "v2",
+        "time_off_requests",
+        ":time_off_request_id"
+       ],
+       "variable": [
+        {
+         "key": "time_off_request_id",
+         "value": ""
+        }
+       ]
+      },
+      "description": "Updates a time off request's details (dates, message, days, policy).\n\nThis is a full replacement \u2014 all fields must be provided, including time_off_request_days with one entry per date (amount_used in seconds, typically 28800 for an 8-hour day).\n\nApproved, paid, or partially paid requests cannot be edited.\n\nIf the request was denied, updating it automatically resubmits it (status \u2192 submitted).\n\nIf the policy does not require approval, the request is auto-approved on update.\n\nSet require_no_shift_",
+      "body": {
+       "mode": "raw",
+       "raw": "{}"
+      }
+     }
+    },
+    {
+     "name": "Delete time off request",
+     "request": {
+      "method": "DELETE",
+      "header": [],
+      "url": {
+       "raw": "{{baseUrl}}/v2/time_off_requests/:time_off_request_id",
+       "host": [
+        "{{baseUrl}}"
+       ],
+       "path": [
+        "v2",
+        "time_off_requests",
+        ":time_off_request_id"
+       ],
+       "variable": [
+        {
+         "key": "time_off_request_id",
+         "value": ""
+        }
+       ]
+      },
+      "description": "Deletes the time off request.\n\nApproved or paid time off requests cannot be deleted."
+     }
+    },
+    {
+     "name": "List organization time off policies",
+     "request": {
+      "method": "GET",
+      "header": [],
+      "url": {
+       "raw": "{{baseUrl}}/v2/organizations/:organization_id/time_off_policies",
+       "host": [
+        "{{baseUrl}}"
+       ],
+       "path": [
+        "v2",
+        "organizations",
+        ":organization_id",
+        "time_off_policies"
+       ],
+       "variable": [
+        {
+         "key": "organization_id",
+         "value": ""
+        }
+       ]
+      },
+      "description": "Returns a collection of time off policies for the given organization."
+     }
+    },
+    {
+     "name": "List organization time off balances",
+     "request": {
+      "method": "GET",
+      "header": [],
+      "url": {
+       "raw": "{{baseUrl}}/v2/organizations/:organization_id/time_off_balances",
+       "host": [
+        "{{baseUrl}}"
+       ],
+       "path": [
+        "v2",
+        "organizations",
+        ":organization_id",
+        "time_off_balances"
+       ],
+       "variable": [
+        {
+         "key": "organization_id",
+         "value": ""
+        }
+       ]
+      },
+      "description": "Returns time off balances for the given organization.\n\nEach entry represents one user's balance for one time off policy in the requested year.\n\nUse `year` to query balances for a specific year (defaults to current year in the organization's timezone).\n\nUse `include[]` to sideload related users and time_off_policies."
+     }
+    }
+   ]
+  },
+  {
+   "name": "Attendance",
+   "item": [
+    {
+     "name": "List organization attendance schedules",
+     "request": {
+      "method": "GET",
+      "header": [],
+      "url": {
+       "raw": "{{baseUrl}}/v2/organizations/:organization_id/attendance_schedules?date[start]=&date[stop]=",
+       "host": [
+        "{{baseUrl}}"
+       ],
+       "path": [
+        "v2",
+        "organizations",
+        ":organization_id",
+        "attendance_schedules"
+       ],
+       "variable": [
+        {
+         "key": "organization_id",
+         "value": ""
+        }
+       ],
+       "query": [
+        {
+         "key": "date[start]",
+         "value": "",
+         "description": "Start date (ISO 8601)"
+        },
+        {
+         "key": "date[stop]",
+         "value": "",
+         "description": "Stop date (ISO 8601, Inclusive)"
+        }
+       ]
+      },
+      "description": "Returns a collection of attendance schedules (expected work shifts) for the given organization.\n\nUse date[start] and date[stop] to filter schedules that cover the specified date range. Repeating schedules are included if any occurrence falls within the range."
+     }
+    },
+    {
+     "name": "Create attendance schedule",
+     "request": {
+      "method": "POST",
+      "header": [
+       {
+        "key": "Content-Type",
+        "value": "application/json"
+       }
+      ],
+      "url": {
+       "raw": "{{baseUrl}}/v2/organizations/:organization_id/attendance_schedules",
+       "host": [
+        "{{baseUrl}}"
+       ],
+       "path": [
+        "v2",
+        "organizations",
+        ":organization_id",
+        "attendance_schedules"
+       ],
+       "variable": [
+        {
+         "key": "organization_id",
+         "value": ""
+        }
+       ]
+      },
+      "description": "Creates an expected work shift for a user.\n\nReturns the created attendance schedule.\n\nFor repeating schedules, specify repeat_schedule (weekly/bi_weekly) and weekdays. Use repeat_until to set an end date. Use excluded_dates to skip specific dates.",
+      "body": {
+       "mode": "raw",
+       "raw": "{}"
+      }
+     }
+    },
+    {
+     "name": "List organization attendance shifts",
+     "request": {
+      "method": "GET",
+      "header": [],
+      "url": {
+       "raw": "{{baseUrl}}/v2/organizations/:organization_id/attendance_shifts?date[start]=&date[stop]=",
+       "host": [
+        "{{baseUrl}}"
+       ],
+       "path": [
+        "v2",
+        "organizations",
+        ":organization_id",
+        "attendance_shifts"
+       ],
+       "variable": [
+        {
+         "key": "organization_id",
+         "value": ""
+        }
+       ],
+       "query": [
+        {
+         "key": "date[start]",
+         "value": "",
+         "description": "Start date (ISO 8601)"
+        },
+        {
+         "key": "date[stop]",
+         "value": "",
+         "description": "Stop date (ISO 8601, Inclusive)"
+        }
+       ]
+      },
+      "description": "Returns actual work shifts (clock-in/clock-out records) for the given organization.\n\nUse date[start] and date[stop] to filter shifts that fall within the specified date range.\n\nNote: The maximum allowed difference between date[start] and date[stop] is 31 days.\nData is only available within organization\u2019s retention period.\nIf date[start] falls outside this window, the request will fail."
+     }
+    },
+    {
+     "name": "List organization holidays",
+     "request": {
+      "method": "GET",
+      "header": [],
+      "url": {
+       "raw": "{{baseUrl}}/v2/organizations/:organization_id/holidays",
+       "host": [
+        "{{baseUrl}}"
+       ],
+       "path": [
+        "v2",
+        "organizations",
+        ":organization_id",
+        "holidays"
+       ],
+       "variable": [
+        {
+         "key": "organization_id",
+         "value": ""
+        }
+       ]
+      },
+      "description": "Returns a collection of holidays for the given organization.\n\nResults can be filtered by created[start]/[stop] and date[start]/[stop]."
+     }
+    }
+   ]
+  },
+  {
+   "name": "Screenshots",
+   "item": [
+    {
+     "name": "List organization screenshots",
+     "request": {
+      "method": "GET",
+      "header": [],
+      "url": {
+       "raw": "{{baseUrl}}/v2/organizations/:organization_id/screenshots?time_slot[start]=&time_slot[stop]=",
+       "host": [
+        "{{baseUrl}}"
+       ],
+       "path": [
+        "v2",
+        "organizations",
+        ":organization_id",
+        "screenshots"
+       ],
+       "variable": [
+        {
+         "key": "organization_id",
+         "value": ""
+        }
+       ],
+       "query": [
+        {
+         "key": "time_slot[start]",
+         "value": "",
+         "description": "Start time (ISO 8601)"
+        },
+        {
+         "key": "time_slot[stop]",
+         "value": "",
+         "description": "Stop time (ISO 8601, Exclusive)"
+        }
+       ]
+      },
+      "description": "Returns a collection of screenshots for the given organization.\n\nResults can be filtered by user_ids[], project_ids[], and time_slot[start]/[stop].\n\nNote: Date range limit is 7 days. Earliest date is 6 months ago."
+     }
+    },
+    {
+     "name": "Get screenshot",
+     "request": {
+      "method": "GET",
+      "header": [],
+      "url": {
+       "raw": "{{baseUrl}}/v2/organizations/:organization_id/screenshots/:screenshot_id",
+       "host": [
+        "{{baseUrl}}"
+       ],
+       "path": [
+        "v2",
+        "organizations",
+        ":organization_id",
+        "screenshots",
+        ":screenshot_id"
+       ],
+       "variable": [
+        {
+         "key": "organization_id",
+         "value": ""
+        },
+        {
+         "key": "screenshot_id",
+         "value": ""
+        }
+       ]
+      },
+      "description": "Returns the screenshot with the given ID."
+     }
+    }
+   ]
+  },
+  {
+   "name": "App & URL Tracking",
+   "item": [
+    {
+     "name": "List organization tool usages",
+     "request": {
+      "method": "GET",
+      "header": [],
+      "url": {
+       "raw": "{{baseUrl}}/v2/organizations/:organization_id/tool_usages?time_slot[start]=&time_slot[stop]=",
+       "host": [
+        "{{baseUrl}}"
+       ],
+       "path": [
+        "v2",
+        "organizations",
+        ":organization_id",
+        "tool_usages"
+       ],
+       "variable": [
+        {
+         "key": "organization_id",
+         "value": ""
+        }
+       ],
+       "query": [
+        {
+         "key": "time_slot[start]",
+         "value": "",
+         "description": "Start time (ISO 8601)"
+        },
+        {
+         "key": "time_slot[stop]",
+         "value": "",
+         "description": "Stop time (ISO 8601, Exclusive)"
+        }
+       ]
+      },
+      "description": "Returns a collection of tool usages (productivity tool usage) for the given organization.\n\nResults can be filtered by time_slot[start]/[stop], user_ids[], task_ids[], project_ids[], and tool_type.\n\nThe preferred endpoints to fetch tool usage data are the daily endpoints.\n\nRequires Owner or Organization Manager role (with view others data permission).\n\nNote: Date range limit is 7 days. Earliest date is 1 month ago."
+     }
+    },
+    {
+     "name": "List organization daily tool usages",
+     "request": {
+      "method": "GET",
+      "header": [],
+      "url": {
+       "raw": "{{baseUrl}}/v2/organizations/:organization_id/tool_usages/daily?date[start]=&date[stop]=",
+       "host": [
+        "{{baseUrl}}"
+       ],
+       "path": [
+        "v2",
+        "organizations",
+        ":organization_id",
+        "tool_usages",
+        "daily"
+       ],
+       "variable": [
+        {
+         "key": "organization_id",
+         "value": ""
+        }
+       ],
+       "query": [
+        {
+         "key": "date[start]",
+         "value": "",
+         "description": "Start date (ISO 8601)"
+        },
+        {
+         "key": "date[stop]",
+         "value": "",
+         "description": "Stop date (ISO 8601, Inclusive)"
+        }
+       ]
+      },
+      "description": "Returns daily aggregated time spent using productivity tools (apps and websites categorized by Hubstaff).\n\nResults can be filtered by user_ids[], task_ids[], project_ids[], tool_type, and date[start]/[stop].\n\nRequires Owner or Organization Manager role (with view others data permission).\n\nNote: Date range limit is 14 days. Earliest date is 1 month ago."
+     }
+    },
+    {
+     "name": "List member Track Apps & URLs settings",
+     "request": {
+      "method": "GET",
+      "header": [],
+      "url": {
+       "raw": "{{baseUrl}}/v2/organizations/:organization_id/app_and_url_tracking_settings",
+       "host": [
+        "{{baseUrl}}"
+       ],
+       "path": [
+        "v2",
+        "organizations",
+        ":organization_id",
+        "app_and_url_tracking_settings"
+       ],
+       "variable": [
+        {
+         "key": "organization_id",
+         "value": ""
+        }
+       ]
+      },
+      "description": "Returns the Track Apps & URLs setting for the organization's members.\n\nResults can be filtered to specific members with `user_ids`. When no filter is given,\nall members are returned.\n\nOnly organization Owners and Managers may use this endpoint."
+     }
+    },
+    {
+     "name": "Update member Track Apps & URLs settings",
+     "request": {
+      "method": "PUT",
+      "header": [
+       {
+        "key": "Content-Type",
+        "value": "application/json"
+       }
+      ],
+      "url": {
+       "raw": "{{baseUrl}}/v2/organizations/:organization_id/app_and_url_tracking_settings",
+       "host": [
+        "{{baseUrl}}"
+       ],
+       "path": [
+        "v2",
+        "organizations",
+        ":organization_id",
+        "app_and_url_tracking_settings"
+       ],
+       "variable": [
+        {
+         "key": "organization_id",
+         "value": ""
+        }
+       ]
+      },
+      "description": "Sets the Track Apps & URLs setting for the organization's members.\n\nAllowed values: `off`, `apps`, `apps_and_urls`. Available only to organizations whose plan\nincludes Apps & URLs tracking.\n\nProvide `user_ids` to update specific members. To change the organization-wide default\ninstead \u2014 which cascades to every current and future member \u2014 set `apply_to_all_members`\nto `true` and omit `user_ids`. The organization-wide change is cautionary and irreversible\nin bulk: the response reports `scope: \"glo",
+      "body": {
+       "mode": "raw",
+       "raw": "{}"
+      }
+     }
+    }
+   ]
+  },
+  {
+   "name": "Webhooks",
+   "item": [
+    {
+     "name": "Create organization webhook",
+     "request": {
+      "method": "POST",
+      "header": [
+       {
+        "key": "Content-Type",
+        "value": "application/json"
+       }
+      ],
+      "url": {
+       "raw": "{{baseUrl}}/v2/organizations/:organization_id/webhooks",
+       "host": [
+        "{{baseUrl}}"
+       ],
+       "path": [
+        "v2",
+        "organizations",
+        ":organization_id",
+        "webhooks"
+       ],
+       "variable": [
+        {
+         "key": "organization_id",
+         "value": ""
+        }
+       ]
+      },
+      "description": "Creates a new webhook subscription for the organization. After creation, Hubstaff will send a POST request to your `target_url` with an empty body and an `X-Hook-Secret` header.\n\nYour endpoint must respond with HTTP 200 and echo the same `X-Hook-Secret` header to verify ownership.\n\nStore the secret value - you'll need it to activate the webhook.",
+      "body": {
+       "mode": "raw",
+       "raw": "{}"
+      }
+     }
+    },
+    {
+     "name": "Get webhook",
+     "request": {
+      "method": "GET",
+      "header": [],
+      "url": {
+       "raw": "{{baseUrl}}/v2/webhooks/:webhook_id",
+       "host": [
+        "{{baseUrl}}"
+       ],
+       "path": [
+        "v2",
+        "webhooks",
+        ":webhook_id"
+       ],
+       "variable": [
+        {
+         "key": "webhook_id",
+         "value": ""
+        }
+       ]
+      },
+      "description": "Returns the details of a specific webhook including its status, events, and target URL."
+     }
+    },
+    {
+     "name": "Delete webhook",
+     "request": {
+      "method": "DELETE",
+      "header": [],
+      "url": {
+       "raw": "{{baseUrl}}/v2/webhooks/:webhook_id",
+       "host": [
+        "{{baseUrl}}"
+       ],
+       "path": [
+        "v2",
+        "webhooks",
+        ":webhook_id"
+       ],
+       "variable": [
+        {
+         "key": "webhook_id",
+         "value": ""
+        }
+       ]
+      },
+      "description": "Permanently deletes a webhook. The webhook will stop receiving events immediately."
+     }
+    },
+    {
+     "name": "Activate webhook",
+     "request": {
+      "method": "POST",
+      "header": [],
+      "url": {
+       "raw": "{{baseUrl}}/v2/webhooks/:webhook_id/activate",
+       "host": [
+        "{{baseUrl}}"
+       ],
+       "path": [
+        "v2",
+        "webhooks",
+        ":webhook_id",
+        "activate"
+       ],
+       "variable": [
+        {
+         "key": "webhook_id",
+         "value": ""
+        }
+       ]
+      },
+      "description": "Activates a webhook after endpoint verification.\n\nYou must include the `X-Hook-Secret` header with the secret value you received during the verification step.\n\nOnce activated, the webhook will start receiving events."
+     }
+    }
+   ]
+  }
+ ]
+}

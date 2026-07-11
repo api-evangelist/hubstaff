@@ -1,0 +1,120 @@
+aid: hubstaff
+name: Hubstaff
+review:
+  question: Does Hubstaff expose a documented public WebSocket API?
+  answer: false
+  date: '2026-07-11'
+  reviewer: API Evangelist
+  asyncapiSpecCreated: false
+  asyncapiScopeNote: |
+    No AsyncAPI document was authored. Hubstaff's public API v2 is
+    request/response REST over HTTPS (the live Swagger 2.0 definition at
+    https://api.hubstaff.com/v2/docs declares schemes: [https] only). The
+    only push-style surface is webhooks - Hubstaff POSTs event payloads
+    (timer.start, timer.stop, task.create, shift.late, etc.) to a
+    consumer-provided HTTPS endpoint after an X-Hook-Secret verification
+    and activation handshake. Webhooks are provider-to-endpoint HTTP
+    callbacks, not a WebSocket or SSE transport on Hubstaff's own API, so
+    there is no server-push protocol surface to model in AsyncAPI.
+findings:
+  summary: |
+    Hubstaff does not publish a documented public WebSocket API. The
+    Hubstaff API v2 (base https://api.hubstaff.com, all paths prefixed
+    /v2) is pure request/response REST over HTTPS, authenticated with
+    OpenID Connect / OAuth 2.0 through Hubstaff Account
+    (https://account.hubstaff.com, scopes hubstaff:read and
+    hubstaff:write) or with personal access tokens that act as 90-day
+    OAuth refresh tokens exchanged for access tokens. The live machine
+    definition (Swagger 2.0 at https://api.hubstaff.com/v2/docs, 124
+    paths) contains no ws:// or wss:// endpoints, no WebSocket mentions,
+    and no server-sent event streams. Real-time needs are served by the
+    Webhooks API - HTTP callbacks delivered to a customer-hosted HTTPS
+    endpoint with secret verification - and by polling the activities
+    "updates" endpoints (e.g. /v2/organizations/{id}/activities/updates)
+    which are cursor-paginated REST, not streaming.
+  accessModel: |
+    The API is publicly documented (developer.hubstaff.com) but requires a
+    Hubstaff account; every call is scoped to organizations the
+    authenticated user belongs to. Rate limit: 1,000 requests per hour per
+    application per authenticated user, with a 30-second per-request
+    timeout. API v1 is deprecated; v2 is current.
+  transports:
+    - protocol: REST
+      scheme: https
+      baseURL: https://api.hubstaff.com/v2
+      documented: true
+      note: Full read/write API - activities, time entries, timesheets, time off, attendance, organizations, members, teams, projects, tasks, clients, invoices, payments, screenshots, app/URL usage. Swagger 2.0 definition declares HTTPS only.
+    - protocol: Webhook
+      scheme: https
+      documented: true
+      note: Hubstaff POSTs event notifications (timer.*, project.*, task.*, schedule.*, shift.*, work_break.*, activity.*, idle_time.start, billing.occupied_seats) to a consumer endpoint after X-Hook-Secret verification and POST /v2/webhooks/{id}/activate. HTTP callbacks, not WebSocket.
+    - protocol: WebSocket
+      scheme: wss
+      documented: false
+      note: No WebSocket endpoint appears anywhere in the live API definition or developer portal as of the review date.
+    - protocol: SSE
+      scheme: https
+      documented: false
+      note: No Server-Sent Events or streaming endpoints are documented; "updates" endpoints are cursor-paginated REST polling surfaces.
+  endpointsConfirmedRest:
+    - GET    https://api.hubstaff.com/v2/organizations
+    - POST   https://api.hubstaff.com/v2/organizations
+    - GET    https://api.hubstaff.com/v2/organizations/{organization_id}
+    - GET    https://api.hubstaff.com/v2/organizations/{organization_id}/members
+    - POST   https://api.hubstaff.com/v2/organizations/{organization_id}/members
+    - GET    https://api.hubstaff.com/v2/organizations/{organization_id}/activities
+    - GET    https://api.hubstaff.com/v2/organizations/{organization_id}/activities/daily
+    - GET    https://api.hubstaff.com/v2/organizations/{organization_id}/activities/updates
+    - GET    https://api.hubstaff.com/v2/organizations/{organization_id}/last_activities
+    - POST   https://api.hubstaff.com/v2/users/{user_id}/time_entries
+    - GET    https://api.hubstaff.com/v2/organizations/{organization_id}/timesheets
+    - PUT    https://api.hubstaff.com/v2/timesheets/{timesheet_id}
+    - GET    https://api.hubstaff.com/v2/organizations/{organization_id}/time_edit_logs
+    - GET    https://api.hubstaff.com/v2/organizations/{organization_id}/projects
+    - POST   https://api.hubstaff.com/v2/organizations/{organization_id}/projects
+    - GET    https://api.hubstaff.com/v2/projects/{project_id}
+    - PUT    https://api.hubstaff.com/v2/projects/{project_id}
+    - GET    https://api.hubstaff.com/v2/organizations/{organization_id}/tasks
+    - GET    https://api.hubstaff.com/v2/projects/{project_id}/tasks
+    - POST   https://api.hubstaff.com/v2/projects/{project_id}/tasks
+    - GET    https://api.hubstaff.com/v2/tasks/{task_id}
+    - PUT    https://api.hubstaff.com/v2/tasks/{task_id}
+    - DELETE https://api.hubstaff.com/v2/tasks/{task_id}
+    - GET    https://api.hubstaff.com/v2/users/me
+    - GET    https://api.hubstaff.com/v2/users/{user_id}
+    - GET    https://api.hubstaff.com/v2/organizations/{organization_id}/clients
+    - GET    https://api.hubstaff.com/v2/organizations/{organization_id}/client_invoices
+    - GET    https://api.hubstaff.com/v2/organizations/{organization_id}/team_payments
+    - GET    https://api.hubstaff.com/v2/organizations/{organization_id}/time_off_requests
+    - POST   https://api.hubstaff.com/v2/organizations/{organization_id}/time_off_requests
+    - GET    https://api.hubstaff.com/v2/organizations/{organization_id}/attendance_schedules
+    - GET    https://api.hubstaff.com/v2/organizations/{organization_id}/attendance_shifts
+    - GET    https://api.hubstaff.com/v2/organizations/{organization_id}/screenshots
+    - GET    https://api.hubstaff.com/v2/organizations/{organization_id}/tool_usages/daily
+    - POST   https://api.hubstaff.com/v2/organizations/{organization_id}/webhooks
+    - POST   https://api.hubstaff.com/v2/webhooks/{webhook_id}/activate
+    - GET    https://api.hubstaff.com/v2/webhooks/{webhook_id}
+    - DELETE https://api.hubstaff.com/v2/webhooks/{webhook_id}
+sources:
+  - url: https://api.hubstaff.com/v2/docs
+    type: OpenAPI
+    note: Live Swagger 2.0 definition (124 paths, schemes https only). OAuth2 accessCode flow via account.hubstaff.com; no WebSocket or SSE anywhere in the document.
+  - url: https://developer.hubstaff.com/
+    type: Documentation
+    note: Hubstaff Developer Portal - public API documentation, personal access tokens, and app registration.
+  - url: https://developer.hubstaff.com/docs/hubstaff_v2
+    type: APIReference
+    note: Interactive API v2 reference rendered from the live definition.
+  - url: https://support.hubstaff.com/time-tracking-api/
+    type: Documentation
+    note: Confirms v1 deprecated / v2 current, OpenID Connect + personal access tokens (90-day refresh tokens), 1,000 requests/hour per app, 30-second request timeout, HTTPS required.
+actions:
+  asyncapiPath: null
+  apisYmlUpdated: true
+  reason: |
+    No WebSocket protocol surface exists. Hubstaff's own public API is
+    request/response REST over HTTPS; its push mechanism is webhooks
+    (HTTP callbacks to consumer endpoints), which carry no server-push
+    transport on Hubstaff's API to model in AsyncAPI, and the activity
+    "updates" endpoints are polling surfaces. No AsyncAPI document was
+    created.

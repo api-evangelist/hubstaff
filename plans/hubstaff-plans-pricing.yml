@@ -1,0 +1,234 @@
+specification: API Commons Plans
+specificationVersion: '0.1'
+schema: https://raw.githubusercontent.com/api-evangelist/interface-research/main/schema/api-commons.yml#/$defs/Plans
+provider: Hubstaff
+providerId: hubstaff
+created: '2026-07-11'
+modified: '2026-07-11'
+reconciled: false
+tags:
+- Time Tracking
+- Timesheets
+- Workforce Management
+- Productivity
+- Plans
+description: >-
+  Hubstaff is priced per user per month across four paid tiers - Starter, Grow,
+  Team, and Enterprise - plus a single-user free plan. Paid plans carry a
+  two-seat minimum and are available with monthly, quarterly, or annual billing
+  (annual is cheaper). There is no separate API subscription: the API v2 comes
+  with the account, and every API call is scoped to the organizations the
+  authenticated user belongs to. Optional per-user add-ons (Insights, Tasks,
+  Locations, Silent App, More Screenshots, Data Retention) extend lower tiers.
+  A 14-day free trial (no credit card) and a 30-day money-back guarantee are
+  offered.
+notes: >-
+  Prices captured 2026-07-11 from Hubstaff's pricing page and pricing guide -
+  annual per-user monthly equivalents with monthly-billing prices noted per
+  plan. Verify current rates at hubstaff.com/pricing during reconciliation;
+  Hubstaff notes pricing may change over time.
+sources:
+- https://hubstaff.com/pricing
+- https://hubstaff.com/hubstaff-pricing-guide
+- https://support.hubstaff.com/new-pricing-and-plans/
+plans:
+- id: hubstaff-free
+  name: Free
+  type: free
+  description: >-
+    Free plan for one person (the organization owner only). Basic time
+    tracking, timesheets, activity monitoring, and limited screenshots
+    (100/month).
+  entries:
+  - label: Seat
+    name: free_seat
+    type: user
+    metric: users
+    limit: 1
+    timeFrame: month
+    geo: global
+    unit: 1
+    price: $0 (single user)
+    userMultiplied: false
+  elements:
+  - name: Time Tracking
+  - name: Timesheets
+  - name: Activity Monitoring
+  - name: Limited Screenshots (100/month)
+- id: hubstaff-starter
+  name: Starter
+  type: paid
+  description: >-
+    Entry paid tier - time tracking, timesheets, and basic reporting with up
+    to 500 screenshots and app/URL entries per month, and email support with a
+    2+ day SLA. Two-seat minimum.
+  entries:
+  - label: Per User (Annual Billing)
+    name: starter_user_annual
+    type: user
+    metric: users
+    limit: -1
+    timeFrame: month
+    geo: global
+    unit: 1
+    price: $4.99 per user per month billed annually ($7.00 billed monthly)
+    userMultiplied: true
+  elements:
+  - name: Time Tracking
+  - name: Timesheets
+  - name: Limited Screenshots (500/month)
+  - name: Limited App and URL Tracking
+  - name: Email Support (2+ day SLA)
+- id: hubstaff-grow
+  name: Grow
+  type: paid
+  description: >-
+    Mid tier - adds more screenshots and app/URL tracking (1,500/month), one
+    integration, and faster email support (1+ day SLA). Two-seat minimum.
+  entries:
+  - label: Per User (Annual Billing)
+    name: grow_user_annual
+    type: user
+    metric: users
+    limit: -1
+    timeFrame: month
+    geo: global
+    unit: 1
+    price: $7.50 per user per month billed annually ($9.00 billed monthly)
+    userMultiplied: true
+  elements:
+  - name: Everything in Starter
+  - name: More Screenshots (1,500/month)
+  - name: One Integration
+  - name: Reports
+  - name: Email Support (1+ day SLA)
+- id: hubstaff-team
+  name: Team
+  type: paid
+  description: >-
+    Full workforce management tier - unlimited screenshots and app/URL
+    tracking, unlimited integrations, payroll, and chat plus email support
+    with a 24-hour SLA. Two-seat minimum.
+  entries:
+  - label: Per User (Annual Billing)
+    name: team_user_annual
+    type: user
+    metric: users
+    limit: -1
+    timeFrame: month
+    geo: global
+    unit: 1
+    price: $10.00 per user per month billed annually ($12.00 billed monthly)
+    userMultiplied: true
+  elements:
+  - name: Everything in Grow
+  - name: Unlimited Screenshots
+  - name: Unlimited App and URL Tracking
+  - name: Unlimited Integrations
+  - name: Payroll
+  - name: Workforce Analytics
+  - name: Chat and Email Support (24-hour SLA)
+- id: hubstaff-enterprise
+  name: Enterprise
+  type: enterprise
+  description: >-
+    Top tier for larger organizations - SSO, SCIM provisioning, compliance
+    certifications, concierge setup, an assigned account rep, and VIP support
+    with a 2-hour SLA. Listed at $25 per user per month with annual/custom
+    terms negotiated with sales.
+  entries:
+  - label: Per User
+    name: enterprise_user
+    type: user
+    metric: users
+    limit: -1
+    timeFrame: month
+    geo: global
+    unit: 1
+    price: $25.00 per user per month (annual billing custom - contact sales)
+    userMultiplied: true
+  elements:
+  - name: Everything in Team
+  - name: Single Sign-On (SSO)
+  - name: SCIM Provisioning
+  - name: Compliance Certifications
+  - name: Concierge Setup
+  - name: Assigned Account Rep
+  - name: VIP Support (2-hour SLA)
+- id: hubstaff-add-ons
+  name: Add-Ons
+  type: addon
+  description: >-
+    Optional per-user add-ons that extend lower-tier plans with capabilities
+    otherwise bundled higher up.
+  entries:
+  - label: Insights (Workforce Analytics)
+    name: addon_insights
+    type: user
+    metric: users
+    limit: -1
+    timeFrame: month
+    geo: global
+    unit: 1
+    price: from $2.50 per user per month
+    userMultiplied: true
+  - label: Tasks (Project Management)
+    name: addon_tasks
+    type: user
+    metric: users
+    limit: -1
+    timeFrame: month
+    geo: global
+    unit: 1
+    price: from $2.50 per user per month
+    userMultiplied: true
+  - label: Locations (GPS and Job Sites)
+    name: addon_locations
+    type: user
+    metric: users
+    limit: -1
+    timeFrame: month
+    geo: global
+    unit: 1
+    price: from $3.33 per user per month
+    userMultiplied: true
+  - label: Silent App
+    name: addon_silent_app
+    type: user
+    metric: users
+    limit: -1
+    timeFrame: month
+    geo: global
+    unit: 1
+    price: from $2.50 per user per month
+    userMultiplied: true
+  - label: More Screenshots
+    name: addon_more_screenshots
+    type: user
+    metric: users
+    limit: -1
+    timeFrame: month
+    geo: global
+    unit: 1
+    price: from $2.50 per user per month
+    userMultiplied: true
+  - label: Data Retention
+    name: addon_data_retention
+    type: user
+    metric: users
+    limit: -1
+    timeFrame: month
+    geo: global
+    unit: 1
+    price: from $1.67 per user per month
+    userMultiplied: true
+  elements:
+  - name: Insights
+  - name: Tasks
+  - name: Locations
+  - name: Silent App
+  - name: More Screenshots
+  - name: Data Retention
+maintainers:
+- FN: Kin Lane
+  email: kin@apievangelist.com

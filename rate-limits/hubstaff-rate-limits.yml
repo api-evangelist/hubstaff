@@ -1,0 +1,66 @@
+specification: API Commons Rate Limits
+specificationVersion: '0.1'
+schema: https://raw.githubusercontent.com/api-evangelist/interface-research/main/schema/api-commons.yml#/$defs/RateLimits
+provider: Hubstaff
+providerId: hubstaff
+created: '2026-07-11'
+modified: '2026-07-11'
+reconciled: false
+tags:
+- Time Tracking
+- Timesheets
+- Workforce Management
+- Rate Limiting
+- Quotas
+description: >-
+  Hubstaff publishes a single global rate limit for API v2 - authenticated
+  users are allowed 1,000 requests every hour, per application. Individual
+  requests are subject to a 30-second timeout. All requests must be made over
+  HTTPS (plain HTTP is redirected). Personal access tokens act as OAuth
+  refresh tokens and expire after 90 days, so token-exchange calls against
+  account.hubstaff.com should be cached rather than performed per request.
+  Collection endpoints are cursor-paginated with page_start_id and page_limit;
+  Hubstaff recommends the pre-aggregated activities/daily endpoints over raw
+  activities when building reports, because they return far fewer records for
+  the same time span.
+notes: >-
+  The 1,000 requests/hour per app figure comes from Hubstaff's own API support
+  documentation. Per-endpoint or per-plan variations are not documented as of
+  the review date.
+sources:
+- https://support.hubstaff.com/time-tracking-api/
+- https://developer.hubstaff.com/
+- https://api.hubstaff.com/v2/docs
+responseCodes:
+  throttled: 429
+limits:
+- name: API Requests
+  scope: user + application
+  metric: requests
+  limit: 1000 per hour
+  notes: Authenticated users are allowed 1,000 requests every hour, per application.
+- name: Request Timeout
+  scope: request
+  metric: seconds
+  limit: 30
+  notes: Individual API requests time out after 30 seconds.
+- name: Personal Access Token Lifetime
+  scope: token
+  metric: days
+  limit: 90
+  notes: PATs are OAuth refresh tokens with a 90-day expiry; exchange them for short-lived access tokens and rotate before expiry.
+- name: Page Size
+  scope: request
+  metric: records
+  limit: configurable via page_limit
+  notes: Collection endpoints use cursor pagination (page_start_id / page_limit).
+policies:
+- name: HTTPS Only
+  description: All requests must use HTTPS; HTTP requests are redirected to HTTPS.
+- name: Prefer Daily Aggregates
+  description: Use the activities/daily endpoints instead of raw 10-minute activities where possible - they are pre-aggregated and consume far less of the hourly request budget for reporting workloads.
+- name: Backoff Strategy
+  description: Spread bulk reads across the hour and implement exponential backoff with jitter on 429 responses to stay within the 1,000 requests/hour per-app budget.
+maintainers:
+- FN: Kin Lane
+  email: kin@apievangelist.com

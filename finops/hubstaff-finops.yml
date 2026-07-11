@@ -1,0 +1,92 @@
+specification: FinOps Framework
+specificationVersion: '1.0'
+schema: https://www.finops.org/framework/
+provider: Hubstaff
+providerId: hubstaff
+created: '2026-07-11'
+modified: '2026-07-11'
+reconciled: false
+tags:
+- Time Tracking
+- Timesheets
+- Workforce Management
+- Productivity
+- FinOps
+- Cost Management
+- FOCUS
+description: >-
+  FinOps view of Hubstaff spend. Hubstaff is a per-seat SaaS subscription -
+  cost scales with the number of users in the organization, not with API call
+  volume. Paid tiers run from $4.99 (Starter) to $10.00 (Team) per user per
+  month billed annually, with Enterprise listed at $25.00 per user per month,
+  a two-seat minimum on paid plans, and optional per-user add-ons (Insights,
+  Tasks, Locations, Silent App, More Screenshots, Data Retention) layered on
+  top. The API itself carries no separate fee or metered billing - it is
+  bounded by the 1,000 requests/hour per-app rate limit rather than by spend.
+notes: >-
+  The primary cost levers are seat count, plan tier, billing cadence (annual
+  vs monthly saves roughly 17-33%), and add-ons. Verify current rates at
+  hubstaff.com/pricing during reconciliation.
+sources:
+- https://hubstaff.com/pricing
+- https://hubstaff.com/hubstaff-pricing-guide
+- https://support.hubstaff.com/new-pricing-and-plans/
+- https://focus.finops.org/focus-specification/v1-3/
+alignedWith:
+  framework: FinOps Foundation Framework
+  frameworkUrl: https://www.finops.org/framework/
+  dataSpec: FOCUS
+  dataSpecVersion: '1.3'
+  dataSpecUrl: https://focus.finops.org/focus-specification/v1-3/
+publisherName: Hubstaff
+serviceCategory: Business Applications
+billingModel:
+  pricingCategory: Subscription
+  billingFrequency: Monthly, Quarterly, or Annual
+  billingCurrency: USD
+  chargeCategories:
+  - Purchase
+  - Adjustment
+focusColumns:
+  ServiceName: Hubstaff
+  ServiceCategory: Business Applications
+  ProviderName: Hubstaff
+  PublisherName: Hubstaff
+  InvoiceIssuerName: Hubstaff
+  BillingCurrency: USD
+  ChargeCategory: Purchase
+  PricingCategory: Committed (annual) or On-Demand (monthly)
+meters:
+- name: seats
+  description: Active users in the organization - the primary billing unit across all plan tiers.
+  unit: users
+  aggregation: max
+  dimensions:
+  - organization
+  - plan_tier
+- name: add_on_seats
+  description: Per-user add-ons (Insights, Tasks, Locations, Silent App, More Screenshots, Data Retention) billed on top of the base plan.
+  unit: users
+  aggregation: max
+  dimensions:
+  - organization
+  - add_on
+- name: api_requests
+  description: API v2 requests - not billed, but capped at 1,000 per hour per application; a scarcity budget rather than a cost meter.
+  unit: requests
+  aggregation: sum
+  dimensions:
+  - application
+  - user
+principles:
+- name: Visibility
+  description: Track occupied seats against paid seats per organization; the billing.occupied_seats webhook event and GET /v2/organizations/{id}/seats give a programmatic seat snapshot for reconciliation.
+- name: Allocation
+  description: Map organizations, teams, and projects to internal cost centers so per-seat spend and tracked time roll up to the right budget owners.
+- name: Optimization
+  description: Right-size the plan tier against feature use (screenshots, integrations, payroll), prefer annual billing for the discount, remove inactive members promptly, and prefer add-ons over a blanket tier upgrade when only one capability is needed.
+- name: Accountability
+  description: Review seat counts and add-on usage monthly; assign an owner for the Hubstaff subscription and for each OAuth app consuming the API budget.
+maintainers:
+- FN: Kin Lane
+  email: kin@apievangelist.com

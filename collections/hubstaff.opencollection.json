@@ -1,0 +1,1519 @@
+{
+ "opencollection": "1.0.0",
+ "info": {
+  "name": "Hubstaff API",
+  "version": "2.0"
+ },
+ "request": {
+  "auth": {
+   "type": "bearer",
+   "token": "{{accessToken}}"
+  }
+ },
+ "items": [
+  {
+   "info": {
+    "name": "Organizations",
+    "type": "folder"
+   },
+   "items": [
+    {
+     "info": {
+      "name": "List organizations",
+      "type": "http"
+     },
+     "http": {
+      "method": "GET",
+      "url": "https://api.hubstaff.com/v2/organizations"
+     },
+     "docs": "Returns a collection of organizations the authenticated user is an active member of."
+    },
+    {
+     "info": {
+      "name": "Create organization",
+      "type": "http"
+     },
+     "http": {
+      "method": "POST",
+      "url": "https://api.hubstaff.com/v2/organizations",
+      "body": {
+       "type": "json",
+       "data": "{}"
+      }
+     },
+     "docs": "Creates a new organization.\n\nReturns the created organization."
+    },
+    {
+     "info": {
+      "name": "Get organization",
+      "type": "http"
+     },
+     "http": {
+      "method": "GET",
+      "url": "https://api.hubstaff.com/v2/organizations/:organization_id",
+      "params": [
+       {
+        "name": "organization_id",
+        "value": "",
+        "type": "path",
+        "description": "Organization ID"
+       }
+      ]
+     },
+     "docs": "Returns the organization with the given ID."
+    },
+    {
+     "info": {
+      "name": "Get organization seats",
+      "type": "http"
+     },
+     "http": {
+      "method": "GET",
+      "url": "https://api.hubstaff.com/v2/organizations/:organization_id/seats",
+      "params": [
+       {
+        "name": "organization_id",
+        "value": "",
+        "type": "path",
+        "description": ""
+       }
+      ]
+     },
+     "docs": "Returns billing seat counters for the specified organization.\n\n- Paid seats are the total number of seats you are currently paying for.\n- Occupied is the total number of seats that are currently filled.\n- Open seats will be filled automatically when new members are added.\n  Any open seats will be removed automatically when a new billing cycle starts,\n  bringing down the number of paid seats to match the number of seats occupied."
+    }
+   ]
+  },
+  {
+   "info": {
+    "name": "Members",
+    "type": "folder"
+   },
+   "items": [
+    {
+     "info": {
+      "name": "List organization members",
+      "type": "http"
+     },
+     "http": {
+      "method": "GET",
+      "url": "https://api.hubstaff.com/v2/organizations/:organization_id/members",
+      "params": [
+       {
+        "name": "organization_id",
+        "value": "",
+        "type": "path",
+        "description": ""
+       }
+      ]
+     },
+     "docs": "Returns a collection of members for the given organization.\n\nResults can be filtered by search, user IDs, membership role, and date range.\n\n*trackable* - Whether the user can track time.  This is one of 3 values\n- *false* -- meaning tracking has been explicitly disabled for this user regardless of their role\n- *true* -- meaning they are allowed to track time\n- *viewer* -- meaning they are allowed to track time, however as they are only a project viewer (or no\n  memberships) they implicitly can n"
+    },
+    {
+     "info": {
+      "name": "Create organization member",
+      "type": "http"
+     },
+     "http": {
+      "method": "POST",
+      "url": "https://api.hubstaff.com/v2/organizations/:organization_id/members",
+      "params": [
+       {
+        "name": "organization_id",
+        "value": "",
+        "type": "path",
+        "description": ""
+       }
+      ],
+      "body": {
+       "type": "json",
+       "data": "{}"
+      }
+     },
+     "docs": "Creates a new user and adds them to the organization as a member.\n\nReturns the created member.\n\nAvailable roles:\n- organization_manager - Organization manager\n- project_manager - Project manager\n- project_user - Project user\n- project_viewer - Project viewer\n\nAvailable pay periods:\n- none - Disables automatic payments\n- weekly - Pay users weekly\n- twice_per_month - Pay users twice a month\n- biweekly - Pay users bi-weekly\n- monthly - Pay users monthly"
+    },
+    {
+     "info": {
+      "name": "Update organization members",
+      "type": "http"
+     },
+     "http": {
+      "method": "PUT",
+      "url": "https://api.hubstaff.com/v2/organizations/:organization_id/update_members",
+      "params": [
+       {
+        "name": "organization_id",
+        "value": "",
+        "type": "path",
+        "description": "Organization ID"
+       }
+      ],
+      "body": {
+       "type": "json",
+       "data": "{}"
+      }
+     },
+     "docs": "Updates organization members.\n\nReturns {success: true} on success.\n\nOnly pass in the members you want to change.\n\nAvailable roles:\n- user - Member role determined by project membership\n- manager - Organization manager\n- owner - Organization owner\n- remove - Removes user from organization (and all projects/teams)\n\nLimits: Specify full limits config. Missing limits will be removed. Empty \"limits\" removes all limits.\n\nProjects: Specify project memberships to change. Available project roles: viewer,"
+    },
+    {
+     "info": {
+      "name": "List team members",
+      "type": "http"
+     },
+     "http": {
+      "method": "GET",
+      "url": "https://api.hubstaff.com/v2/teams/:team_id/members",
+      "params": [
+       {
+        "name": "team_id",
+        "value": "",
+        "type": "path",
+        "description": "Team ID"
+       }
+      ]
+     },
+     "docs": "Returns a collection of members for the given team.\n\nMembership roles:\n- manager - Can track time, view all data, change settings, and manage membership\n- user - Can track time and view only their own data\n- viewer - Can view reports but cannot make changes"
+    },
+    {
+     "info": {
+      "name": "List project members",
+      "type": "http"
+     },
+     "http": {
+      "method": "GET",
+      "url": "https://api.hubstaff.com/v2/projects/:project_id/members",
+      "params": [
+       {
+        "name": "project_id",
+        "value": "",
+        "type": "path",
+        "description": ""
+       }
+      ]
+     },
+     "docs": "Returns a collection of members for the given project.\n\nResults can be filtered by search, user IDs, membership role, and date range.\n\n*membership_role* - The permission role the member has in this project\n- *manager* - An manager can track time, see data for any member within the project, can change settings, and manage membership within the project\n- *user* - A user can track time against the project and see only their own data within the project\n- *viewer* - A viewer can access reports based "
+    }
+   ]
+  },
+  {
+   "info": {
+    "name": "Invites",
+    "type": "folder"
+   },
+   "items": [
+    {
+     "info": {
+      "name": "List organization invites",
+      "type": "http"
+     },
+     "http": {
+      "method": "GET",
+      "url": "https://api.hubstaff.com/v2/organizations/:organization_id/invites",
+      "params": [
+       {
+        "name": "organization_id",
+        "value": "",
+        "type": "path",
+        "description": ""
+       }
+      ]
+     },
+     "docs": "Returns a collection of invites for the given organization.\n\nResults can be filtered by email and status."
+    },
+    {
+     "info": {
+      "name": "Create invite",
+      "type": "http"
+     },
+     "http": {
+      "method": "POST",
+      "url": "https://api.hubstaff.com/v2/organizations/:organization_id/invites",
+      "params": [
+       {
+        "name": "organization_id",
+        "value": "",
+        "type": "path",
+        "description": ""
+       }
+      ],
+      "body": {
+       "type": "json",
+       "data": "{}"
+      }
+     },
+     "docs": "Creates a new invite.\n\nReturns the created invite.\n\nNote: If there is an account for the email in Hubstaff, the invite will be auto accepted.\nNote: There is a rate limit on how many invites you may create.\n\nAvailable roles:\n- organization_manager - Invited as an organization manager\n- project_manager - Invited as a project manager\n- project_user - Invited as a project user\n- project_viewer - Invited as a project viewer\n\nIf no project_ids are set, any project_* role will default to project_viewer"
+    }
+   ]
+  },
+  {
+   "info": {
+    "name": "Teams",
+    "type": "folder"
+   },
+   "items": [
+    {
+     "info": {
+      "name": "List organization teams",
+      "type": "http"
+     },
+     "http": {
+      "method": "GET",
+      "url": "https://api.hubstaff.com/v2/organizations/:organization_id/teams",
+      "params": [
+       {
+        "name": "organization_id",
+        "value": "",
+        "type": "path",
+        "description": ""
+       }
+      ]
+     },
+     "docs": "Returns a collection of teams for the given organization."
+    },
+    {
+     "info": {
+      "name": "Create team",
+      "type": "http"
+     },
+     "http": {
+      "method": "POST",
+      "url": "https://api.hubstaff.com/v2/organizations/:organization_id/teams",
+      "params": [
+       {
+        "name": "organization_id",
+        "value": "",
+        "type": "path",
+        "description": ""
+       }
+      ],
+      "body": {
+       "type": "json",
+       "data": "{}"
+      }
+     },
+     "docs": "Creates a new team.\n\nReturns the created team.\n\nOnly name is required. Members can optionally be added with roles: viewer, user, or manager.\n\nNote: When a member lead is set to true, the role is forced to manager."
+    },
+    {
+     "info": {
+      "name": "Get team",
+      "type": "http"
+     },
+     "http": {
+      "method": "GET",
+      "url": "https://api.hubstaff.com/v2/teams/:team_id",
+      "params": [
+       {
+        "name": "team_id",
+        "value": "",
+        "type": "path",
+        "description": "Team ID"
+       }
+      ]
+     },
+     "docs": "Returns the team with the given ID."
+    }
+   ]
+  },
+  {
+   "info": {
+    "name": "Users",
+    "type": "folder"
+   },
+   "items": [
+    {
+     "info": {
+      "name": "Get current user",
+      "type": "http"
+     },
+     "http": {
+      "method": "GET",
+      "url": "https://api.hubstaff.com/v2/users/me"
+     },
+     "docs": "Returns the authenticated user."
+    },
+    {
+     "info": {
+      "name": "Get user",
+      "type": "http"
+     },
+     "http": {
+      "method": "GET",
+      "url": "https://api.hubstaff.com/v2/users/:user_id",
+      "params": [
+       {
+        "name": "user_id",
+        "value": "",
+        "type": "path",
+        "description": "User ID"
+       }
+      ]
+     },
+     "docs": "Returns the user with the given ID."
+    }
+   ]
+  },
+  {
+   "info": {
+    "name": "Activities",
+    "type": "folder"
+   },
+   "items": [
+    {
+     "info": {
+      "name": "List organization activities",
+      "type": "http"
+     },
+     "http": {
+      "method": "GET",
+      "url": "https://api.hubstaff.com/v2/organizations/:organization_id/activities",
+      "params": [
+       {
+        "name": "organization_id",
+        "value": "",
+        "type": "path",
+        "description": ""
+       },
+       {
+        "name": "time_slot[start]",
+        "value": "",
+        "type": "query",
+        "description": "Start time (ISO 8601)"
+       },
+       {
+        "name": "time_slot[stop]",
+        "value": "",
+        "type": "query",
+        "description": "Stop time (ISO 8601, Exclusive)"
+       }
+      ]
+     },
+     "docs": "Returns a collection of activities (10-minute time blocks) for the given organization.\n\nResults can be filtered by user, task, project, and time range (time_slot[start], time_slot[stop]).\n\nFor aggregated daily data, use the daily_activities endpoint instead.\n\nNote: Data may be delayed up to 20 minutes.\nNote: Date range limit is 7 days. Earliest date is 6 months ago."
+    },
+    {
+     "info": {
+      "name": "List organization daily activities",
+      "type": "http"
+     },
+     "http": {
+      "method": "GET",
+      "url": "https://api.hubstaff.com/v2/organizations/:organization_id/activities/daily",
+      "params": [
+       {
+        "name": "organization_id",
+        "value": "",
+        "type": "path",
+        "description": ""
+       },
+       {
+        "name": "date[start]",
+        "value": "",
+        "type": "query",
+        "description": "Start date (ISO 8601)"
+       },
+       {
+        "name": "date[stop]",
+        "value": "",
+        "type": "query",
+        "description": "Stop date (ISO 8601, Inclusive)"
+       }
+      ]
+     },
+     "docs": "Returns daily aggregated time tracking data for the given organization.\n\nResults can be filtered by user_ids[], task_ids[], project_ids[], and date[start]/[stop]. Data is aggregated by organization timezone date.\n\nNote: Date range limit is 31 days. Earliest date is 3 years ago."
+    },
+    {
+     "info": {
+      "name": "List organization last activities",
+      "type": "http"
+     },
+     "http": {
+      "method": "GET",
+      "url": "https://api.hubstaff.com/v2/organizations/:organization_id/last_activities",
+      "params": [
+       {
+        "name": "organization_id",
+        "value": "",
+        "type": "path",
+        "description": ""
+       }
+      ]
+     },
+     "docs": "Returns the most recent activity for each member in the organization."
+    },
+    {
+     "info": {
+      "name": "List project activities",
+      "type": "http"
+     },
+     "http": {
+      "method": "GET",
+      "url": "https://api.hubstaff.com/v2/projects/:project_id/activities",
+      "params": [
+       {
+        "name": "project_id",
+        "value": "",
+        "type": "path",
+        "description": ""
+       },
+       {
+        "name": "time_slot[start]",
+        "value": "",
+        "type": "query",
+        "description": "Start time (ISO 8601)"
+       },
+       {
+        "name": "time_slot[stop]",
+        "value": "",
+        "type": "query",
+        "description": "Stop time (ISO 8601, Exclusive)"
+       }
+      ]
+     },
+     "docs": "Returns a collection of activities (10-minute time blocks) for the given project.\n\nResults can be filtered by user, task, project, and time range (time_slot[start], time_slot[stop]).\n\nFor aggregated daily data, use the daily_activities endpoint instead.\n\nNote: Data may be delayed up to 20 minutes.\nNote: Date range limit is 7 days. Earliest date is 6 months ago."
+    },
+    {
+     "info": {
+      "name": "List project daily activities",
+      "type": "http"
+     },
+     "http": {
+      "method": "GET",
+      "url": "https://api.hubstaff.com/v2/projects/:project_id/activities/daily",
+      "params": [
+       {
+        "name": "project_id",
+        "value": "",
+        "type": "path",
+        "description": ""
+       },
+       {
+        "name": "date[start]",
+        "value": "",
+        "type": "query",
+        "description": "Start date (ISO 8601)"
+       },
+       {
+        "name": "date[stop]",
+        "value": "",
+        "type": "query",
+        "description": "Stop date (ISO 8601, Inclusive)"
+       }
+      ]
+     },
+     "docs": "Returns daily aggregated time tracking data for the given project.\n\nResults can be filtered by user_ids[], task_ids[], project_ids[], and date[start]/[stop]. Data is aggregated by organization timezone date.\n\nNote: Date range limit is 31 days. Earliest date is 3 years ago."
+    }
+   ]
+  },
+  {
+   "info": {
+    "name": "Time Entries",
+    "type": "folder"
+   },
+   "items": [
+    {
+     "info": {
+      "name": "Create time entry",
+      "type": "http"
+     },
+     "http": {
+      "method": "POST",
+      "url": "https://api.hubstaff.com/v2/users/:user_id/time_entries",
+      "params": [
+       {
+        "name": "user_id",
+        "value": "",
+        "type": "path",
+        "description": ""
+       }
+      ],
+      "body": {
+       "type": "json",
+       "data": "{}"
+      }
+     },
+     "docs": "Creates a new time entry.\n\nReturns {success: true} on success.\n\nNote: Manual time entries that require approval cannot be added through the API."
+    }
+   ]
+  },
+  {
+   "info": {
+    "name": "Timesheets",
+    "type": "folder"
+   },
+   "items": [
+    {
+     "info": {
+      "name": "List organization timesheets",
+      "type": "http"
+     },
+     "http": {
+      "method": "GET",
+      "url": "https://api.hubstaff.com/v2/organizations/:organization_id/timesheets",
+      "params": [
+       {
+        "name": "organization_id",
+        "value": "",
+        "type": "path",
+        "description": ""
+       }
+      ]
+     },
+     "docs": "Returns a collection of timesheets (aggregate approval records) for the given organization.\n\nResults can be filtered by date[start]/[stop], approved[start], and status.\n\nNote: Timesheets are aggregate records used by the timesheet approval system, not individual time entries."
+    },
+    {
+     "info": {
+      "name": "Update timesheet status",
+      "type": "http"
+     },
+     "http": {
+      "method": "PUT",
+      "url": "https://api.hubstaff.com/v2/timesheets/:timesheet_id",
+      "params": [
+       {
+        "name": "timesheet_id",
+        "value": "",
+        "type": "path",
+        "description": "Timesheet ID"
+       }
+      ],
+      "body": {
+       "type": "json",
+       "data": "{}"
+      }
+     },
+     "docs": "Updates a timesheet status or updates the denial reason on an already denied timesheet.\n\nAllowed statuses are open, submitted, approved, and denied. A denial_reason is required when transitioning a timesheet to denied.\n\nApproving a timesheet can require explicit confirmation when the period has pending manual time requests or pending time off requests.\nIf pending manual time requests would be denied, the endpoint returns 422 with error_code 14905; repeat the request with confirm_pending_manual_t"
+    }
+   ]
+  },
+  {
+   "info": {
+    "name": "Time Edit Logs",
+    "type": "folder"
+   },
+   "items": [
+    {
+     "info": {
+      "name": "List organization time edit logs",
+      "type": "http"
+     },
+     "http": {
+      "method": "GET",
+      "url": "https://api.hubstaff.com/v2/organizations/:organization_id/time_edit_logs",
+      "params": [
+       {
+        "name": "organization_id",
+        "value": "",
+        "type": "path",
+        "description": ""
+       },
+       {
+        "name": "created[start]",
+        "value": "",
+        "type": "query",
+        "description": "Start time (ISO 8601)"
+       },
+       {
+        "name": "created[stop]",
+        "value": "",
+        "type": "query",
+        "description": "Stop time (ISO 8601, exclusive)"
+       }
+      ]
+     },
+     "docs": "Returns a collection of time edit logs (manual time additions/edits/deletions) for the given organization.\n\nResults can be filtered by created[start]/[stop], user_ids[], task_ids[], and project_ids[].\n\nNote: Date range limit is 31 days. Earliest date is 3 years ago."
+    }
+   ]
+  },
+  {
+   "info": {
+    "name": "Projects",
+    "type": "folder"
+   },
+   "items": [
+    {
+     "info": {
+      "name": "List organization projects",
+      "type": "http"
+     },
+     "http": {
+      "method": "GET",
+      "url": "https://api.hubstaff.com/v2/organizations/:organization_id/projects",
+      "params": [
+       {
+        "name": "organization_id",
+        "value": "",
+        "type": "path",
+        "description": ""
+       }
+      ]
+     },
+     "docs": "Returns a collection of projects for the given organization.\n\nResults can be filtered by status (active/archived/all) and project_ids[]."
+    },
+    {
+     "info": {
+      "name": "Create project",
+      "type": "http"
+     },
+     "http": {
+      "method": "POST",
+      "url": "https://api.hubstaff.com/v2/organizations/:organization_id/projects",
+      "params": [
+       {
+        "name": "organization_id",
+        "value": "",
+        "type": "path",
+        "description": ""
+       }
+      ],
+      "body": {
+       "type": "json",
+       "data": "{}"
+      }
+     },
+     "docs": "Creates a new project.\n\nReturns the created project.\n\nOnly name is required. Members can optionally be added with roles: viewer, user, or manager."
+    },
+    {
+     "info": {
+      "name": "Get project",
+      "type": "http"
+     },
+     "http": {
+      "method": "GET",
+      "url": "https://api.hubstaff.com/v2/projects/:project_id",
+      "params": [
+       {
+        "name": "project_id",
+        "value": "",
+        "type": "path",
+        "description": "Project ID"
+       }
+      ]
+     },
+     "docs": "Returns the project with the given ID."
+    },
+    {
+     "info": {
+      "name": "Update project",
+      "type": "http"
+     },
+     "http": {
+      "method": "PUT",
+      "url": "https://api.hubstaff.com/v2/projects/:project_id",
+      "params": [
+       {
+        "name": "project_id",
+        "value": "",
+        "type": "path",
+        "description": "Project ID"
+       }
+      ],
+      "body": {
+       "type": "json",
+       "data": "{}"
+      }
+     },
+     "docs": "Updates a project.\n\nReturns the updated project.\n\nOnly pass in the fields you want to change. To unset the budget, specify null. To update the budget, you must specify the complete budget configuration.\n\nWhen restoring an archived project, you can only change the status column.\n\nRate handling for pay_rate and bill_rate:\n- To remove a rate, pass null (e.g., pay_rate: null)\n- Custom user rates take precedence over default project rates\n- To apply default project rate to a user, remove their custom"
+    }
+   ]
+  },
+  {
+   "info": {
+    "name": "Tasks",
+    "type": "folder"
+   },
+   "items": [
+    {
+     "info": {
+      "name": "List organization tasks",
+      "type": "http"
+     },
+     "http": {
+      "method": "GET",
+      "url": "https://api.hubstaff.com/v2/organizations/:organization_id/tasks",
+      "params": [
+       {
+        "name": "organization_id",
+        "value": "",
+        "type": "path",
+        "description": ""
+       }
+      ]
+     },
+     "docs": "Returns a collection of tasks (to-dos) for the given organization.\n\nResults can be filtered by status[] (active/completed/deleted), user_ids[], project_ids[], and global_todo_ids[]."
+    },
+    {
+     "info": {
+      "name": "List project tasks",
+      "type": "http"
+     },
+     "http": {
+      "method": "GET",
+      "url": "https://api.hubstaff.com/v2/projects/:project_id/tasks",
+      "params": [
+       {
+        "name": "project_id",
+        "value": "",
+        "type": "path",
+        "description": ""
+       }
+      ]
+     },
+     "docs": "Returns a collection of tasks (to-dos) for the given project.\n\nResults can be filtered by status[] (active/completed/deleted), user_ids[], project_ids[], and global_todo_ids[]."
+    },
+    {
+     "info": {
+      "name": "Create task",
+      "type": "http"
+     },
+     "http": {
+      "method": "POST",
+      "url": "https://api.hubstaff.com/v2/projects/:project_id/tasks",
+      "params": [
+       {
+        "name": "project_id",
+        "value": "",
+        "type": "path",
+        "description": ""
+       }
+      ],
+      "body": {
+       "type": "json",
+       "data": "{}"
+      }
+     },
+     "docs": "Creates a new task for this project.\n\nReturns the created task.\n\nNote: If this project is integrated with a 3rd party tool, you must create the task in that tool instead."
+    },
+    {
+     "info": {
+      "name": "Get task",
+      "type": "http"
+     },
+     "http": {
+      "method": "GET",
+      "url": "https://api.hubstaff.com/v2/tasks/:task_id",
+      "params": [
+       {
+        "name": "task_id",
+        "value": "",
+        "type": "path",
+        "description": "Task ID"
+       }
+      ]
+     },
+     "docs": "Returns the task with the given ID."
+    },
+    {
+     "info": {
+      "name": "Update task",
+      "type": "http"
+     },
+     "http": {
+      "method": "PUT",
+      "url": "https://api.hubstaff.com/v2/tasks/:task_id",
+      "params": [
+       {
+        "name": "task_id",
+        "value": "",
+        "type": "path",
+        "description": "Task ID"
+       }
+      ],
+      "body": {
+       "type": "json",
+       "data": "{}"
+      }
+     },
+     "docs": "Updates a task.\n\nReturns the updated task.\n\nOnly pass in the fields you want to change. Requires passing lock_version from the task fetch.\n\nNote: Only simple todos can be updated. 3rd party tasks must be updated in their system."
+    },
+    {
+     "info": {
+      "name": "Delete task",
+      "type": "http"
+     },
+     "http": {
+      "method": "DELETE",
+      "url": "https://api.hubstaff.com/v2/tasks/:task_id",
+      "params": [
+       {
+        "name": "task_id",
+        "value": "",
+        "type": "path",
+        "description": "Task ID"
+       }
+      ]
+     },
+     "docs": "Deletes a task.\n\nNote: Only simple todos can be deleted. 3rd party tasks must be deleted in their system."
+    }
+   ]
+  },
+  {
+   "info": {
+    "name": "Clients",
+    "type": "folder"
+   },
+   "items": [
+    {
+     "info": {
+      "name": "List organization clients",
+      "type": "http"
+     },
+     "http": {
+      "method": "GET",
+      "url": "https://api.hubstaff.com/v2/organizations/:organization_id/clients",
+      "params": [
+       {
+        "name": "organization_id",
+        "value": "",
+        "type": "path",
+        "description": ""
+       }
+      ]
+     },
+     "docs": "Returns a collection of clients for the given organization.\n\nResults can be filtered by status."
+    },
+    {
+     "info": {
+      "name": "Create client",
+      "type": "http"
+     },
+     "http": {
+      "method": "POST",
+      "url": "https://api.hubstaff.com/v2/organizations/:organization_id/clients",
+      "params": [
+       {
+        "name": "organization_id",
+        "value": "",
+        "type": "path",
+        "description": ""
+       }
+      ],
+      "body": {
+       "type": "json",
+       "data": "{}"
+      }
+     },
+     "docs": "Creates a new client.\n\nReturns the created client."
+    },
+    {
+     "info": {
+      "name": "Get client",
+      "type": "http"
+     },
+     "http": {
+      "method": "GET",
+      "url": "https://api.hubstaff.com/v2/clients/:client_id",
+      "params": [
+       {
+        "name": "client_id",
+        "value": "",
+        "type": "path",
+        "description": "Client ID"
+       }
+      ]
+     },
+     "docs": "Returns the client with the given ID."
+    },
+    {
+     "info": {
+      "name": "Update client",
+      "type": "http"
+     },
+     "http": {
+      "method": "PUT",
+      "url": "https://api.hubstaff.com/v2/clients/:client_id",
+      "params": [
+       {
+        "name": "client_id",
+        "value": "",
+        "type": "path",
+        "description": "Client ID"
+       }
+      ],
+      "body": {
+       "type": "json",
+       "data": "{}"
+      }
+     },
+     "docs": "Updates a client.\n\nReturns the updated client.\n\nOnly pass in the fields you want to change. To unset the budget, specify null as the value. To update the budget, you must specify the complete budget configuration. To clear invoice_notes or net_terms (to use organization defaults), specify null as the value."
+    }
+   ]
+  },
+  {
+   "info": {
+    "name": "Client Invoices",
+    "type": "folder"
+   },
+   "items": [
+    {
+     "info": {
+      "name": "List organization client invoices",
+      "type": "http"
+     },
+     "http": {
+      "method": "GET",
+      "url": "https://api.hubstaff.com/v2/organizations/:organization_id/client_invoices",
+      "params": [
+       {
+        "name": "organization_id",
+        "value": "",
+        "type": "path",
+        "description": ""
+       }
+      ]
+     },
+     "docs": "Returns invoices sent to clients for the given organization.\n\nResults can be filtered by client_ids[], issue_date[start]/[stop], and status. Use include_line_items=true to include invoice line items."
+    }
+   ]
+  },
+  {
+   "info": {
+    "name": "Team Payments",
+    "type": "folder"
+   },
+   "items": [
+    {
+     "info": {
+      "name": "List organization team payments",
+      "type": "http"
+     },
+     "http": {
+      "method": "GET",
+      "url": "https://api.hubstaff.com/v2/organizations/:organization_id/team_payments",
+      "params": [
+       {
+        "name": "organization_id",
+        "value": "",
+        "type": "path",
+        "description": ""
+       }
+      ]
+     },
+     "docs": "Returns a collection of team payments (payroll disbursements) for the given organization.\n\nResults can be filtered by created[start]/[stop], user_ids[], and project_ids[].\n\nNote: If date filters are not provided, defaults to the last 3 years. Earliest date is 3 years ago."
+    }
+   ]
+  },
+  {
+   "info": {
+    "name": "Time Off",
+    "type": "folder"
+   },
+   "items": [
+    {
+     "info": {
+      "name": "List organization time off requests",
+      "type": "http"
+     },
+     "http": {
+      "method": "GET",
+      "url": "https://api.hubstaff.com/v2/organizations/:organization_id/time_off_requests",
+      "params": [
+       {
+        "name": "organization_id",
+        "value": "",
+        "type": "path",
+        "description": ""
+       }
+      ]
+     },
+     "docs": "Returns a collection of time off requests for the given organization.\n\nResults can be filtered by created[start]/[stop], starts_at[start]/[stop], approved_at[start]/[stop], and user_ids[].\n\nUse include[] to sideload related users and time_off_policies."
+    },
+    {
+     "info": {
+      "name": "Create time off request",
+      "type": "http"
+     },
+     "http": {
+      "method": "POST",
+      "url": "https://api.hubstaff.com/v2/organizations/:organization_id/time_off_requests",
+      "params": [
+       {
+        "name": "organization_id",
+        "value": "",
+        "type": "path",
+        "description": ""
+       }
+      ],
+      "body": {
+       "type": "json",
+       "data": "{}"
+      }
+     },
+     "docs": "Creates a new time off request.\n\nReturns the created time off request with a balance_preview showing the policy balance impact.\n\ntime_off_request_days must include one entry for every date from starts_at to stops_at. Each entry requires a date and amount_used in seconds (typically 28800 for an 8-hour day). Set amount_used to 0 for excluded weekend or holiday days.\n\nSet require_no_shift_overlap to true to reject the request if it overlaps with scheduled attendance shifts.\n\nremove_shifts deletes o"
+    },
+    {
+     "info": {
+      "name": "Get time off request",
+      "type": "http"
+     },
+     "http": {
+      "method": "GET",
+      "url": "https://api.hubstaff.com/v2/time_off_requests/:time_off_request_id",
+      "params": [
+       {
+        "name": "time_off_request_id",
+        "value": "",
+        "type": "path",
+        "description": "Time off request ID"
+       }
+      ]
+     },
+     "docs": "Returns the time off request with the given ID.\n\nIncludes time_off_request_days with per-day breakdown of dates, amounts, and holiday/paid status.\n\nAlso includes balance_preview showing the policy balance impact."
+    },
+    {
+     "info": {
+      "name": "Update time off request",
+      "type": "http"
+     },
+     "http": {
+      "method": "PUT",
+      "url": "https://api.hubstaff.com/v2/time_off_requests/:time_off_request_id",
+      "params": [
+       {
+        "name": "time_off_request_id",
+        "value": "",
+        "type": "path",
+        "description": "Time off request ID"
+       }
+      ],
+      "body": {
+       "type": "json",
+       "data": "{}"
+      }
+     },
+     "docs": "Updates a time off request's details (dates, message, days, policy).\n\nThis is a full replacement \u2014 all fields must be provided, including time_off_request_days with one entry per date (amount_used in seconds, typically 28800 for an 8-hour day).\n\nApproved, paid, or partially paid requests cannot be edited.\n\nIf the request was denied, updating it automatically resubmits it (status \u2192 submitted).\n\nIf the policy does not require approval, the request is auto-approved on update.\n\nSet require_no_shift_"
+    },
+    {
+     "info": {
+      "name": "Delete time off request",
+      "type": "http"
+     },
+     "http": {
+      "method": "DELETE",
+      "url": "https://api.hubstaff.com/v2/time_off_requests/:time_off_request_id",
+      "params": [
+       {
+        "name": "time_off_request_id",
+        "value": "",
+        "type": "path",
+        "description": "Time off request ID"
+       }
+      ]
+     },
+     "docs": "Deletes the time off request.\n\nApproved or paid time off requests cannot be deleted."
+    },
+    {
+     "info": {
+      "name": "List organization time off policies",
+      "type": "http"
+     },
+     "http": {
+      "method": "GET",
+      "url": "https://api.hubstaff.com/v2/organizations/:organization_id/time_off_policies",
+      "params": [
+       {
+        "name": "organization_id",
+        "value": "",
+        "type": "path",
+        "description": ""
+       }
+      ]
+     },
+     "docs": "Returns a collection of time off policies for the given organization."
+    },
+    {
+     "info": {
+      "name": "List organization time off balances",
+      "type": "http"
+     },
+     "http": {
+      "method": "GET",
+      "url": "https://api.hubstaff.com/v2/organizations/:organization_id/time_off_balances",
+      "params": [
+       {
+        "name": "organization_id",
+        "value": "",
+        "type": "path",
+        "description": ""
+       }
+      ]
+     },
+     "docs": "Returns time off balances for the given organization.\n\nEach entry represents one user's balance for one time off policy in the requested year.\n\nUse `year` to query balances for a specific year (defaults to current year in the organization's timezone).\n\nUse `include[]` to sideload related users and time_off_policies."
+    }
+   ]
+  },
+  {
+   "info": {
+    "name": "Attendance",
+    "type": "folder"
+   },
+   "items": [
+    {
+     "info": {
+      "name": "List organization attendance schedules",
+      "type": "http"
+     },
+     "http": {
+      "method": "GET",
+      "url": "https://api.hubstaff.com/v2/organizations/:organization_id/attendance_schedules",
+      "params": [
+       {
+        "name": "organization_id",
+        "value": "",
+        "type": "path",
+        "description": ""
+       },
+       {
+        "name": "date[start]",
+        "value": "",
+        "type": "query",
+        "description": "Start date (ISO 8601)"
+       },
+       {
+        "name": "date[stop]",
+        "value": "",
+        "type": "query",
+        "description": "Stop date (ISO 8601, Inclusive)"
+       }
+      ]
+     },
+     "docs": "Returns a collection of attendance schedules (expected work shifts) for the given organization.\n\nUse date[start] and date[stop] to filter schedules that cover the specified date range. Repeating schedules are included if any occurrence falls within the range."
+    },
+    {
+     "info": {
+      "name": "Create attendance schedule",
+      "type": "http"
+     },
+     "http": {
+      "method": "POST",
+      "url": "https://api.hubstaff.com/v2/organizations/:organization_id/attendance_schedules",
+      "params": [
+       {
+        "name": "organization_id",
+        "value": "",
+        "type": "path",
+        "description": ""
+       }
+      ],
+      "body": {
+       "type": "json",
+       "data": "{}"
+      }
+     },
+     "docs": "Creates an expected work shift for a user.\n\nReturns the created attendance schedule.\n\nFor repeating schedules, specify repeat_schedule (weekly/bi_weekly) and weekdays. Use repeat_until to set an end date. Use excluded_dates to skip specific dates."
+    },
+    {
+     "info": {
+      "name": "List organization attendance shifts",
+      "type": "http"
+     },
+     "http": {
+      "method": "GET",
+      "url": "https://api.hubstaff.com/v2/organizations/:organization_id/attendance_shifts",
+      "params": [
+       {
+        "name": "organization_id",
+        "value": "",
+        "type": "path",
+        "description": ""
+       },
+       {
+        "name": "date[start]",
+        "value": "",
+        "type": "query",
+        "description": "Start date (ISO 8601)"
+       },
+       {
+        "name": "date[stop]",
+        "value": "",
+        "type": "query",
+        "description": "Stop date (ISO 8601, Inclusive)"
+       }
+      ]
+     },
+     "docs": "Returns actual work shifts (clock-in/clock-out records) for the given organization.\n\nUse date[start] and date[stop] to filter shifts that fall within the specified date range.\n\nNote: The maximum allowed difference between date[start] and date[stop] is 31 days.\nData is only available within organization\u2019s retention period.\nIf date[start] falls outside this window, the request will fail."
+    },
+    {
+     "info": {
+      "name": "List organization holidays",
+      "type": "http"
+     },
+     "http": {
+      "method": "GET",
+      "url": "https://api.hubstaff.com/v2/organizations/:organization_id/holidays",
+      "params": [
+       {
+        "name": "organization_id",
+        "value": "",
+        "type": "path",
+        "description": ""
+       }
+      ]
+     },
+     "docs": "Returns a collection of holidays for the given organization.\n\nResults can be filtered by created[start]/[stop] and date[start]/[stop]."
+    }
+   ]
+  },
+  {
+   "info": {
+    "name": "Screenshots",
+    "type": "folder"
+   },
+   "items": [
+    {
+     "info": {
+      "name": "List organization screenshots",
+      "type": "http"
+     },
+     "http": {
+      "method": "GET",
+      "url": "https://api.hubstaff.com/v2/organizations/:organization_id/screenshots",
+      "params": [
+       {
+        "name": "organization_id",
+        "value": "",
+        "type": "path",
+        "description": ""
+       },
+       {
+        "name": "time_slot[start]",
+        "value": "",
+        "type": "query",
+        "description": "Start time (ISO 8601)"
+       },
+       {
+        "name": "time_slot[stop]",
+        "value": "",
+        "type": "query",
+        "description": "Stop time (ISO 8601, Exclusive)"
+       }
+      ]
+     },
+     "docs": "Returns a collection of screenshots for the given organization.\n\nResults can be filtered by user_ids[], project_ids[], and time_slot[start]/[stop].\n\nNote: Date range limit is 7 days. Earliest date is 6 months ago."
+    },
+    {
+     "info": {
+      "name": "Get screenshot",
+      "type": "http"
+     },
+     "http": {
+      "method": "GET",
+      "url": "https://api.hubstaff.com/v2/organizations/:organization_id/screenshots/:screenshot_id",
+      "params": [
+       {
+        "name": "organization_id",
+        "value": "",
+        "type": "path",
+        "description": ""
+       },
+       {
+        "name": "screenshot_id",
+        "value": "",
+        "type": "path",
+        "description": "Screenshot ID"
+       }
+      ]
+     },
+     "docs": "Returns the screenshot with the given ID."
+    }
+   ]
+  },
+  {
+   "info": {
+    "name": "App & URL Tracking",
+    "type": "folder"
+   },
+   "items": [
+    {
+     "info": {
+      "name": "List organization tool usages",
+      "type": "http"
+     },
+     "http": {
+      "method": "GET",
+      "url": "https://api.hubstaff.com/v2/organizations/:organization_id/tool_usages",
+      "params": [
+       {
+        "name": "organization_id",
+        "value": "",
+        "type": "path",
+        "description": ""
+       },
+       {
+        "name": "time_slot[start]",
+        "value": "",
+        "type": "query",
+        "description": "Start time (ISO 8601)"
+       },
+       {
+        "name": "time_slot[stop]",
+        "value": "",
+        "type": "query",
+        "description": "Stop time (ISO 8601, Exclusive)"
+       }
+      ]
+     },
+     "docs": "Returns a collection of tool usages (productivity tool usage) for the given organization.\n\nResults can be filtered by time_slot[start]/[stop], user_ids[], task_ids[], project_ids[], and tool_type.\n\nThe preferred endpoints to fetch tool usage data are the daily endpoints.\n\nRequires Owner or Organization Manager role (with view others data permission).\n\nNote: Date range limit is 7 days. Earliest date is 1 month ago."
+    },
+    {
+     "info": {
+      "name": "List organization daily tool usages",
+      "type": "http"
+     },
+     "http": {
+      "method": "GET",
+      "url": "https://api.hubstaff.com/v2/organizations/:organization_id/tool_usages/daily",
+      "params": [
+       {
+        "name": "organization_id",
+        "value": "",
+        "type": "path",
+        "description": ""
+       },
+       {
+        "name": "date[start]",
+        "value": "",
+        "type": "query",
+        "description": "Start date (ISO 8601)"
+       },
+       {
+        "name": "date[stop]",
+        "value": "",
+        "type": "query",
+        "description": "Stop date (ISO 8601, Inclusive)"
+       }
+      ]
+     },
+     "docs": "Returns daily aggregated time spent using productivity tools (apps and websites categorized by Hubstaff).\n\nResults can be filtered by user_ids[], task_ids[], project_ids[], tool_type, and date[start]/[stop].\n\nRequires Owner or Organization Manager role (with view others data permission).\n\nNote: Date range limit is 14 days. Earliest date is 1 month ago."
+    },
+    {
+     "info": {
+      "name": "List member Track Apps & URLs settings",
+      "type": "http"
+     },
+     "http": {
+      "method": "GET",
+      "url": "https://api.hubstaff.com/v2/organizations/:organization_id/app_and_url_tracking_settings",
+      "params": [
+       {
+        "name": "organization_id",
+        "value": "",
+        "type": "path",
+        "description": ""
+       }
+      ]
+     },
+     "docs": "Returns the Track Apps & URLs setting for the organization's members.\n\nResults can be filtered to specific members with `user_ids`. When no filter is given,\nall members are returned.\n\nOnly organization Owners and Managers may use this endpoint."
+    },
+    {
+     "info": {
+      "name": "Update member Track Apps & URLs settings",
+      "type": "http"
+     },
+     "http": {
+      "method": "PUT",
+      "url": "https://api.hubstaff.com/v2/organizations/:organization_id/app_and_url_tracking_settings",
+      "params": [
+       {
+        "name": "organization_id",
+        "value": "",
+        "type": "path",
+        "description": ""
+       }
+      ],
+      "body": {
+       "type": "json",
+       "data": "{}"
+      }
+     },
+     "docs": "Sets the Track Apps & URLs setting for the organization's members.\n\nAllowed values: `off`, `apps`, `apps_and_urls`. Available only to organizations whose plan\nincludes Apps & URLs tracking.\n\nProvide `user_ids` to update specific members. To change the organization-wide default\ninstead \u2014 which cascades to every current and future member \u2014 set `apply_to_all_members`\nto `true` and omit `user_ids`. The organization-wide change is cautionary and irreversible\nin bulk: the response reports `scope: \"glo"
+    }
+   ]
+  },
+  {
+   "info": {
+    "name": "Webhooks",
+    "type": "folder"
+   },
+   "items": [
+    {
+     "info": {
+      "name": "Create organization webhook",
+      "type": "http"
+     },
+     "http": {
+      "method": "POST",
+      "url": "https://api.hubstaff.com/v2/organizations/:organization_id/webhooks",
+      "params": [
+       {
+        "name": "organization_id",
+        "value": "",
+        "type": "path",
+        "description": ""
+       }
+      ],
+      "body": {
+       "type": "json",
+       "data": "{}"
+      }
+     },
+     "docs": "Creates a new webhook subscription for the organization. After creation, Hubstaff will send a POST request to your `target_url` with an empty body and an `X-Hook-Secret` header.\n\nYour endpoint must respond with HTTP 200 and echo the same `X-Hook-Secret` header to verify ownership.\n\nStore the secret value - you'll need it to activate the webhook."
+    },
+    {
+     "info": {
+      "name": "Get webhook",
+      "type": "http"
+     },
+     "http": {
+      "method": "GET",
+      "url": "https://api.hubstaff.com/v2/webhooks/:webhook_id",
+      "params": [
+       {
+        "name": "webhook_id",
+        "value": "",
+        "type": "path",
+        "description": "Webhook ID"
+       }
+      ]
+     },
+     "docs": "Returns the details of a specific webhook including its status, events, and target URL."
+    },
+    {
+     "info": {
+      "name": "Delete webhook",
+      "type": "http"
+     },
+     "http": {
+      "method": "DELETE",
+      "url": "https://api.hubstaff.com/v2/webhooks/:webhook_id",
+      "params": [
+       {
+        "name": "webhook_id",
+        "value": "",
+        "type": "path",
+        "description": "Webhook ID"
+       }
+      ]
+     },
+     "docs": "Permanently deletes a webhook. The webhook will stop receiving events immediately."
+    },
+    {
+     "info": {
+      "name": "Activate webhook",
+      "type": "http"
+     },
+     "http": {
+      "method": "POST",
+      "url": "https://api.hubstaff.com/v2/webhooks/:webhook_id/activate",
+      "params": [
+       {
+        "name": "webhook_id",
+        "value": "",
+        "type": "path",
+        "description": "Webhook ID"
+       }
+      ]
+     },
+     "docs": "Activates a webhook after endpoint verification.\n\nYou must include the `X-Hook-Secret` header with the secret value you received during the verification step.\n\nOnce activated, the webhook will start receiving events."
+    }
+   ]
+  }
+ ]
+}

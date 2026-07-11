@@ -1,0 +1,206 @@
+aid: hubstaff
+url: https://raw.githubusercontent.com/api-evangelist/hubstaff/refs/heads/main/apis.yml
+name: Hubstaff
+kind: company
+description: Hubstaff is a time tracking and workforce analytics platform for remote,
+  hybrid, and field teams. The Hubstaff API v2 provides read and write access to
+  tracked time (10-minute activity blocks and daily aggregates), time entries,
+  timesheets and approvals, time off, attendance schedules and shifts, organizations,
+  members, teams, projects, tasks, clients, invoices, team payments, screenshots,
+  app and URL usage, and webhooks - authenticated with OAuth 2.0 / OpenID Connect
+  or personal access tokens.
+image: https://kinlane-images.s3.amazonaws.com/shared/apis-json/apis-json-logo.jpg
+tags:
+- Time Tracking
+- Timesheets
+- Workforce Management
+- Productivity
+- Employee Monitoring
+- Project Management
+- Payroll
+created: '2026-07-11'
+modified: '2026-07-11'
+specificationVersion: '0.19'
+apis:
+- aid: hubstaff:hubstaff-activities-time-tracking-api
+  name: Hubstaff Activities and Time Tracking API
+  tags:
+  - Time Tracking
+  - Activities
+  - Productivity
+  image: https://kinlane-images.s3.amazonaws.com/shared/apis-json/apis-json-logo.jpg
+  humanURL: https://developer.hubstaff.com/docs/hubstaff_v2
+  baseURL: https://api.hubstaff.com/v2
+  properties:
+  - url: https://developer.hubstaff.com/docs/hubstaff_v2
+    type: APIReference
+  - url: https://support.hubstaff.com/time-tracking-api/
+    type: Documentation
+  - url: openapi/hubstaff-openapi.yml
+    type: OpenAPI
+  description: Tracked time as 10-minute activity blocks with keyboard and mouse
+    activity percentages, pre-aggregated daily activities, and the most recent
+    activity per member - filterable by user, project, task, and time range at
+    both the organization and project level.
+- aid: hubstaff:hubstaff-timesheets-time-entries-api
+  name: Hubstaff Timesheets and Time Entries API
+  tags:
+  - Timesheets
+  - Time Entries
+  - Approvals
+  image: https://kinlane-images.s3.amazonaws.com/shared/apis-json/apis-json-logo.jpg
+  humanURL: https://developer.hubstaff.com/docs/hubstaff_v2
+  baseURL: https://api.hubstaff.com/v2
+  properties:
+  - url: https://developer.hubstaff.com/docs/hubstaff_v2
+    type: APIReference
+  - url: openapi/hubstaff-openapi.yml
+    type: OpenAPI
+  description: Create time entries for users, list organization timesheets (aggregate
+    approval records), move timesheets through the open, submitted, approved, and
+    denied statuses, and audit manual time edits via time edit logs.
+- aid: hubstaff:hubstaff-organizations-teams-api
+  name: Hubstaff Organizations and Teams API
+  tags:
+  - Organizations
+  - Teams
+  - Members
+  - Workforce Management
+  image: https://kinlane-images.s3.amazonaws.com/shared/apis-json/apis-json-logo.jpg
+  humanURL: https://developer.hubstaff.com/docs/hubstaff_v2
+  baseURL: https://api.hubstaff.com/v2
+  properties:
+  - url: https://developer.hubstaff.com/docs/hubstaff_v2
+    type: APIReference
+  - url: openapi/hubstaff-openapi.yml
+    type: OpenAPI
+  description: Manage organizations, seats, members and their pay and bill rates,
+    teams and team membership, and invites - the workforce structure that all
+    tracked time hangs off of.
+- aid: hubstaff:hubstaff-projects-tasks-api
+  name: Hubstaff Projects and Tasks API
+  tags:
+  - Projects
+  - Tasks
+  - Project Management
+  image: https://kinlane-images.s3.amazonaws.com/shared/apis-json/apis-json-logo.jpg
+  humanURL: https://developer.hubstaff.com/docs/hubstaff_v2
+  baseURL: https://api.hubstaff.com/v2
+  properties:
+  - url: https://developer.hubstaff.com/docs/hubstaff_v2
+    type: APIReference
+  - url: openapi/hubstaff-openapi.yml
+    type: OpenAPI
+  description: Create and manage projects (including budgets and project members)
+    and tasks (to-dos) at the project and organization level. Tasks synced from
+    third-party integrations are read-only through the API.
+- aid: hubstaff:hubstaff-users-api
+  name: Hubstaff Users API
+  tags:
+  - Users
+  - Profiles
+  image: https://kinlane-images.s3.amazonaws.com/shared/apis-json/apis-json-logo.jpg
+  humanURL: https://developer.hubstaff.com/docs/hubstaff_v2
+  baseURL: https://api.hubstaff.com/v2
+  properties:
+  - url: https://developer.hubstaff.com/docs/hubstaff_v2
+    type: APIReference
+  - url: openapi/hubstaff-openapi.yml
+    type: OpenAPI
+  description: Retrieve the authenticated user (/users/me) and individual user
+    profiles by ID.
+- aid: hubstaff:hubstaff-time-off-attendance-api
+  name: Hubstaff Time Off and Attendance API
+  tags:
+  - Time Off
+  - Attendance
+  - Scheduling
+  - Workforce Management
+  image: https://kinlane-images.s3.amazonaws.com/shared/apis-json/apis-json-logo.jpg
+  humanURL: https://developer.hubstaff.com/docs/hubstaff_v2
+  baseURL: https://api.hubstaff.com/v2
+  properties:
+  - url: https://developer.hubstaff.com/docs/hubstaff_v2
+    type: APIReference
+  - url: openapi/hubstaff-openapi.yml
+    type: OpenAPI
+  description: Time off requests with approval workflow and balance previews, time
+    off policies and balances, attendance schedules (expected shifts, including
+    repeating schedules), actual clock-in and clock-out attendance shifts, and
+    organization holidays.
+- aid: hubstaff:hubstaff-clients-invoices-payments-api
+  name: Hubstaff Clients, Invoices, and Payments API
+  tags:
+  - Clients
+  - Invoicing
+  - Payroll
+  image: https://kinlane-images.s3.amazonaws.com/shared/apis-json/apis-json-logo.jpg
+  humanURL: https://developer.hubstaff.com/docs/hubstaff_v2
+  baseURL: https://api.hubstaff.com/v2
+  properties:
+  - url: https://developer.hubstaff.com/docs/hubstaff_v2
+    type: APIReference
+  - url: openapi/hubstaff-openapi.yml
+    type: OpenAPI
+  description: Manage the clients projects are billed to, list client invoices,
+    and list team payments (payroll) generated from tracked time.
+- aid: hubstaff:hubstaff-screenshots-app-tracking-api
+  name: Hubstaff Screenshots and App Tracking API
+  tags:
+  - Screenshots
+  - Activity Monitoring
+  - App Tracking
+  image: https://kinlane-images.s3.amazonaws.com/shared/apis-json/apis-json-logo.jpg
+  humanURL: https://developer.hubstaff.com/docs/hubstaff_v2
+  baseURL: https://api.hubstaff.com/v2
+  properties:
+  - url: https://developer.hubstaff.com/docs/hubstaff_v2
+    type: APIReference
+  - url: openapi/hubstaff-openapi.yml
+    type: OpenAPI
+  description: Retrieve screenshots captured while tracking time, application and
+    URL usage (raw and daily aggregates), and read or update the organization's
+    app and URL tracking settings.
+- aid: hubstaff:hubstaff-webhooks-api
+  name: Hubstaff Webhooks API
+  tags:
+  - Webhooks
+  - Events
+  - Notifications
+  image: https://kinlane-images.s3.amazonaws.com/shared/apis-json/apis-json-logo.jpg
+  humanURL: https://developer.hubstaff.com/docs/hubstaff_v2
+  baseURL: https://api.hubstaff.com/v2
+  properties:
+  - url: https://developer.hubstaff.com/docs/hubstaff_v2
+    type: APIReference
+  - url: openapi/hubstaff-openapi.yml
+    type: OpenAPI
+  description: Subscribe to real-time HTTP event notifications at the organization,
+    project, or user level - timer.start, timer.stop, project.create, task.create,
+    task.assign, schedule and shift events, work breaks, and billing seat
+    snapshots - with an X-Hook-Secret verification and activation handshake and
+    signed deliveries.
+common:
+- type: GitHubOrganization
+  url: https://github.com/NetsoftHoldings
+- type: LinkedIn
+  url: https://www.linkedin.com/company/hubstaff
+- type: Website
+  url: https://hubstaff.com
+- type: Documentation
+  url: https://developer.hubstaff.com/
+- type: Pricing
+  url: https://hubstaff.com/pricing
+- type: Support
+  url: https://support.hubstaff.com/
+- type: Blog
+  url: https://hubstaff.com/blog
+- type: Plans
+  url: plans/hubstaff-plans-pricing.yml
+- type: RateLimits
+  url: rate-limits/hubstaff-rate-limits.yml
+- type: FinOps
+  url: finops/hubstaff-finops.yml
+maintainers:
+- FN: Kin Lane
+  email: kin@apievangelist.com
