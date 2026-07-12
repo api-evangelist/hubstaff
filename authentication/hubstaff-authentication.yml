@@ -1,0 +1,29 @@
+generated: '2026-07-11'
+method: derived
+source: openapi/hubstaff-openapi.yml
+summary:
+  types:
+  - http
+  - oauth2
+  oauth2_flows:
+  - authorizationCode
+schemes:
+- name: oauth2
+  type: oauth2
+  flows:
+  - flow: authorizationCode
+    authorizationUrl: https://account.hubstaff.com/authorizations/new
+    tokenUrl: https://account.hubstaff.com/access_tokens
+    scopes: 2
+  description: Hubstaff Account OpenID Connect / OAuth 2.0 authentication. Scopes are hubstaff:read
+    and hubstaff:write.
+  sources:
+  - openapi/hubstaff-openapi.yml
+- name: personalAccessToken
+  type: http
+  scheme: bearer
+  description: Access token obtained by exchanging a personal access token (created at https://developer.hubstaff.com/personal_access_tokens)
+    via the OAuth 2.0 refresh token grant at https://account.hubstaff.com/access_tokens. PATs
+    expire after 90 days.
+  sources:
+  - openapi/hubstaff-openapi.yml

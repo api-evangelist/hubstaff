@@ -181,6 +181,12 @@ apis:
     snapshots - with an X-Hook-Secret verification and activation handshake and
     signed deliveries.
 common:
+- type: VulnerabilityDisclosure
+  url: security/hubstaff-vulnerability-disclosure.yml
+- type: DomainSecurity
+  url: security/hubstaff-domain-security.yml
+- type: Authentication
+  url: authentication/hubstaff-authentication.yml
 - type: GitHubOrganization
   url: https://github.com/NetsoftHoldings
 - type: LinkedIn
