@@ -1,0 +1,892 @@
+generated: '2026-07-15'
+method: generated
+source: openapi/hubstaff-openapi.yml
+description: Recommended x-agentic-access execution contracts, classified heuristically from
+  the OpenAPI. A governance starting point for exposing this API to AI agents — review and bind
+  audience per deployment. See research/curity/agentic-governance/.
+summary:
+  operations: 62
+  by_action_class:
+    connected: 40
+    acting: 22
+  by_consequence:
+    read: 40
+    write: 22
+  human_in_the_loop_required: 0
+operations:
+- path: /v2/organizations
+  method: get
+  operationId: getV2Organizations
+  x-agentic-access:
+    action-class: connected
+    consequence: read
+    subject: optional
+    token:
+      max-ttl: 3600
+    audit: none
+    scope:
+    - hubstaff:read
+- path: /v2/organizations
+  method: post
+  operationId: postV2Organizations
+  x-agentic-access:
+    action-class: acting
+    consequence: write
+    subject: required
+    audience: null
+    token:
+      max-ttl: 900
+    escalation:
+      human-in-the-loop: conditional
+      triggers:
+      - abnormal
+      - high-value
+    audit: required
+    scope:
+    - hubstaff:read
+- path: /v2/organizations/{organization_id}
+  method: get
+  operationId: getV2OrganizationsOrganizationId
+  x-agentic-access:
+    action-class: connected
+    consequence: read
+    subject: optional
+    token:
+      max-ttl: 3600
+    audit: none
+    scope:
+    - hubstaff:read
+- path: /v2/organizations/{organization_id}/seats
+  method: get
+  operationId: getV2OrganizationsOrganizationIdSeats
+  x-agentic-access:
+    action-class: connected
+    consequence: read
+    subject: optional
+    token:
+      max-ttl: 3600
+    audit: none
+    scope:
+    - hubstaff:read
+- path: /v2/organizations/{organization_id}/members
+  method: get
+  operationId: getV2OrganizationsOrganizationIdMembers
+  x-agentic-access:
+    action-class: connected
+    consequence: read
+    subject: optional
+    token:
+      max-ttl: 3600
+    audit: none
+    scope:
+    - hubstaff:read
+- path: /v2/organizations/{organization_id}/members
+  method: post
+  operationId: postV2OrganizationsOrganizationIdMembers
+  x-agentic-access:
+    action-class: acting
+    consequence: write
+    subject: required
+    audience: null
+    token:
+      max-ttl: 900
+    escalation:
+      human-in-the-loop: conditional
+      triggers:
+      - abnormal
+      - high-value
+    audit: required
+    scope:
+    - hubstaff:read
+- path: /v2/organizations/{organization_id}/update_members
+  method: put
+  operationId: putV2OrganizationsOrganizationIdUpdateMembers
+  x-agentic-access:
+    action-class: acting
+    consequence: write
+    subject: required
+    audience: null
+    token:
+      max-ttl: 900
+    escalation:
+      human-in-the-loop: conditional
+      triggers:
+      - abnormal
+      - high-value
+    audit: required
+    scope:
+    - hubstaff:read
+- path: /v2/organizations/{organization_id}/invites
+  method: get
+  operationId: getV2OrganizationsOrganizationIdInvites
+  x-agentic-access:
+    action-class: connected
+    consequence: read
+    subject: optional
+    token:
+      max-ttl: 3600
+    audit: none
+    scope:
+    - hubstaff:read
+- path: /v2/organizations/{organization_id}/invites
+  method: post
+  operationId: postV2OrganizationsOrganizationIdInvites
+  x-agentic-access:
+    action-class: acting
+    consequence: write
+    subject: required
+    audience: null
+    token:
+      max-ttl: 900
+    escalation:
+      human-in-the-loop: conditional
+      triggers:
+      - abnormal
+      - high-value
+    audit: required
+    scope:
+    - hubstaff:read
+- path: /v2/organizations/{organization_id}/teams
+  method: get
+  operationId: getV2OrganizationsOrganizationIdTeams
+  x-agentic-access:
+    action-class: connected
+    consequence: read
+    subject: optional
+    token:
+      max-ttl: 3600
+    audit: none
+    scope:
+    - hubstaff:read
+- path: /v2/organizations/{organization_id}/teams
+  method: post
+  operationId: postV2OrganizationsOrganizationIdTeams
+  x-agentic-access:
+    action-class: acting
+    consequence: write
+    subject: required
+    audience: null
+    token:
+      max-ttl: 900
+    escalation:
+      human-in-the-loop: conditional
+      triggers:
+      - abnormal
+      - high-value
+    audit: required
+    scope:
+    - hubstaff:read
+- path: /v2/teams/{team_id}
+  method: get
+  operationId: getV2TeamsTeamId
+  x-agentic-access:
+    action-class: connected
+    consequence: read
+    subject: optional
+    token:
+      max-ttl: 3600
+    audit: none
+    scope:
+    - hubstaff:read
+- path: /v2/teams/{team_id}/members
+  method: get
+  operationId: getV2TeamsTeamIdMembers
+  x-agentic-access:
+    action-class: connected
+    consequence: read
+    subject: optional
+    token:
+      max-ttl: 3600
+    audit: none
+    scope:
+    - hubstaff:read
+- path: /v2/users/me
+  method: get
+  operationId: getV2UsersMe
+  x-agentic-access:
+    action-class: connected
+    consequence: read
+    subject: optional
+    token:
+      max-ttl: 3600
+    audit: none
+    scope:
+    - hubstaff:read
+- path: /v2/users/{user_id}
+  method: get
+  operationId: getV2UsersUserId
+  x-agentic-access:
+    action-class: connected
+    consequence: read
+    subject: optional
+    token:
+      max-ttl: 3600
+    audit: none
+    scope:
+    - hubstaff:read
+- path: /v2/organizations/{organization_id}/activities
+  method: get
+  operationId: getV2OrganizationsOrganizationIdActivities
+  x-agentic-access:
+    action-class: connected
+    consequence: read
+    subject: optional
+    token:
+      max-ttl: 3600
+    audit: none
+    scope:
+    - hubstaff:read
+- path: /v2/organizations/{organization_id}/activities/daily
+  method: get
+  operationId: getV2OrganizationsOrganizationIdActivitiesDaily
+  x-agentic-access:
+    action-class: connected
+    consequence: read
+    subject: optional
+    token:
+      max-ttl: 3600
+    audit: none
+    scope:
+    - hubstaff:read
+- path: /v2/organizations/{organization_id}/last_activities
+  method: get
+  operationId: getV2OrganizationsOrganizationIdLastActivities
+  x-agentic-access:
+    action-class: connected
+    consequence: read
+    subject: optional
+    token:
+      max-ttl: 3600
+    audit: none
+    scope:
+    - hubstaff:read
+- path: /v2/projects/{project_id}/activities
+  method: get
+  operationId: getV2ProjectsProjectIdActivities
+  x-agentic-access:
+    action-class: connected
+    consequence: read
+    subject: optional
+    token:
+      max-ttl: 3600
+    audit: none
+    scope:
+    - hubstaff:read
+- path: /v2/projects/{project_id}/activities/daily
+  method: get
+  operationId: getV2ProjectsProjectIdActivitiesDaily
+  x-agentic-access:
+    action-class: connected
+    consequence: read
+    subject: optional
+    token:
+      max-ttl: 3600
+    audit: none
+    scope:
+    - hubstaff:read
+- path: /v2/users/{user_id}/time_entries
+  method: post
+  operationId: postV2UsersUserIdTimeEntries
+  x-agentic-access:
+    action-class: acting
+    consequence: write
+    subject: required
+    audience: null
+    token:
+      max-ttl: 900
+    escalation:
+      human-in-the-loop: conditional
+      triggers:
+      - abnormal
+      - high-value
+    audit: required
+    scope:
+    - hubstaff:read
+- path: /v2/organizations/{organization_id}/timesheets
+  method: get
+  operationId: getV2OrganizationsOrganizationIdTimesheets
+  x-agentic-access:
+    action-class: connected
+    consequence: read
+    subject: optional
+    token:
+      max-ttl: 3600
+    audit: none
+    scope:
+    - hubstaff:read
+- path: /v2/timesheets/{timesheet_id}
+  method: put
+  operationId: putV2TimesheetsTimesheetId
+  x-agentic-access:
+    action-class: acting
+    consequence: write
+    subject: required
+    audience: null
+    token:
+      max-ttl: 900
+    escalation:
+      human-in-the-loop: conditional
+      triggers:
+      - abnormal
+      - high-value
+    audit: required
+    scope:
+    - hubstaff:read
+- path: /v2/organizations/{organization_id}/time_edit_logs
+  method: get
+  operationId: getV2OrganizationsOrganizationIdTimeEditLogs
+  x-agentic-access:
+    action-class: connected
+    consequence: read
+    subject: optional
+    token:
+      max-ttl: 3600
+    audit: none
+    scope:
+    - hubstaff:read
+- path: /v2/organizations/{organization_id}/projects
+  method: get
+  operationId: getV2OrganizationsOrganizationIdProjects
+  x-agentic-access:
+    action-class: connected
+    consequence: read
+    subject: optional
+    token:
+      max-ttl: 3600
+    audit: none
+    scope:
+    - hubstaff:read
+- path: /v2/organizations/{organization_id}/projects
+  method: post
+  operationId: postV2OrganizationsOrganizationIdProjects
+  x-agentic-access:
+    action-class: acting
+    consequence: write
+    subject: required
+    audience: null
+    token:
+      max-ttl: 900
+    escalation:
+      human-in-the-loop: conditional
+      triggers:
+      - abnormal
+      - high-value
+    audit: required
+    scope:
+    - hubstaff:read
+- path: /v2/projects/{project_id}
+  method: get
+  operationId: getV2ProjectsProjectId
+  x-agentic-access:
+    action-class: connected
+    consequence: read
+    subject: optional
+    token:
+      max-ttl: 3600
+    audit: none
+    scope:
+    - hubstaff:read
+- path: /v2/projects/{project_id}
+  method: put
+  operationId: putV2ProjectsProjectId
+  x-agentic-access:
+    action-class: acting
+    consequence: write
+    subject: required
+    audience: null
+    token:
+      max-ttl: 900
+    escalation:
+      human-in-the-loop: conditional
+      triggers:
+      - abnormal
+      - high-value
+    audit: required
+    scope:
+    - hubstaff:read
+- path: /v2/projects/{project_id}/members
+  method: get
+  operationId: getV2ProjectsProjectIdMembers
+  x-agentic-access:
+    action-class: connected
+    consequence: read
+    subject: optional
+    token:
+      max-ttl: 3600
+    audit: none
+    scope:
+    - hubstaff:read
+- path: /v2/organizations/{organization_id}/tasks
+  method: get
+  operationId: getV2OrganizationsOrganizationIdTasks
+  x-agentic-access:
+    action-class: connected
+    consequence: read
+    subject: optional
+    token:
+      max-ttl: 3600
+    audit: none
+    scope:
+    - hubstaff:read
+- path: /v2/projects/{project_id}/tasks
+  method: get
+  operationId: getV2ProjectsProjectIdTasks
+  x-agentic-access:
+    action-class: connected
+    consequence: read
+    subject: optional
+    token:
+      max-ttl: 3600
+    audit: none
+    scope:
+    - hubstaff:read
+- path: /v2/projects/{project_id}/tasks
+  method: post
+  operationId: postV2ProjectsProjectIdTasks
+  x-agentic-access:
+    action-class: acting
+    consequence: write
+    subject: required
+    audience: null
+    token:
+      max-ttl: 900
+    escalation:
+      human-in-the-loop: conditional
+      triggers:
+      - abnormal
+      - high-value
+    audit: required
+    scope:
+    - hubstaff:read
+- path: /v2/tasks/{task_id}
+  method: get
+  operationId: getV2TasksTaskId
+  x-agentic-access:
+    action-class: connected
+    consequence: read
+    subject: optional
+    token:
+      max-ttl: 3600
+    audit: none
+    scope:
+    - hubstaff:read
+- path: /v2/tasks/{task_id}
+  method: put
+  operationId: putV2TasksTaskId
+  x-agentic-access:
+    action-class: acting
+    consequence: write
+    subject: required
+    audience: null
+    token:
+      max-ttl: 900
+    escalation:
+      human-in-the-loop: conditional
+      triggers:
+      - abnormal
+      - high-value
+    audit: required
+    scope:
+    - hubstaff:read
+- path: /v2/tasks/{task_id}
+  method: delete
+  operationId: deleteV2TasksTaskId
+  x-agentic-access:
+    action-class: acting
+    consequence: write
+    subject: required
+    audience: null
+    token:
+      max-ttl: 900
+    escalation:
+      human-in-the-loop: conditional
+      triggers:
+      - abnormal
+      - high-value
+    audit: required
+    scope:
+    - hubstaff:read
+- path: /v2/organizations/{organization_id}/clients
+  method: get
+  operationId: getV2OrganizationsOrganizationIdClients
+  x-agentic-access:
+    action-class: connected
+    consequence: read
+    subject: optional
+    token:
+      max-ttl: 3600
+    audit: none
+    scope:
+    - hubstaff:read
+- path: /v2/organizations/{organization_id}/clients
+  method: post
+  operationId: postV2OrganizationsOrganizationIdClients
+  x-agentic-access:
+    action-class: acting
+    consequence: write
+    subject: required
+    audience: null
+    token:
+      max-ttl: 900
+    escalation:
+      human-in-the-loop: conditional
+      triggers:
+      - abnormal
+      - high-value
+    audit: required
+    scope:
+    - hubstaff:read
+- path: /v2/clients/{client_id}
+  method: get
+  operationId: getV2ClientsClientId
+  x-agentic-access:
+    action-class: connected
+    consequence: read
+    subject: optional
+    token:
+      max-ttl: 3600
+    audit: none
+    scope:
+    - hubstaff:read
+- path: /v2/clients/{client_id}
+  method: put
+  operationId: putV2ClientsClientId
+  x-agentic-access:
+    action-class: acting
+    consequence: write
+    subject: required
+    audience: null
+    token:
+      max-ttl: 900
+    escalation:
+      human-in-the-loop: conditional
+      triggers:
+      - abnormal
+      - high-value
+    audit: required
+    scope:
+    - hubstaff:read
+- path: /v2/organizations/{organization_id}/client_invoices
+  method: get
+  operationId: getV2OrganizationsOrganizationIdClientInvoices
+  x-agentic-access:
+    action-class: connected
+    consequence: read
+    subject: optional
+    token:
+      max-ttl: 3600
+    audit: none
+    scope:
+    - hubstaff:read
+- path: /v2/organizations/{organization_id}/team_payments
+  method: get
+  operationId: getV2OrganizationsOrganizationIdTeamPayments
+  x-agentic-access:
+    action-class: connected
+    consequence: read
+    subject: optional
+    token:
+      max-ttl: 3600
+    audit: none
+    scope:
+    - hubstaff:read
+- path: /v2/organizations/{organization_id}/time_off_requests
+  method: get
+  operationId: getV2OrganizationsOrganizationIdTimeOffRequests
+  x-agentic-access:
+    action-class: connected
+    consequence: read
+    subject: optional
+    token:
+      max-ttl: 3600
+    audit: none
+    scope:
+    - hubstaff:read
+- path: /v2/organizations/{organization_id}/time_off_requests
+  method: post
+  operationId: postV2OrganizationsOrganizationIdTimeOffRequests
+  x-agentic-access:
+    action-class: acting
+    consequence: write
+    subject: required
+    audience: null
+    token:
+      max-ttl: 900
+    escalation:
+      human-in-the-loop: conditional
+      triggers:
+      - abnormal
+      - high-value
+    audit: required
+    scope:
+    - hubstaff:read
+- path: /v2/time_off_requests/{time_off_request_id}
+  method: get
+  operationId: getV2TimeOffRequestsTimeOffRequestId
+  x-agentic-access:
+    action-class: connected
+    consequence: read
+    subject: optional
+    token:
+      max-ttl: 3600
+    audit: none
+    scope:
+    - hubstaff:read
+- path: /v2/time_off_requests/{time_off_request_id}
+  method: put
+  operationId: putV2TimeOffRequestsTimeOffRequestId
+  x-agentic-access:
+    action-class: acting
+    consequence: write
+    subject: required
+    audience: null
+    token:
+      max-ttl: 900
+    escalation:
+      human-in-the-loop: conditional
+      triggers:
+      - abnormal
+      - high-value
+    audit: required
+    scope:
+    - hubstaff:read
+- path: /v2/time_off_requests/{time_off_request_id}
+  method: delete
+  operationId: deleteV2TimeOffRequestsTimeOffRequestId
+  x-agentic-access:
+    action-class: acting
+    consequence: write
+    subject: required
+    audience: null
+    token:
+      max-ttl: 900
+    escalation:
+      human-in-the-loop: conditional
+      triggers:
+      - abnormal
+      - high-value
+    audit: required
+    scope:
+    - hubstaff:read
+- path: /v2/organizations/{organization_id}/time_off_policies
+  method: get
+  operationId: getV2OrganizationsOrganizationIdTimeOffPolicies
+  x-agentic-access:
+    action-class: connected
+    consequence: read
+    subject: optional
+    token:
+      max-ttl: 3600
+    audit: none
+    scope:
+    - hubstaff:read
+- path: /v2/organizations/{organization_id}/time_off_balances
+  method: get
+  operationId: getV2OrganizationsOrganizationIdTimeOffBalances
+  x-agentic-access:
+    action-class: connected
+    consequence: read
+    subject: optional
+    token:
+      max-ttl: 3600
+    audit: none
+    scope:
+    - hubstaff:read
+- path: /v2/organizations/{organization_id}/attendance_schedules
+  method: get
+  operationId: getV2OrganizationsOrganizationIdAttendanceSchedules
+  x-agentic-access:
+    action-class: connected
+    consequence: read
+    subject: optional
+    token:
+      max-ttl: 3600
+    audit: none
+    scope:
+    - hubstaff:read
+- path: /v2/organizations/{organization_id}/attendance_schedules
+  method: post
+  operationId: postV2OrganizationsOrganizationIdAttendanceSchedules
+  x-agentic-access:
+    action-class: acting
+    consequence: write
+    subject: required
+    audience: null
+    token:
+      max-ttl: 900
+    escalation:
+      human-in-the-loop: conditional
+      triggers:
+      - abnormal
+      - high-value
+    audit: required
+    scope:
+    - hubstaff:read
+- path: /v2/organizations/{organization_id}/attendance_shifts
+  method: get
+  operationId: getV2OrganizationsOrganizationIdAttendanceShifts
+  x-agentic-access:
+    action-class: connected
+    consequence: read
+    subject: optional
+    token:
+      max-ttl: 3600
+    audit: none
+    scope:
+    - hubstaff:read
+- path: /v2/organizations/{organization_id}/holidays
+  method: get
+  operationId: getV2OrganizationsOrganizationIdHolidays
+  x-agentic-access:
+    action-class: connected
+    consequence: read
+    subject: optional
+    token:
+      max-ttl: 3600
+    audit: none
+    scope:
+    - hubstaff:read
+- path: /v2/organizations/{organization_id}/screenshots
+  method: get
+  operationId: getV2OrganizationsOrganizationIdScreenshots
+  x-agentic-access:
+    action-class: connected
+    consequence: read
+    subject: optional
+    token:
+      max-ttl: 3600
+    audit: none
+    scope:
+    - hubstaff:read
+- path: /v2/organizations/{organization_id}/screenshots/{screenshot_id}
+  method: get
+  operationId: getV2OrganizationsOrganizationIdScreenshotsScreenshotId
+  x-agentic-access:
+    action-class: connected
+    consequence: read
+    subject: optional
+    token:
+      max-ttl: 3600
+    audit: none
+    scope:
+    - hubstaff:read
+- path: /v2/organizations/{organization_id}/tool_usages
+  method: get
+  operationId: getV2OrganizationsOrganizationIdToolUsages
+  x-agentic-access:
+    action-class: connected
+    consequence: read
+    subject: optional
+    token:
+      max-ttl: 3600
+    audit: none
+    scope:
+    - hubstaff:read
+- path: /v2/organizations/{organization_id}/tool_usages/daily
+  method: get
+  operationId: getV2OrganizationsOrganizationIdToolUsagesDaily
+  x-agentic-access:
+    action-class: connected
+    consequence: read
+    subject: optional
+    token:
+      max-ttl: 3600
+    audit: none
+    scope:
+    - hubstaff:read
+- path: /v2/organizations/{organization_id}/app_and_url_tracking_settings
+  method: get
+  operationId: getV2OrganizationsOrganizationIdAppAndUrlTrackingSettings
+  x-agentic-access:
+    action-class: connected
+    consequence: read
+    subject: optional
+    token:
+      max-ttl: 3600
+    audit: none
+    scope:
+    - hubstaff:read
+- path: /v2/organizations/{organization_id}/app_and_url_tracking_settings
+  method: put
+  operationId: putV2OrganizationsOrganizationIdAppAndUrlTrackingSettings
+  x-agentic-access:
+    action-class: acting
+    consequence: write
+    subject: required
+    audience: null
+    token:
+      max-ttl: 900
+    escalation:
+      human-in-the-loop: conditional
+      triggers:
+      - abnormal
+      - high-value
+    audit: required
+    scope:
+    - hubstaff:read
+- path: /v2/organizations/{organization_id}/webhooks
+  method: post
+  operationId: postV2OrganizationsOrganizationIdWebhooks
+  x-agentic-access:
+    action-class: acting
+    consequence: write
+    subject: required
+    audience: null
+    token:
+      max-ttl: 900
+    escalation:
+      human-in-the-loop: conditional
+      triggers:
+      - abnormal
+      - high-value
+    audit: required
+    scope:
+    - hubstaff:read
+- path: /v2/webhooks/{webhook_id}
+  method: get
+  operationId: getV2WebhooksWebhookId
+  x-agentic-access:
+    action-class: connected
+    consequence: read
+    subject: optional
+    token:
+      max-ttl: 3600
+    audit: none
+    scope:
+    - hubstaff:read
+- path: /v2/webhooks/{webhook_id}
+  method: delete
+  operationId: deleteV2WebhooksWebhookId
+  x-agentic-access:
+    action-class: acting
+    consequence: write
+    subject: required
+    audience: null
+    token:
+      max-ttl: 900
+    escalation:
+      human-in-the-loop: conditional
+      triggers:
+      - abnormal
+      - high-value
+    audit: required
+    scope:
+    - hubstaff:read
+- path: /v2/webhooks/{webhook_id}/activate
+  method: post
+  operationId: postV2WebhooksWebhookIdActivate
+  x-agentic-access:
+    action-class: acting
+    consequence: write
+    subject: required
+    audience: null
+    token:
+      max-ttl: 900
+    escalation:
+      human-in-the-loop: conditional
+      triggers:
+      - abnormal
+      - high-value
+    audit: required
+    scope:
+    - hubstaff:read

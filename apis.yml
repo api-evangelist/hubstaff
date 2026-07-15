@@ -181,6 +181,8 @@ apis:
     snapshots - with an X-Hook-Secret verification and activation handshake and
     signed deliveries.
 common:
+- type: AgenticAccess
+  url: agentic-access/hubstaff-agentic-access.yml
 - type: VulnerabilityDisclosure
   url: security/hubstaff-vulnerability-disclosure.yml
 - type: DomainSecurity
