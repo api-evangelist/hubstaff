@@ -1,0 +1,174 @@
+openapi: 3.0.3
+info:
+  title: Hubstaff Activities Timesheets API
+  description: 'The Hubstaff API v2 provides programmatic read and write access to Hubstaff''s time tracking, timesheet, workforce management, and project management data - organizations, members, teams, projects, tasks, clients, activities (10-minute tracked time blocks with activity percentages), daily activity aggregates, time entries, timesheets and approvals, time off requests/policies/balances, attendance schedules and shifts, screenshots, app and URL usage, invoices, team payments, and webhooks.
+
+
+    Authentication uses OpenID Connect / OAuth 2.0 through Hubstaff Account (https://account.hubstaff.com). For server-side scripts, create a personal access token at https://developer.hubstaff.com/personal_access_tokens - the PAT acts as an OAuth refresh token (90-day expiry) that you exchange for short-lived access tokens at https://account.hubstaff.com/access_tokens. Send the access token as a Bearer token on every request.
+
+
+    Rate limit: authenticated users are allowed 1,000 requests per hour per application; individual requests time out after 30 seconds. All requests must use HTTPS. Collection endpoints use cursor pagination via page_start_id and page_limit. This document is a curated OpenAPI 3.0 rendering of the live Swagger 2.0 definition published at https://api.hubstaff.com/v2/docs, covering the primary resource areas; consult the live definition for the complete surface (insights, job sites, budgets, overtime policies, integrations, and more).'
+  version: '2.0'
+  contact:
+    name: Hubstaff Developer Portal
+    url: https://developer.hubstaff.com/
+  termsOfService: https://hubstaff.com/terms
+servers:
+- url: https://api.hubstaff.com
+  description: Hubstaff production API (paths include the /v2 prefix)
+security:
+- oauth2:
+  - hubstaff:read
+- personalAccessToken: []
+tags:
+- name: Timesheets
+  description: Timesheet approval records - list and update status (open, submitted, approved, denied).
+paths:
+  /v2/organizations/{organization_id}/timesheets:
+    get:
+      operationId: getV2OrganizationsOrganizationIdTimesheets
+      tags:
+      - Timesheets
+      summary: List organization timesheets
+      description: 'Returns a collection of timesheets (aggregate approval records) for the given organization.
+
+
+        Results can be filtered by date[start]/[stop], approved[start], and status.
+
+
+        Note: Timesheets are aggregate records used by the timesheet approval system, not individual time entries.'
+      parameters:
+      - name: organization_id
+        in: path
+        required: true
+        schema:
+          type: integer
+          format: int32
+      - name: page_start_id
+        in: query
+        description: The page start ID.
+        schema:
+          type: integer
+          format: int32
+          default: 0
+      - name: page_limit
+        in: query
+        description: The default page size
+        schema:
+          type: integer
+          format: int32
+          default: null
+      - name: date[start]
+        in: query
+        description: Start date (ISO 8601)
+        schema:
+          type: string
+          format: date
+      - name: date[stop]
+        in: query
+        description: Stop date (ISO 8601, Inclusive)
+        schema:
+          type: string
+          format: date
+      - name: approved[start]
+        in: query
+        description: Includes timesheets approved since the specified start date, considering UTC timezone (ISO 8601)
+        schema:
+          type: string
+          format: date
+      - name: status
+        in: query
+        description: Invoice status
+        schema:
+          type: string
+          enum:
+          - open
+          - submitted
+          - approved
+          - denied
+      - name: include
+        in: query
+        description: Specify related data to side load.
+        schema:
+          type: array
+          items:
+            type: string
+            enum:
+            - users
+      responses:
+        '200':
+          description: A list of timesheets
+        '400':
+          description: Invalid parameters
+        '401':
+          description: Unauthorized
+        '403':
+          description: API access is only for organizations on an active plan
+        '404':
+          description: Could not find record
+        '429':
+          description: Rate limit exceeded
+  /v2/timesheets/{timesheet_id}:
+    put:
+      operationId: putV2TimesheetsTimesheetId
+      tags:
+      - Timesheets
+      summary: Update timesheet status
+      description: 'Updates a timesheet status or updates the denial reason on an already denied timesheet.
+
+
+        Allowed statuses are open, submitted, approved, and denied. A denial_reason is required when transitioning a timesheet to denied.
+
+
+        Approving a timesheet can require explicit confirmation when the period has pending manual time requests or pending time off requests.
+
+        If pending manual time requests would be denied, the endpoint returns 422 with error_code 14905; repeat the request with confirm_pending_manual_time_request_denial set to true.
+
+        If the period has pending time off requests, the endpoint returns 422 with error_code 14906; repeat the request with acknowledge_pending_time_off_requests set to true.'
+      parameters:
+      - name: timesheet_id
+        in: path
+        description: Timesheet ID
+        required: true
+        schema:
+          type: integer
+          format: int32
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              type: object
+              description: Request payload. See the live Hubstaff API reference (https://api.hubstaff.com/v2/docs) for the full schema.
+      responses:
+        '200':
+          description: The updated timesheet
+        '400':
+          description: Invalid parameters
+        '401':
+          description: Unauthorized
+        '403':
+          description: API access is only for organizations on an active plan
+        '404':
+          description: Could not find record
+        '429':
+          description: Rate limit exceeded
+components:
+  securitySchemes:
+    oauth2:
+      type: oauth2
+      description: Hubstaff Account OpenID Connect / OAuth 2.0 authentication. Scopes are hubstaff:read and hubstaff:write.
+      flows:
+        authorizationCode:
+          authorizationUrl: https://account.hubstaff.com/authorizations/new
+          tokenUrl: https://account.hubstaff.com/access_tokens
+          scopes:
+            hubstaff:read: Read access to the Hubstaff API
+            hubstaff:write: Write access to the Hubstaff API
+    personalAccessToken:
+      type: http
+      scheme: bearer
+      description: Access token obtained by exchanging a personal access token (created at https://developer.hubstaff.com/personal_access_tokens) via the OAuth 2.0 refresh token grant at https://account.hubstaff.com/access_tokens. PATs expire after 90 days.
+externalDocs:
+  description: Hubstaff API v2 reference (interactive)
+  url: https://developer.hubstaff.com/docs/hubstaff_v2

@@ -1,0 +1,451 @@
+openapi: 3.0.3
+info:
+  title: Hubstaff Activities Time Off API
+  description: 'The Hubstaff API v2 provides programmatic read and write access to Hubstaff''s time tracking, timesheet, workforce management, and project management data - organizations, members, teams, projects, tasks, clients, activities (10-minute tracked time blocks with activity percentages), daily activity aggregates, time entries, timesheets and approvals, time off requests/policies/balances, attendance schedules and shifts, screenshots, app and URL usage, invoices, team payments, and webhooks.
+
+
+    Authentication uses OpenID Connect / OAuth 2.0 through Hubstaff Account (https://account.hubstaff.com). For server-side scripts, create a personal access token at https://developer.hubstaff.com/personal_access_tokens - the PAT acts as an OAuth refresh token (90-day expiry) that you exchange for short-lived access tokens at https://account.hubstaff.com/access_tokens. Send the access token as a Bearer token on every request.
+
+
+    Rate limit: authenticated users are allowed 1,000 requests per hour per application; individual requests time out after 30 seconds. All requests must use HTTPS. Collection endpoints use cursor pagination via page_start_id and page_limit. This document is a curated OpenAPI 3.0 rendering of the live Swagger 2.0 definition published at https://api.hubstaff.com/v2/docs, covering the primary resource areas; consult the live definition for the complete surface (insights, job sites, budgets, overtime policies, integrations, and more).'
+  version: '2.0'
+  contact:
+    name: Hubstaff Developer Portal
+    url: https://developer.hubstaff.com/
+  termsOfService: https://hubstaff.com/terms
+servers:
+- url: https://api.hubstaff.com
+  description: Hubstaff production API (paths include the /v2 prefix)
+security:
+- oauth2:
+  - hubstaff:read
+- personalAccessToken: []
+tags:
+- name: Time Off
+  description: Time off requests, policies, and balances.
+paths:
+  /v2/organizations/{organization_id}/time_off_requests:
+    get:
+      operationId: getV2OrganizationsOrganizationIdTimeOffRequests
+      tags:
+      - Time Off
+      summary: List organization time off requests
+      description: 'Returns a collection of time off requests for the given organization.
+
+
+        Results can be filtered by created[start]/[stop], starts_at[start]/[stop], approved_at[start]/[stop], and user_ids[].
+
+
+        Use include[] to sideload related users and time_off_policies.'
+      parameters:
+      - name: organization_id
+        in: path
+        required: true
+        schema:
+          type: integer
+          format: int32
+      - name: page_start_id
+        in: query
+        description: The page start ID.
+        schema:
+          type: integer
+          format: int32
+          default: 0
+      - name: page_limit
+        in: query
+        description: The default page size
+        schema:
+          type: integer
+          format: int32
+          default: null
+      - name: created[start]
+        in: query
+        description: Start time (ISO 8601)
+        schema:
+          type: string
+          format: date-time
+      - name: created[stop]
+        in: query
+        description: Stop time (ISO 8601, Exclusive)
+        schema:
+          type: string
+          format: date-time
+      - name: starts_at[start]
+        in: query
+        description: Start time (ISO 8601)
+        schema:
+          type: string
+          format: date-time
+      - name: starts_at[stop]
+        in: query
+        description: Stop time (ISO 8601, Exclusive)
+        schema:
+          type: string
+          format: date-time
+      - name: approved_at[start]
+        in: query
+        description: Approved start time (ISO 8601)
+        schema:
+          type: string
+          format: date-time
+      - name: approved_at[stop]
+        in: query
+        description: Approved stop time (ISO 8601, Exclusive)
+        schema:
+          type: string
+          format: date-time
+      - name: user_ids
+        in: query
+        description: List of user IDs
+        schema:
+          type: array
+          items:
+            type: integer
+            format: int32
+      - name: include
+        in: query
+        description: Specify related data to side load.
+        schema:
+          type: array
+          items:
+            type: string
+            enum:
+            - users
+            - time_off_policies
+      responses:
+        '200':
+          description: A list of time off requests
+        '400':
+          description: Invalid parameters
+        '401':
+          description: Unauthorized
+        '403':
+          description: API access is only for organizations on an active plan
+        '404':
+          description: Could not find record
+        '429':
+          description: Rate limit exceeded
+    post:
+      operationId: postV2OrganizationsOrganizationIdTimeOffRequests
+      tags:
+      - Time Off
+      summary: Create time off request
+      description: 'Creates a new time off request.
+
+
+        Returns the created time off request with a balance_preview showing the policy balance impact.
+
+
+        time_off_request_days must include one entry for every date from starts_at to stops_at. Each entry requires a date and amount_used in seconds (typically 28800 for an 8-hour day). Set amount_used to 0 for excluded weekend or holiday days.
+
+
+        Set require_no_shift_overlap to true to reject the request if it overlaps with scheduled attendance shifts.
+
+
+        remove_shifts deletes overlapping attendance shifts only when the policy does not require approval (the request is auto-approved on creation). When the policy requires approval, this field is ignored — use the status endpoint to remove shifts at approval time instead.
+
+
+        Note: starts_at and stops_at are interpreted as wall-clock times in the target user''s configured timezone (any timezone offset in the value is ignored). When all_day is true, times are normalized to 09:00–17:00.'
+      parameters:
+      - name: organization_id
+        in: path
+        required: true
+        schema:
+          type: integer
+          format: int32
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              type: object
+              description: Request payload. See the live Hubstaff API reference (https://api.hubstaff.com/v2/docs) for the full schema.
+      responses:
+        '201':
+          description: A time off request
+        '400':
+          description: Invalid parameters
+        '401':
+          description: Unauthorized
+        '403':
+          description: API access is only for organizations on an active plan
+        '404':
+          description: Could not find record
+        '429':
+          description: Rate limit exceeded
+  /v2/time_off_requests/{time_off_request_id}:
+    get:
+      operationId: getV2TimeOffRequestsTimeOffRequestId
+      tags:
+      - Time Off
+      summary: Get time off request
+      description: 'Returns the time off request with the given ID.
+
+
+        Includes time_off_request_days with per-day breakdown of dates, amounts, and holiday/paid status.
+
+
+        Also includes balance_preview showing the policy balance impact.'
+      parameters:
+      - name: time_off_request_id
+        in: path
+        description: Time off request ID
+        required: true
+        schema:
+          type: integer
+          format: int32
+      responses:
+        '200':
+          description: A time off request
+        '400':
+          description: Invalid parameters
+        '401':
+          description: Unauthorized
+        '403':
+          description: API access is only for organizations on an active plan
+        '404':
+          description: Could not find record
+        '429':
+          description: Rate limit exceeded
+    put:
+      operationId: putV2TimeOffRequestsTimeOffRequestId
+      tags:
+      - Time Off
+      summary: Update time off request
+      description: 'Updates a time off request''s details (dates, message, days, policy).
+
+
+        This is a full replacement — all fields must be provided, including time_off_request_days with one entry per date (amount_used in seconds, typically 28800 for an 8-hour day).
+
+
+        Approved, paid, or partially paid requests cannot be edited.
+
+
+        If the request was denied, updating it automatically resubmits it (status → submitted).
+
+
+        If the policy does not require approval, the request is auto-approved on update.
+
+
+        Set require_no_shift_overlap to true to reject the update if it overlaps with scheduled attendance shifts.
+
+
+        remove_shifts deletes overlapping attendance shifts only when the policy does not require approval (the request is auto-approved on update). When the policy requires approval, this field is ignored — use the status endpoint to remove shifts at approval time instead.
+
+
+        Note: starts_at and stops_at are interpreted as wall-clock times in the user''s configured timezone (any timezone offset in the value is ignored). When all_day is true, times are normalized to 09:00–17:00.'
+      parameters:
+      - name: time_off_request_id
+        in: path
+        description: Time off request ID
+        required: true
+        schema:
+          type: integer
+          format: int32
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              type: object
+              description: Request payload. See the live Hubstaff API reference (https://api.hubstaff.com/v2/docs) for the full schema.
+      responses:
+        '200':
+          description: The updated time off request
+        '400':
+          description: Invalid parameters
+        '401':
+          description: Unauthorized
+        '403':
+          description: API access is only for organizations on an active plan
+        '404':
+          description: Could not find record
+        '429':
+          description: Rate limit exceeded
+    delete:
+      operationId: deleteV2TimeOffRequestsTimeOffRequestId
+      tags:
+      - Time Off
+      summary: Delete time off request
+      description: 'Deletes the time off request.
+
+
+        Approved or paid time off requests cannot be deleted.'
+      parameters:
+      - name: time_off_request_id
+        in: path
+        description: Time off request ID
+        required: true
+        schema:
+          type: integer
+          format: int32
+      responses:
+        '204':
+          description: Deletion successful
+        '400':
+          description: Invalid parameters
+        '401':
+          description: Unauthorized
+        '403':
+          description: API access is only for organizations on an active plan
+        '404':
+          description: Could not find record
+        '429':
+          description: Rate limit exceeded
+  /v2/organizations/{organization_id}/time_off_policies:
+    get:
+      operationId: getV2OrganizationsOrganizationIdTimeOffPolicies
+      tags:
+      - Time Off
+      summary: List organization time off policies
+      description: Returns a collection of time off policies for the given organization.
+      parameters:
+      - name: organization_id
+        in: path
+        required: true
+        schema:
+          type: integer
+          format: int32
+      - name: page_start_id
+        in: query
+        description: The page start ID.
+        schema:
+          type: integer
+          format: int32
+          default: 0
+      - name: page_limit
+        in: query
+        description: The default page size
+        schema:
+          type: integer
+          format: int32
+          default: null
+      - name: status
+        in: query
+        description: Policy status
+        schema:
+          type: string
+          enum:
+          - active
+          - archived
+          - all
+          default: active
+      responses:
+        '200':
+          description: A list of time off policies
+        '400':
+          description: Invalid parameters
+        '401':
+          description: Unauthorized
+        '403':
+          description: API access is only for organizations on an active plan
+        '404':
+          description: Could not find record
+        '429':
+          description: Rate limit exceeded
+  /v2/organizations/{organization_id}/time_off_balances:
+    get:
+      operationId: getV2OrganizationsOrganizationIdTimeOffBalances
+      tags:
+      - Time Off
+      summary: List organization time off balances
+      description: 'Returns time off balances for the given organization.
+
+
+        Each entry represents one user''s balance for one time off policy in the requested year.
+
+
+        Use `year` to query balances for a specific year (defaults to current year in the organization''s timezone).
+
+
+        Use `include[]` to sideload related users and time_off_policies.'
+      parameters:
+      - name: organization_id
+        in: path
+        required: true
+        schema:
+          type: integer
+          format: int32
+      - name: page_start_id
+        in: query
+        description: The page start ID.
+        schema:
+          type: integer
+          format: int32
+          default: 0
+      - name: page_limit
+        in: query
+        description: The default page size
+        schema:
+          type: integer
+          format: int32
+          default: null
+      - name: search
+        in: query
+        description: User name search
+        schema:
+          type: string
+      - name: user_ids
+        in: query
+        description: Filter by user IDs
+        schema:
+          type: array
+          items:
+            type: integer
+            format: int32
+      - name: time_off_policy_ids
+        in: query
+        description: Filter by time off policy IDs
+        schema:
+          type: array
+          items:
+            type: integer
+            format: int32
+      - name: year
+        in: query
+        description: 'Balance year (default: current year in organization timezone)'
+        schema:
+          type: integer
+          format: int32
+      - name: include
+        in: query
+        description: Specify related data to side load.
+        schema:
+          type: array
+          items:
+            type: string
+            enum:
+            - users
+            - time_off_policies
+      responses:
+        '200':
+          description: A list of time off balances
+        '400':
+          description: Invalid parameters
+        '401':
+          description: Unauthorized
+        '403':
+          description: API access is only for organizations on an active plan
+        '404':
+          description: Could not find record
+        '429':
+          description: Rate limit exceeded
+components:
+  securitySchemes:
+    oauth2:
+      type: oauth2
+      description: Hubstaff Account OpenID Connect / OAuth 2.0 authentication. Scopes are hubstaff:read and hubstaff:write.
+      flows:
+        authorizationCode:
+          authorizationUrl: https://account.hubstaff.com/authorizations/new
+          tokenUrl: https://account.hubstaff.com/access_tokens
+          scopes:
+            hubstaff:read: Read access to the Hubstaff API
+            hubstaff:write: Write access to the Hubstaff API
+    personalAccessToken:
+      type: http
+      scheme: bearer
+      description: Access token obtained by exchanging a personal access token (created at https://developer.hubstaff.com/personal_access_tokens) via the OAuth 2.0 refresh token grant at https://account.hubstaff.com/access_tokens. PATs expire after 90 days.
+externalDocs:
+  description: Hubstaff API v2 reference (interactive)
+  url: https://developer.hubstaff.com/docs/hubstaff_v2

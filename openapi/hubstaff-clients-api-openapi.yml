@@ -1,0 +1,212 @@
+openapi: 3.0.3
+info:
+  title: Hubstaff Activities Clients API
+  description: 'The Hubstaff API v2 provides programmatic read and write access to Hubstaff''s time tracking, timesheet, workforce management, and project management data - organizations, members, teams, projects, tasks, clients, activities (10-minute tracked time blocks with activity percentages), daily activity aggregates, time entries, timesheets and approvals, time off requests/policies/balances, attendance schedules and shifts, screenshots, app and URL usage, invoices, team payments, and webhooks.
+
+
+    Authentication uses OpenID Connect / OAuth 2.0 through Hubstaff Account (https://account.hubstaff.com). For server-side scripts, create a personal access token at https://developer.hubstaff.com/personal_access_tokens - the PAT acts as an OAuth refresh token (90-day expiry) that you exchange for short-lived access tokens at https://account.hubstaff.com/access_tokens. Send the access token as a Bearer token on every request.
+
+
+    Rate limit: authenticated users are allowed 1,000 requests per hour per application; individual requests time out after 30 seconds. All requests must use HTTPS. Collection endpoints use cursor pagination via page_start_id and page_limit. This document is a curated OpenAPI 3.0 rendering of the live Swagger 2.0 definition published at https://api.hubstaff.com/v2/docs, covering the primary resource areas; consult the live definition for the complete surface (insights, job sites, budgets, overtime policies, integrations, and more).'
+  version: '2.0'
+  contact:
+    name: Hubstaff Developer Portal
+    url: https://developer.hubstaff.com/
+  termsOfService: https://hubstaff.com/terms
+servers:
+- url: https://api.hubstaff.com
+  description: Hubstaff production API (paths include the /v2 prefix)
+security:
+- oauth2:
+  - hubstaff:read
+- personalAccessToken: []
+tags:
+- name: Clients
+  description: Clients that projects are billed to.
+paths:
+  /v2/organizations/{organization_id}/clients:
+    get:
+      operationId: getV2OrganizationsOrganizationIdClients
+      tags:
+      - Clients
+      summary: List organization clients
+      description: 'Returns a collection of clients for the given organization.
+
+
+        Results can be filtered by status.'
+      parameters:
+      - name: organization_id
+        in: path
+        required: true
+        schema:
+          type: integer
+          format: int32
+      - name: page_start_id
+        in: query
+        description: The page start ID.
+        schema:
+          type: integer
+          format: int32
+          default: 0
+      - name: page_limit
+        in: query
+        description: The default page size
+        schema:
+          type: integer
+          format: int32
+          default: null
+      - name: status
+        in: query
+        description: Client status
+        schema:
+          type: string
+          enum:
+          - active
+          - archived
+          - all
+          default: active
+      - name: include
+        in: query
+        description: Specify related data to side load.
+        schema:
+          type: array
+          items:
+            type: string
+            enum:
+            - projects
+      responses:
+        '200':
+          description: A list of clients
+        '400':
+          description: Invalid parameters
+        '401':
+          description: Unauthorized
+        '403':
+          description: API access is only for organizations on an active plan
+        '404':
+          description: Could not find record
+        '429':
+          description: Rate limit exceeded
+    post:
+      operationId: postV2OrganizationsOrganizationIdClients
+      tags:
+      - Clients
+      summary: Create client
+      description: 'Creates a new client.
+
+
+        Returns the created client.'
+      parameters:
+      - name: organization_id
+        in: path
+        required: true
+        schema:
+          type: integer
+          format: int32
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              type: object
+              description: Request payload. See the live Hubstaff API reference (https://api.hubstaff.com/v2/docs) for the full schema.
+      responses:
+        '200':
+          description: A client
+        '400':
+          description: Invalid parameters
+        '401':
+          description: Unauthorized
+        '403':
+          description: API access is only for organizations on an active plan
+        '404':
+          description: Could not find record
+        '429':
+          description: Rate limit exceeded
+  /v2/clients/{client_id}:
+    get:
+      operationId: getV2ClientsClientId
+      tags:
+      - Clients
+      summary: Get client
+      description: Returns the client with the given ID.
+      parameters:
+      - name: client_id
+        in: path
+        description: Client ID
+        required: true
+        schema:
+          type: integer
+          format: int32
+      responses:
+        '200':
+          description: A client
+        '400':
+          description: Invalid parameters
+        '401':
+          description: Unauthorized
+        '403':
+          description: API access is only for organizations on an active plan
+        '404':
+          description: Could not find record
+        '429':
+          description: Rate limit exceeded
+    put:
+      operationId: putV2ClientsClientId
+      tags:
+      - Clients
+      summary: Update client
+      description: 'Updates a client.
+
+
+        Returns the updated client.
+
+
+        Only pass in the fields you want to change. To unset the budget, specify null as the value. To update the budget, you must specify the complete budget configuration. To clear invoice_notes or net_terms (to use organization defaults), specify null as the value.'
+      parameters:
+      - name: client_id
+        in: path
+        description: Client ID
+        required: true
+        schema:
+          type: integer
+          format: int32
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              type: object
+              description: Request payload. See the live Hubstaff API reference (https://api.hubstaff.com/v2/docs) for the full schema.
+      responses:
+        '200':
+          description: A client
+        '400':
+          description: Invalid parameters
+        '401':
+          description: Unauthorized
+        '403':
+          description: API access is only for organizations on an active plan
+        '404':
+          description: Could not find record
+        '429':
+          description: Rate limit exceeded
+components:
+  securitySchemes:
+    oauth2:
+      type: oauth2
+      description: Hubstaff Account OpenID Connect / OAuth 2.0 authentication. Scopes are hubstaff:read and hubstaff:write.
+      flows:
+        authorizationCode:
+          authorizationUrl: https://account.hubstaff.com/authorizations/new
+          tokenUrl: https://account.hubstaff.com/access_tokens
+          scopes:
+            hubstaff:read: Read access to the Hubstaff API
+            hubstaff:write: Write access to the Hubstaff API
+    personalAccessToken:
+      type: http
+      scheme: bearer
+      description: Access token obtained by exchanging a personal access token (created at https://developer.hubstaff.com/personal_access_tokens) via the OAuth 2.0 refresh token grant at https://account.hubstaff.com/access_tokens. PATs expire after 90 days.
+externalDocs:
+  description: Hubstaff API v2 reference (interactive)
+  url: https://developer.hubstaff.com/docs/hubstaff_v2

@@ -1,0 +1,294 @@
+openapi: 3.0.3
+info:
+  title: Hubstaff Activities Attendance API
+  description: 'The Hubstaff API v2 provides programmatic read and write access to Hubstaff''s time tracking, timesheet, workforce management, and project management data - organizations, members, teams, projects, tasks, clients, activities (10-minute tracked time blocks with activity percentages), daily activity aggregates, time entries, timesheets and approvals, time off requests/policies/balances, attendance schedules and shifts, screenshots, app and URL usage, invoices, team payments, and webhooks.
+
+
+    Authentication uses OpenID Connect / OAuth 2.0 through Hubstaff Account (https://account.hubstaff.com). For server-side scripts, create a personal access token at https://developer.hubstaff.com/personal_access_tokens - the PAT acts as an OAuth refresh token (90-day expiry) that you exchange for short-lived access tokens at https://account.hubstaff.com/access_tokens. Send the access token as a Bearer token on every request.
+
+
+    Rate limit: authenticated users are allowed 1,000 requests per hour per application; individual requests time out after 30 seconds. All requests must use HTTPS. Collection endpoints use cursor pagination via page_start_id and page_limit. This document is a curated OpenAPI 3.0 rendering of the live Swagger 2.0 definition published at https://api.hubstaff.com/v2/docs, covering the primary resource areas; consult the live definition for the complete surface (insights, job sites, budgets, overtime policies, integrations, and more).'
+  version: '2.0'
+  contact:
+    name: Hubstaff Developer Portal
+    url: https://developer.hubstaff.com/
+  termsOfService: https://hubstaff.com/terms
+servers:
+- url: https://api.hubstaff.com
+  description: Hubstaff production API (paths include the /v2 prefix)
+security:
+- oauth2:
+  - hubstaff:read
+- personalAccessToken: []
+tags:
+- name: Attendance
+  description: Expected work shifts (schedules), actual clock-in/clock-out shifts, and holidays.
+paths:
+  /v2/organizations/{organization_id}/attendance_schedules:
+    get:
+      operationId: getV2OrganizationsOrganizationIdAttendanceSchedules
+      tags:
+      - Attendance
+      summary: List organization attendance schedules
+      description: 'Returns a collection of attendance schedules (expected work shifts) for the given organization.
+
+
+        Use date[start] and date[stop] to filter schedules that cover the specified date range. Repeating schedules are included if any occurrence falls within the range.'
+      parameters:
+      - name: organization_id
+        in: path
+        required: true
+        schema:
+          type: integer
+          format: int32
+      - name: page_start_id
+        in: query
+        description: The page start ID.
+        schema:
+          type: integer
+          format: int32
+          default: 0
+      - name: page_limit
+        in: query
+        description: The default page size
+        schema:
+          type: integer
+          format: int32
+          default: null
+      - name: date[start]
+        in: query
+        description: Start date (ISO 8601)
+        required: true
+        schema:
+          type: string
+          format: date
+      - name: date[stop]
+        in: query
+        description: Stop date (ISO 8601, Inclusive)
+        required: true
+        schema:
+          type: string
+          format: date
+      - name: include
+        in: query
+        description: Specify related data to side load.
+        schema:
+          type: array
+          items:
+            type: string
+            enum:
+            - users
+      responses:
+        '200':
+          description: A list of attendance schedules
+        '400':
+          description: Invalid parameters
+        '401':
+          description: Unauthorized
+        '403':
+          description: API access is only for organizations on an active plan
+        '404':
+          description: Could not find record
+        '429':
+          description: Rate limit exceeded
+    post:
+      operationId: postV2OrganizationsOrganizationIdAttendanceSchedules
+      tags:
+      - Attendance
+      summary: Create attendance schedule
+      description: 'Creates an expected work shift for a user.
+
+
+        Returns the created attendance schedule.
+
+
+        For repeating schedules, specify repeat_schedule (weekly/bi_weekly) and weekdays. Use repeat_until to set an end date. Use excluded_dates to skip specific dates.'
+      parameters:
+      - name: organization_id
+        in: path
+        required: true
+        schema:
+          type: integer
+          format: int32
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              type: object
+              description: Request payload. See the live Hubstaff API reference (https://api.hubstaff.com/v2/docs) for the full schema.
+      responses:
+        '200':
+          description: attendance schedule created
+        '400':
+          description: Invalid parameters
+        '401':
+          description: Unauthorized
+        '403':
+          description: API access is only for organizations on an active plan
+        '404':
+          description: Could not find record
+        '429':
+          description: Rate limit exceeded
+  /v2/organizations/{organization_id}/attendance_shifts:
+    get:
+      operationId: getV2OrganizationsOrganizationIdAttendanceShifts
+      tags:
+      - Attendance
+      summary: List organization attendance shifts
+      description: 'Returns actual work shifts (clock-in/clock-out records) for the given organization.
+
+
+        Use date[start] and date[stop] to filter shifts that fall within the specified date range.
+
+
+        Note: The maximum allowed difference between date[start] and date[stop] is 31 days.
+
+        Data is only available within organization’s retention period.
+
+        If date[start] falls outside this window, the request will fail.'
+      parameters:
+      - name: organization_id
+        in: path
+        required: true
+        schema:
+          type: integer
+          format: int32
+      - name: page_start_id
+        in: query
+        description: The page start ID.
+        schema:
+          type: integer
+          format: int32
+          default: 0
+      - name: page_limit
+        in: query
+        description: The default page size
+        schema:
+          type: integer
+          format: int32
+          default: null
+      - name: date[start]
+        in: query
+        description: Start date (ISO 8601)
+        required: true
+        schema:
+          type: string
+          format: date
+      - name: date[stop]
+        in: query
+        description: Stop date (ISO 8601, Inclusive)
+        required: true
+        schema:
+          type: string
+          format: date
+      - name: include
+        in: query
+        description: Specify related data to side load.
+        schema:
+          type: array
+          items:
+            type: string
+            enum:
+            - users
+            - attendance_schedules
+      responses:
+        '200':
+          description: A list of attendance shifts
+        '400':
+          description: Invalid parameters
+        '401':
+          description: Unauthorized
+        '403':
+          description: API access is only for organizations on an active plan
+        '404':
+          description: Could not find record
+        '429':
+          description: Rate limit exceeded
+  /v2/organizations/{organization_id}/holidays:
+    get:
+      operationId: getV2OrganizationsOrganizationIdHolidays
+      tags:
+      - Attendance
+      summary: List organization holidays
+      description: 'Returns a collection of holidays for the given organization.
+
+
+        Results can be filtered by created[start]/[stop] and date[start]/[stop].'
+      parameters:
+      - name: organization_id
+        in: path
+        required: true
+        schema:
+          type: integer
+          format: int32
+      - name: page_start_id
+        in: query
+        description: The page start ID.
+        schema:
+          type: integer
+          format: int32
+          default: 0
+      - name: page_limit
+        in: query
+        description: The default page size
+        schema:
+          type: integer
+          format: int32
+          default: null
+      - name: created[start]
+        in: query
+        description: Start time (ISO 8601)
+        schema:
+          type: string
+          format: date-time
+      - name: created[stop]
+        in: query
+        description: Stop time (ISO 8601, Exclusive)
+        schema:
+          type: string
+          format: date-time
+      - name: date[start]
+        in: query
+        description: Start date (ISO 8601)
+        schema:
+          type: string
+          format: date
+      - name: date[stop]
+        in: query
+        description: Stop date (ISO 8601, Inclusive)
+        schema:
+          type: string
+          format: date
+      responses:
+        '200':
+          description: A list of holidays
+        '400':
+          description: Invalid parameters
+        '401':
+          description: Unauthorized
+        '403':
+          description: API access is only for organizations on an active plan
+        '404':
+          description: Could not find record
+        '429':
+          description: Rate limit exceeded
+components:
+  securitySchemes:
+    oauth2:
+      type: oauth2
+      description: Hubstaff Account OpenID Connect / OAuth 2.0 authentication. Scopes are hubstaff:read and hubstaff:write.
+      flows:
+        authorizationCode:
+          authorizationUrl: https://account.hubstaff.com/authorizations/new
+          tokenUrl: https://account.hubstaff.com/access_tokens
+          scopes:
+            hubstaff:read: Read access to the Hubstaff API
+            hubstaff:write: Write access to the Hubstaff API
+    personalAccessToken:
+      type: http
+      scheme: bearer
+      description: Access token obtained by exchanging a personal access token (created at https://developer.hubstaff.com/personal_access_tokens) via the OAuth 2.0 refresh token grant at https://account.hubstaff.com/access_tokens. PATs expire after 90 days.
+externalDocs:
+  description: Hubstaff API v2 reference (interactive)
+  url: https://developer.hubstaff.com/docs/hubstaff_v2
