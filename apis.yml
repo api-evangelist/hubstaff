@@ -9,7 +9,20 @@ description: Hubstaff is a time tracking and workforce analytics platform for re
   members, teams, projects, tasks, clients, invoices, team payments, screenshots,
   app and URL usage, and webhooks - authenticated with OAuth 2.0 / OpenID Connect
   or personal access tokens.
-image: https://kinlane-images.s3.amazonaws.com/shared/apis-json/apis-json-logo.jpg
+accessModel:
+  pricing: freemium
+  onboarding: open
+  trial: true
+  try_now: true
+  public: true
+  label: Freemium (free trial) · Open access
+  confidence: high
+  source:
+  - plans
+  - authentication
+  generated: '2026-07-22'
+  method: derived
+image: https://kinlane-images.s3.amazonaws.com/shared/apis-json/icons/hubstaff.png
 tags:
 - Time Tracking
 - Timesheets
@@ -22,164 +35,275 @@ created: '2026-07-11'
 modified: '2026-07-11'
 specificationVersion: '0.19'
 apis:
-- aid: hubstaff:hubstaff-activities-time-tracking-api
-  name: Hubstaff Activities and Time Tracking API
+- aid: hubstaff:hubstaff-activities-api
+  name: Hubstaff Activities API
+  description: >-
+    Tracked time as 10-minute activity blocks and daily aggregates, with keyboard/mouse activity percentages.
+  humanURL: https://developer.hubstaff.com/docs/hubstaff_v2
+  baseURL: https://api.hubstaff.com/v2
   tags:
-  - Time Tracking
   - Activities
-  - Productivity
-  image: https://kinlane-images.s3.amazonaws.com/shared/apis-json/apis-json-logo.jpg
+  properties:
+  - type: OpenAPI
+    url: openapi/hubstaff-activities-api-openapi.yml
+  - type: APIReference
+    url: https://developer.hubstaff.com/docs/hubstaff_v2
+  - type: Documentation
+    url: https://support.hubstaff.com/time-tracking-api/
+- aid: hubstaff:hubstaff-app-url-tracking-api
+  name: Hubstaff App & URL Tracking API
+  description: Application and URL usage captured while tracking, plus tracking settings.
   humanURL: https://developer.hubstaff.com/docs/hubstaff_v2
   baseURL: https://api.hubstaff.com/v2
-  properties:
-  - url: https://developer.hubstaff.com/docs/hubstaff_v2
-    type: APIReference
-  - url: https://support.hubstaff.com/time-tracking-api/
-    type: Documentation
-  - url: openapi/hubstaff-openapi.yml
-    type: OpenAPI
-  description: Tracked time as 10-minute activity blocks with keyboard and mouse
-    activity percentages, pre-aggregated daily activities, and the most recent
-    activity per member - filterable by user, project, task, and time range at
-    both the organization and project level.
-- aid: hubstaff:hubstaff-timesheets-time-entries-api
-  name: Hubstaff Timesheets and Time Entries API
   tags:
-  - Timesheets
-  - Time Entries
-  - Approvals
-  image: https://kinlane-images.s3.amazonaws.com/shared/apis-json/apis-json-logo.jpg
+  - App & URL Tracking
+  properties:
+  - type: OpenAPI
+    url: openapi/hubstaff-app-url-tracking-api-openapi.yml
+  - type: APIReference
+    url: https://developer.hubstaff.com/docs/hubstaff_v2
+  - type: Documentation
+    url: https://support.hubstaff.com/time-tracking-api/
+- aid: hubstaff:hubstaff-attendance-api
+  name: Hubstaff Attendance API
+  description: Expected work shifts (schedules), actual clock-in/clock-out shifts, and holidays.
   humanURL: https://developer.hubstaff.com/docs/hubstaff_v2
   baseURL: https://api.hubstaff.com/v2
-  properties:
-  - url: https://developer.hubstaff.com/docs/hubstaff_v2
-    type: APIReference
-  - url: openapi/hubstaff-openapi.yml
-    type: OpenAPI
-  description: Create time entries for users, list organization timesheets (aggregate
-    approval records), move timesheets through the open, submitted, approved, and
-    denied statuses, and audit manual time edits via time edit logs.
-- aid: hubstaff:hubstaff-organizations-teams-api
-  name: Hubstaff Organizations and Teams API
   tags:
-  - Organizations
-  - Teams
-  - Members
-  - Workforce Management
-  image: https://kinlane-images.s3.amazonaws.com/shared/apis-json/apis-json-logo.jpg
-  humanURL: https://developer.hubstaff.com/docs/hubstaff_v2
-  baseURL: https://api.hubstaff.com/v2
-  properties:
-  - url: https://developer.hubstaff.com/docs/hubstaff_v2
-    type: APIReference
-  - url: openapi/hubstaff-openapi.yml
-    type: OpenAPI
-  description: Manage organizations, seats, members and their pay and bill rates,
-    teams and team membership, and invites - the workforce structure that all
-    tracked time hangs off of.
-- aid: hubstaff:hubstaff-projects-tasks-api
-  name: Hubstaff Projects and Tasks API
-  tags:
-  - Projects
-  - Tasks
-  - Project Management
-  image: https://kinlane-images.s3.amazonaws.com/shared/apis-json/apis-json-logo.jpg
-  humanURL: https://developer.hubstaff.com/docs/hubstaff_v2
-  baseURL: https://api.hubstaff.com/v2
-  properties:
-  - url: https://developer.hubstaff.com/docs/hubstaff_v2
-    type: APIReference
-  - url: openapi/hubstaff-openapi.yml
-    type: OpenAPI
-  description: Create and manage projects (including budgets and project members)
-    and tasks (to-dos) at the project and organization level. Tasks synced from
-    third-party integrations are read-only through the API.
-- aid: hubstaff:hubstaff-users-api
-  name: Hubstaff Users API
-  tags:
-  - Users
-  - Profiles
-  image: https://kinlane-images.s3.amazonaws.com/shared/apis-json/apis-json-logo.jpg
-  humanURL: https://developer.hubstaff.com/docs/hubstaff_v2
-  baseURL: https://api.hubstaff.com/v2
-  properties:
-  - url: https://developer.hubstaff.com/docs/hubstaff_v2
-    type: APIReference
-  - url: openapi/hubstaff-openapi.yml
-    type: OpenAPI
-  description: Retrieve the authenticated user (/users/me) and individual user
-    profiles by ID.
-- aid: hubstaff:hubstaff-time-off-attendance-api
-  name: Hubstaff Time Off and Attendance API
-  tags:
-  - Time Off
   - Attendance
-  - Scheduling
-  - Workforce Management
-  image: https://kinlane-images.s3.amazonaws.com/shared/apis-json/apis-json-logo.jpg
+  properties:
+  - type: OpenAPI
+    url: openapi/hubstaff-attendance-api-openapi.yml
+  - type: APIReference
+    url: https://developer.hubstaff.com/docs/hubstaff_v2
+  - type: Documentation
+    url: https://support.hubstaff.com/time-tracking-api/
+- aid: hubstaff:hubstaff-client-invoices-api
+  name: Hubstaff Client Invoices API
+  description: Invoices issued to clients.
   humanURL: https://developer.hubstaff.com/docs/hubstaff_v2
   baseURL: https://api.hubstaff.com/v2
+  tags:
+  - Client Invoices
   properties:
-  - url: https://developer.hubstaff.com/docs/hubstaff_v2
-    type: APIReference
-  - url: openapi/hubstaff-openapi.yml
-    type: OpenAPI
-  description: Time off requests with approval workflow and balance previews, time
-    off policies and balances, attendance schedules (expected shifts, including
-    repeating schedules), actual clock-in and clock-out attendance shifts, and
-    organization holidays.
-- aid: hubstaff:hubstaff-clients-invoices-payments-api
-  name: Hubstaff Clients, Invoices, and Payments API
+  - type: OpenAPI
+    url: openapi/hubstaff-client-invoices-api-openapi.yml
+  - type: APIReference
+    url: https://developer.hubstaff.com/docs/hubstaff_v2
+  - type: Documentation
+    url: https://support.hubstaff.com/time-tracking-api/
+- aid: hubstaff:hubstaff-clients-api
+  name: Hubstaff Clients API
+  description: Clients that projects are billed to.
+  humanURL: https://developer.hubstaff.com/docs/hubstaff_v2
+  baseURL: https://api.hubstaff.com/v2
   tags:
   - Clients
-  - Invoicing
-  - Payroll
-  image: https://kinlane-images.s3.amazonaws.com/shared/apis-json/apis-json-logo.jpg
+  properties:
+  - type: OpenAPI
+    url: openapi/hubstaff-clients-api-openapi.yml
+  - type: APIReference
+    url: https://developer.hubstaff.com/docs/hubstaff_v2
+  - type: Documentation
+    url: https://support.hubstaff.com/time-tracking-api/
+- aid: hubstaff:hubstaff-invites-api
+  name: Hubstaff Invites API
+  description: Invite users to an organization.
   humanURL: https://developer.hubstaff.com/docs/hubstaff_v2
   baseURL: https://api.hubstaff.com/v2
+  tags:
+  - Invites
   properties:
-  - url: https://developer.hubstaff.com/docs/hubstaff_v2
-    type: APIReference
-  - url: openapi/hubstaff-openapi.yml
-    type: OpenAPI
-  description: Manage the clients projects are billed to, list client invoices,
-    and list team payments (payroll) generated from tracked time.
-- aid: hubstaff:hubstaff-screenshots-app-tracking-api
-  name: Hubstaff Screenshots and App Tracking API
+  - type: OpenAPI
+    url: openapi/hubstaff-invites-api-openapi.yml
+  - type: APIReference
+    url: https://developer.hubstaff.com/docs/hubstaff_v2
+  - type: Documentation
+    url: https://support.hubstaff.com/time-tracking-api/
+- aid: hubstaff:hubstaff-members-api
+  name: Hubstaff Members API
+  description: Organization membership - list, add, and update members and their pay/bill rates.
+  humanURL: https://developer.hubstaff.com/docs/hubstaff_v2
+  baseURL: https://api.hubstaff.com/v2
+  tags:
+  - Members
+  properties:
+  - type: OpenAPI
+    url: openapi/hubstaff-members-api-openapi.yml
+  - type: APIReference
+    url: https://developer.hubstaff.com/docs/hubstaff_v2
+  - type: Documentation
+    url: https://support.hubstaff.com/time-tracking-api/
+- aid: hubstaff:hubstaff-organizations-api
+  name: Hubstaff Organizations API
+  description: Organizations the authenticated user belongs to, plus seat usage.
+  humanURL: https://developer.hubstaff.com/docs/hubstaff_v2
+  baseURL: https://api.hubstaff.com/v2
+  tags:
+  - Organizations
+  properties:
+  - type: OpenAPI
+    url: openapi/hubstaff-organizations-api-openapi.yml
+  - type: APIReference
+    url: https://developer.hubstaff.com/docs/hubstaff_v2
+  - type: Documentation
+    url: https://support.hubstaff.com/time-tracking-api/
+- aid: hubstaff:hubstaff-projects-api
+  name: Hubstaff Projects API
+  description: Projects within an organization, including budgets and project members.
+  humanURL: https://developer.hubstaff.com/docs/hubstaff_v2
+  baseURL: https://api.hubstaff.com/v2
+  tags:
+  - Projects
+  properties:
+  - type: OpenAPI
+    url: openapi/hubstaff-projects-api-openapi.yml
+  - type: APIReference
+    url: https://developer.hubstaff.com/docs/hubstaff_v2
+  - type: Documentation
+    url: https://support.hubstaff.com/time-tracking-api/
+- aid: hubstaff:hubstaff-screenshots-api
+  name: Hubstaff Screenshots API
+  description: Screenshots captured while tracking time.
+  humanURL: https://developer.hubstaff.com/docs/hubstaff_v2
+  baseURL: https://api.hubstaff.com/v2
   tags:
   - Screenshots
-  - Activity Monitoring
-  - App Tracking
-  image: https://kinlane-images.s3.amazonaws.com/shared/apis-json/apis-json-logo.jpg
+  properties:
+  - type: OpenAPI
+    url: openapi/hubstaff-screenshots-api-openapi.yml
+  - type: APIReference
+    url: https://developer.hubstaff.com/docs/hubstaff_v2
+  - type: Documentation
+    url: https://support.hubstaff.com/time-tracking-api/
+- aid: hubstaff:hubstaff-tasks-api
+  name: Hubstaff Tasks API
+  description: Tasks (to-dos) within projects and organizations.
   humanURL: https://developer.hubstaff.com/docs/hubstaff_v2
   baseURL: https://api.hubstaff.com/v2
+  tags:
+  - Tasks
   properties:
-  - url: https://developer.hubstaff.com/docs/hubstaff_v2
-    type: APIReference
-  - url: openapi/hubstaff-openapi.yml
-    type: OpenAPI
-  description: Retrieve screenshots captured while tracking time, application and
-    URL usage (raw and daily aggregates), and read or update the organization's
-    app and URL tracking settings.
+  - type: OpenAPI
+    url: openapi/hubstaff-tasks-api-openapi.yml
+  - type: APIReference
+    url: https://developer.hubstaff.com/docs/hubstaff_v2
+  - type: Documentation
+    url: https://support.hubstaff.com/time-tracking-api/
+- aid: hubstaff:hubstaff-team-payments-api
+  name: Hubstaff Team Payments API
+  description: Payments made to team members (payroll).
+  humanURL: https://developer.hubstaff.com/docs/hubstaff_v2
+  baseURL: https://api.hubstaff.com/v2
+  tags:
+  - Team Payments
+  properties:
+  - type: OpenAPI
+    url: openapi/hubstaff-team-payments-api-openapi.yml
+  - type: APIReference
+    url: https://developer.hubstaff.com/docs/hubstaff_v2
+  - type: Documentation
+    url: https://support.hubstaff.com/time-tracking-api/
+- aid: hubstaff:hubstaff-teams-api
+  name: Hubstaff Teams API
+  description: Teams within an organization and their membership.
+  humanURL: https://developer.hubstaff.com/docs/hubstaff_v2
+  baseURL: https://api.hubstaff.com/v2
+  tags:
+  - Teams
+  properties:
+  - type: OpenAPI
+    url: openapi/hubstaff-teams-api-openapi.yml
+  - type: APIReference
+    url: https://developer.hubstaff.com/docs/hubstaff_v2
+  - type: Documentation
+    url: https://support.hubstaff.com/time-tracking-api/
+- aid: hubstaff:hubstaff-time-edit-logs-api
+  name: Hubstaff Time Edit Logs API
+  description: Audit trail of manual time edits.
+  humanURL: https://developer.hubstaff.com/docs/hubstaff_v2
+  baseURL: https://api.hubstaff.com/v2
+  tags:
+  - Time Edit Logs
+  properties:
+  - type: OpenAPI
+    url: openapi/hubstaff-time-edit-logs-api-openapi.yml
+  - type: APIReference
+    url: https://developer.hubstaff.com/docs/hubstaff_v2
+  - type: Documentation
+    url: https://support.hubstaff.com/time-tracking-api/
+- aid: hubstaff:hubstaff-time-entries-api
+  name: Hubstaff Time Entries API
+  description: Create time entries for a user (manual time via the API).
+  humanURL: https://developer.hubstaff.com/docs/hubstaff_v2
+  baseURL: https://api.hubstaff.com/v2
+  tags:
+  - Time Entries
+  properties:
+  - type: OpenAPI
+    url: openapi/hubstaff-time-entries-api-openapi.yml
+  - type: APIReference
+    url: https://developer.hubstaff.com/docs/hubstaff_v2
+  - type: Documentation
+    url: https://support.hubstaff.com/time-tracking-api/
+- aid: hubstaff:hubstaff-time-off-api
+  name: Hubstaff Time Off API
+  description: Time off requests, policies, and balances.
+  humanURL: https://developer.hubstaff.com/docs/hubstaff_v2
+  baseURL: https://api.hubstaff.com/v2
+  tags:
+  - Time Off
+  properties:
+  - type: OpenAPI
+    url: openapi/hubstaff-time-off-api-openapi.yml
+  - type: APIReference
+    url: https://developer.hubstaff.com/docs/hubstaff_v2
+  - type: Documentation
+    url: https://support.hubstaff.com/time-tracking-api/
+- aid: hubstaff:hubstaff-timesheets-api
+  name: Hubstaff Timesheets API
+  description: Timesheet approval records - list and update status (open, submitted, approved, denied).
+  humanURL: https://developer.hubstaff.com/docs/hubstaff_v2
+  baseURL: https://api.hubstaff.com/v2
+  tags:
+  - Timesheets
+  properties:
+  - type: OpenAPI
+    url: openapi/hubstaff-timesheets-api-openapi.yml
+  - type: APIReference
+    url: https://developer.hubstaff.com/docs/hubstaff_v2
+  - type: Documentation
+    url: https://support.hubstaff.com/time-tracking-api/
+- aid: hubstaff:hubstaff-users-api
+  name: Hubstaff Users API
+  description: The authenticated user and user profiles.
+  humanURL: https://developer.hubstaff.com/docs/hubstaff_v2
+  baseURL: https://api.hubstaff.com/v2
+  tags:
+  - Users
+  properties:
+  - type: OpenAPI
+    url: openapi/hubstaff-users-api-openapi.yml
+  - type: APIReference
+    url: https://developer.hubstaff.com/docs/hubstaff_v2
+  - type: Documentation
+    url: https://support.hubstaff.com/time-tracking-api/
 - aid: hubstaff:hubstaff-webhooks-api
   name: Hubstaff Webhooks API
-  tags:
-  - Webhooks
-  - Events
-  - Notifications
-  image: https://kinlane-images.s3.amazonaws.com/shared/apis-json/apis-json-logo.jpg
+  description: >-
+    Webhook subscriptions delivering real-time event notifications (timer.start, timer.stop, task.create,
+    shift.late, etc.).
   humanURL: https://developer.hubstaff.com/docs/hubstaff_v2
   baseURL: https://api.hubstaff.com/v2
+  tags:
+  - Webhooks
   properties:
-  - url: https://developer.hubstaff.com/docs/hubstaff_v2
-    type: APIReference
-  - url: openapi/hubstaff-openapi.yml
-    type: OpenAPI
-  description: Subscribe to real-time HTTP event notifications at the organization,
-    project, or user level - timer.start, timer.stop, project.create, task.create,
-    task.assign, schedule and shift events, work breaks, and billing seat
-    snapshots - with an X-Hook-Secret verification and activation handshake and
-    signed deliveries.
+  - type: OpenAPI
+    url: openapi/hubstaff-webhooks-api-openapi.yml
+  - type: APIReference
+    url: https://developer.hubstaff.com/docs/hubstaff_v2
+  - type: Documentation
+    url: https://support.hubstaff.com/time-tracking-api/
 common:
 - type: AgenticAccess
   url: agentic-access/hubstaff-agentic-access.yml
