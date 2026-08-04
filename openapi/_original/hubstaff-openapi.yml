@@ -1,0 +1,3886 @@
+openapi: 3.0.3
+info:
+  title: Hubstaff API
+  description: 'The Hubstaff API v2 provides programmatic read and write access to Hubstaff''s time tracking,
+    timesheet, workforce management, and project management data - organizations, members, teams, projects,
+    tasks, clients, activities (10-minute tracked time blocks with activity percentages), daily activity
+    aggregates, time entries, timesheets and approvals, time off requests/policies/balances, attendance
+    schedules and shifts, screenshots, app and URL usage, invoices, team payments, and webhooks.
+
+
+    Authentication uses OpenID Connect / OAuth 2.0 through Hubstaff Account (https://account.hubstaff.com).
+    For server-side scripts, create a personal access token at https://developer.hubstaff.com/personal_access_tokens
+    - the PAT acts as an OAuth refresh token (90-day expiry) that you exchange for short-lived access
+    tokens at https://account.hubstaff.com/access_tokens. Send the access token as a Bearer token on every
+    request.
+
+
+    Rate limit: authenticated users are allowed 1,000 requests per hour per application; individual requests
+    time out after 30 seconds. All requests must use HTTPS. Collection endpoints use cursor pagination
+    via page_start_id and page_limit. This document is a curated OpenAPI 3.0 rendering of the live Swagger
+    2.0 definition published at https://api.hubstaff.com/v2/docs, covering the primary resource areas;
+    consult the live definition for the complete surface (insights, job sites, budgets, overtime policies,
+    integrations, and more).'
+  version: '2.0'
+  contact:
+    name: Hubstaff Developer Portal
+    url: https://developer.hubstaff.com/
+  termsOfService: https://hubstaff.com/terms
+externalDocs:
+  description: Hubstaff API v2 reference (interactive)
+  url: https://developer.hubstaff.com/docs/hubstaff_v2
+servers:
+- url: https://api.hubstaff.com
+  description: Hubstaff production API (paths include the /v2 prefix)
+security:
+- oauth2:
+  - hubstaff:read
+- personalAccessToken: []
+tags:
+- name: Organizations
+  description: Organizations the authenticated user belongs to, plus seat usage.
+- name: Members
+  description: Organization membership - list, add, and update members and their pay/bill rates.
+- name: Invites
+  description: Invite users to an organization.
+- name: Teams
+  description: Teams within an organization and their membership.
+- name: Users
+  description: The authenticated user and user profiles.
+- name: Activities
+  description: Tracked time as 10-minute activity blocks and daily aggregates, with keyboard/mouse activity
+    percentages.
+- name: Time Entries
+  description: Create time entries for a user (manual time via the API).
+- name: Timesheets
+  description: Timesheet approval records - list and update status (open, submitted, approved, denied).
+- name: Time Edit Logs
+  description: Audit trail of manual time edits.
+- name: Projects
+  description: Projects within an organization, including budgets and project members.
+- name: Tasks
+  description: Tasks (to-dos) within projects and organizations.
+- name: Clients
+  description: Clients that projects are billed to.
+- name: Client Invoices
+  description: Invoices issued to clients.
+- name: Team Payments
+  description: Payments made to team members (payroll).
+- name: Time Off
+  description: Time off requests, policies, and balances.
+- name: Attendance
+  description: Expected work shifts (schedules), actual clock-in/clock-out shifts, and holidays.
+- name: Screenshots
+  description: Screenshots captured while tracking time.
+- name: App & URL Tracking
+  description: Application and URL usage captured while tracking, plus tracking settings.
+- name: Webhooks
+  description: Webhook subscriptions delivering real-time event notifications (timer.start, timer.stop,
+    task.create, shift.late, etc.).
+paths:
+  /v2/organizations:
+    get:
+      operationId: getV2Organizations
+      tags:
+      - Organizations
+      summary: List organizations
+      description: Returns a collection of organizations the authenticated user is an active member of.
+      parameters:
+      - name: page_start_id
+        in: query
+        description: The page start ID.
+        schema:
+          type: integer
+          format: int32
+          default: 0
+      - name: page_limit
+        in: query
+        description: The default page size
+        schema:
+          type: integer
+          format: int32
+          default: null
+      responses:
+        '200':
+          description: A list of organizations
+        '400':
+          description: Invalid parameters
+        '401':
+          description: Unauthorized
+        '403':
+          description: API access is only for organizations on an active plan
+        '429':
+          description: Rate limit exceeded
+    post:
+      operationId: postV2Organizations
+      tags:
+      - Organizations
+      summary: Create organization
+      description: 'Creates a new organization.
+
+
+        Returns the created organization.'
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              type: object
+              description: Request payload. See the live Hubstaff API reference (https://api.hubstaff.com/v2/docs)
+                for the full schema.
+      responses:
+        '200':
+          description: An organization
+        '400':
+          description: Invalid parameters
+        '401':
+          description: Unauthorized
+        '403':
+          description: API access is only for organizations on an active plan
+        '429':
+          description: Rate limit exceeded
+  /v2/organizations/{organization_id}:
+    get:
+      operationId: getV2OrganizationsOrganizationId
+      tags:
+      - Organizations
+      summary: Get organization
+      description: Returns the organization with the given ID.
+      parameters:
+      - name: organization_id
+        in: path
+        description: Organization ID
+        required: true
+        schema:
+          type: integer
+          format: int32
+      responses:
+        '200':
+          description: An organization
+        '400':
+          description: Invalid parameters
+        '401':
+          description: Unauthorized
+        '403':
+          description: API access is only for organizations on an active plan
+        '404':
+          description: Could not find record
+        '429':
+          description: Rate limit exceeded
+  /v2/organizations/{organization_id}/seats:
+    get:
+      operationId: getV2OrganizationsOrganizationIdSeats
+      tags:
+      - Organizations
+      summary: Get organization seats
+      description: "Returns billing seat counters for the specified organization.\n\n- Paid seats are\
+        \ the total number of seats you are currently paying for.\n- Occupied is the total number of seats\
+        \ that are currently filled.\n- Open seats will be filled automatically when new members are added.\n\
+        \  Any open seats will be removed automatically when a new billing cycle starts,\n  bringing down\
+        \ the number of paid seats to match the number of seats occupied."
+      parameters:
+      - name: organization_id
+        in: path
+        required: true
+        schema:
+          type: integer
+          format: int32
+      responses:
+        '200':
+          description: Organization seats counters
+        '400':
+          description: Invalid parameters
+        '401':
+          description: Unauthorized
+        '403':
+          description: API access is only for organizations on an active plan
+        '404':
+          description: Could not find record
+        '429':
+          description: Rate limit exceeded
+  /v2/organizations/{organization_id}/members:
+    get:
+      operationId: getV2OrganizationsOrganizationIdMembers
+      tags:
+      - Members
+      summary: List organization members
+      description: "Returns a collection of members for the given organization.\n\nResults can be filtered\
+        \ by search, user IDs, membership role, and date range.\n\n*trackable* - Whether the user can\
+        \ track time.  This is one of 3 values\n- *false* -- meaning tracking has been explicitly disabled\
+        \ for this user regardless of their role\n- *true* -- meaning they are allowed to track time\n\
+        - *viewer* -- meaning they are allowed to track time, however as they are only a project viewer\
+        \ (or no\n  memberships) they implicitly can not track on any project\n\n*membership_role* - The\
+        \ basic role in this organization\n- *owner* - An owner of the organization.  This member can\
+        \ do anything within the organization.\n- *manager* - An manager of the organization.  This member\
+        \ can do anything within the organization\n  except things to do with money. (payroll, invoicing,\
+        \ account billing)\n- *user* - (By project). A member of the organization where permissions are\
+        \ defined by their project memberships\n\n*effective_role* - represents an effective role that\
+        \ combines a member's organization role and their project roles\n- *organization_owner* - The\
+        \ member is an organization owner\n- *organization_manager* - The member is an organization manager\n\
+        - *project_manager* - The member is an organization user and a manager on all projects and teams\n\
+        - *project_user* - The member is an organization user and a user on all projects and teams\n-\
+        \ *project_viewer* - The member is an organization user and a viewer on all projects and teams\n\
+        - *by_project* - The member is an organization user and has mixed roles on their projects and\
+        \ team memberships (advanced in the web UI)\n- *unassigned* - The member has no assigned role\
+        \ and no project memberships (No role in the web UI)\n\n*profile* - The profile information for\
+        \ the user. Only organization owners and managers may see this information.\n- *custom_fields*\
+        \ - The custom fields, defined for organization, in format of \"key\": \"value\". The meaning\n\
+        \   of keys is defined in organization.member_profile_fields.\n\n**Filtering by dates:**\n\nYou\
+        \ can filter members by when they were added to the organization using the `created_at` parameter:\n\
+        - Use `created_at[start]` to get members added on or after a specific date\n- Use `created_at[stop]`\
+        \ to get members added before a specific date\n- Use both to get members added within a date range\n\
+        \nYou can also filter by when membership was last updated using the `updated_at` parameter:\n\
+        - Use `updated_at[start]` to get members updated on or after a specific date\n- Use `updated_at[stop]`\
+        \ to get members updated before a specific date\n- Use both to get members updated within a date\
+        \ range"
+      parameters:
+      - name: organization_id
+        in: path
+        required: true
+        schema:
+          type: integer
+          format: int32
+      - name: page_start_id
+        in: query
+        description: The page start ID.
+        schema:
+          type: integer
+          format: int32
+          default: 0
+      - name: page_limit
+        in: query
+        description: The default page size
+        schema:
+          type: integer
+          format: int32
+          default: null
+      - name: search[email]
+        in: query
+        description: An email to search for members
+        schema:
+          type: string
+      - name: search[name]
+        in: query
+        description: A name to search for members
+        schema:
+          type: string
+      - name: include_removed
+        in: query
+        description: Include members that were removed from the organization
+        schema:
+          type: boolean
+          default: false
+      - name: include_profile
+        in: query
+        description: Include member profile information
+        schema:
+          type: boolean
+          default: false
+      - name: include_projects
+        in: query
+        description: Include project memberships for this member
+        schema:
+          type: boolean
+          default: false
+      - name: project_statuses
+        in: query
+        description: Filter projects by status when include_projects=true
+        schema:
+          type: array
+          items:
+            type: string
+            enum:
+            - active
+            - archived
+            - deleted
+      - name: include_limits
+        in: query
+        description: Include member limits information
+        schema:
+          type: boolean
+          default: false
+      - name: membership_roles
+        in: query
+        description: Search by membership role
+        schema:
+          type: array
+          items:
+            type: string
+            enum:
+            - owner
+            - manager
+            - user
+            - unassigned
+      - name: created_at[start]
+        in: query
+        description: Start date for created_at filter (inclusive)
+        schema:
+          type: string
+          format: date-time
+      - name: created_at[stop]
+        in: query
+        description: End date for created_at filter (exclusive)
+        schema:
+          type: string
+          format: date-time
+      - name: updated_at[start]
+        in: query
+        description: Start date for updated_at filter (inclusive)
+        schema:
+          type: string
+          format: date-time
+      - name: updated_at[stop]
+        in: query
+        description: End date for updated_at filter (exclusive)
+        schema:
+          type: string
+          format: date-time
+      - name: user_ids
+        in: query
+        description: List of user IDs
+        schema:
+          type: array
+          items:
+            type: integer
+            format: int32
+      - name: include
+        in: query
+        description: Specify related data to side load.
+        schema:
+          type: array
+          items:
+            type: string
+            enum:
+            - users
+            - projects
+      responses:
+        '200':
+          description: A list of members
+        '400':
+          description: Invalid parameters
+        '401':
+          description: Unauthorized
+        '403':
+          description: API access is only for organizations on an active plan
+        '404':
+          description: Could not find record
+        '429':
+          description: Rate limit exceeded
+    post:
+      operationId: postV2OrganizationsOrganizationIdMembers
+      tags:
+      - Members
+      summary: Create organization member
+      description: 'Creates a new user and adds them to the organization as a member.
+
+
+        Returns the created member.
+
+
+        Available roles:
+
+        - organization_manager - Organization manager
+
+        - project_manager - Project manager
+
+        - project_user - Project user
+
+        - project_viewer - Project viewer
+
+
+        Available pay periods:
+
+        - none - Disables automatic payments
+
+        - weekly - Pay users weekly
+
+        - twice_per_month - Pay users twice a month
+
+        - biweekly - Pay users bi-weekly
+
+        - monthly - Pay users monthly'
+      parameters:
+      - name: organization_id
+        in: path
+        required: true
+        schema:
+          type: integer
+          format: int32
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              type: object
+              description: Request payload. See the live Hubstaff API reference (https://api.hubstaff.com/v2/docs)
+                for the full schema.
+      responses:
+        '201':
+          description: A member
+        '400':
+          description: Invalid parameters
+        '401':
+          description: Unauthorized
+        '403':
+          description: API access is only for organizations on an active plan
+        '404':
+          description: Could not find record
+        '429':
+          description: Rate limit exceeded
+  /v2/organizations/{organization_id}/update_members:
+    put:
+      operationId: putV2OrganizationsOrganizationIdUpdateMembers
+      tags:
+      - Members
+      summary: Update organization members
+      description: 'Updates organization members.
+
+
+        Returns {success: true} on success.
+
+
+        Only pass in the members you want to change.
+
+
+        Available roles:
+
+        - user - Member role determined by project membership
+
+        - manager - Organization manager
+
+        - owner - Organization owner
+
+        - remove - Removes user from organization (and all projects/teams)
+
+
+        Limits: Specify full limits config. Missing limits will be removed. Empty "limits" removes all
+        limits.
+
+
+        Projects: Specify project memberships to change. Available project roles: viewer, user, manager,
+        remove.
+
+
+        Metadata: Only specify keys to change. Non-existent keys are created. Use null to remove a key.
+
+
+        Key requirements:
+
+        - 2-30 characters
+
+        - Lowercase letters, numbers, and underscores only
+
+
+        Value requirements:
+
+        - Valid UTF-8 string
+
+        - Maximum 200 characters
+
+
+        Batch size: Up to 150 members per request. Larger requests are rejected with HTTP 400 and code
+        "too_many_members".'
+      parameters:
+      - name: organization_id
+        in: path
+        description: Organization ID
+        required: true
+        schema:
+          type: integer
+          format: int32
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              type: object
+              description: Request payload. See the live Hubstaff API reference (https://api.hubstaff.com/v2/docs)
+                for the full schema.
+      responses:
+        '200':
+          description: Updated successfully
+        '400':
+          description: Invalid parameters
+        '401':
+          description: Unauthorized
+        '403':
+          description: API access is only for organizations on an active plan
+        '404':
+          description: Could not find record
+        '429':
+          description: Rate limit exceeded
+  /v2/organizations/{organization_id}/invites:
+    get:
+      operationId: getV2OrganizationsOrganizationIdInvites
+      tags:
+      - Invites
+      summary: List organization invites
+      description: 'Returns a collection of invites for the given organization.
+
+
+        Results can be filtered by email and status.'
+      parameters:
+      - name: organization_id
+        in: path
+        required: true
+        schema:
+          type: integer
+          format: int32
+      - name: page_start_id
+        in: query
+        description: The page start ID.
+        schema:
+          type: integer
+          format: int32
+          default: 0
+      - name: page_limit
+        in: query
+        description: The default page size
+        schema:
+          type: integer
+          format: int32
+          default: null
+      - name: email
+        in: query
+        description: An email to search for a pending invitation by
+        schema:
+          type: string
+      - name: status
+        in: query
+        description: Filter invites by status
+        schema:
+          type: string
+          enum:
+          - all
+          - pending
+          - accepted
+          - expired
+          default: pending
+      - name: include
+        in: query
+        description: Specify related data to side load.
+        schema:
+          type: array
+          items:
+            type: string
+            enum:
+            - users
+            - projects
+      responses:
+        '200':
+          description: A list of invites
+        '400':
+          description: Invalid parameters
+        '401':
+          description: Unauthorized
+        '403':
+          description: API access is only for organizations on an active plan
+        '404':
+          description: Could not find record
+        '429':
+          description: Rate limit exceeded
+    post:
+      operationId: postV2OrganizationsOrganizationIdInvites
+      tags:
+      - Invites
+      summary: Create invite
+      description: 'Creates a new invite.
+
+
+        Returns the created invite.
+
+
+        Note: If there is an account for the email in Hubstaff, the invite will be auto accepted.
+
+        Note: There is a rate limit on how many invites you may create.
+
+
+        Available roles:
+
+        - organization_manager - Invited as an organization manager
+
+        - project_manager - Invited as a project manager
+
+        - project_user - Invited as a project user
+
+        - project_viewer - Invited as a project viewer
+
+
+        If no project_ids are set, any project_* role will default to project_viewer (no projects assigned).'
+      parameters:
+      - name: organization_id
+        in: path
+        required: true
+        schema:
+          type: integer
+          format: int32
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              type: object
+              description: Request payload. See the live Hubstaff API reference (https://api.hubstaff.com/v2/docs)
+                for the full schema.
+      responses:
+        '201':
+          description: An invite
+        '400':
+          description: Invalid parameters
+        '401':
+          description: Unauthorized
+        '403':
+          description: API access is only for organizations on an active plan
+        '404':
+          description: Could not find record
+        '429':
+          description: Rate limit exceeded
+  /v2/organizations/{organization_id}/teams:
+    get:
+      operationId: getV2OrganizationsOrganizationIdTeams
+      tags:
+      - Teams
+      summary: List organization teams
+      description: Returns a collection of teams for the given organization.
+      parameters:
+      - name: organization_id
+        in: path
+        required: true
+        schema:
+          type: integer
+          format: int32
+      - name: page_start_id
+        in: query
+        description: The page start ID.
+        schema:
+          type: integer
+          format: int32
+          default: 0
+      - name: page_limit
+        in: query
+        description: The default page size
+        schema:
+          type: integer
+          format: int32
+          default: null
+      responses:
+        '200':
+          description: A list of teams
+        '400':
+          description: Invalid parameters
+        '401':
+          description: Unauthorized
+        '403':
+          description: API access is only for organizations on an active plan
+        '404':
+          description: Could not find record
+        '429':
+          description: Rate limit exceeded
+    post:
+      operationId: postV2OrganizationsOrganizationIdTeams
+      tags:
+      - Teams
+      summary: Create team
+      description: 'Creates a new team.
+
+
+        Returns the created team.
+
+
+        Only name is required. Members can optionally be added with roles: viewer, user, or manager.
+
+
+        Note: When a member lead is set to true, the role is forced to manager.'
+      parameters:
+      - name: organization_id
+        in: path
+        required: true
+        schema:
+          type: integer
+          format: int32
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              type: object
+              description: Request payload. See the live Hubstaff API reference (https://api.hubstaff.com/v2/docs)
+                for the full schema.
+      responses:
+        '201':
+          description: A team
+        '400':
+          description: Invalid parameters
+        '401':
+          description: Unauthorized
+        '403':
+          description: API access is only for organizations on an active plan
+        '404':
+          description: Could not find record
+        '429':
+          description: Rate limit exceeded
+  /v2/teams/{team_id}:
+    get:
+      operationId: getV2TeamsTeamId
+      tags:
+      - Teams
+      summary: Get team
+      description: Returns the team with the given ID.
+      parameters:
+      - name: team_id
+        in: path
+        description: Team ID
+        required: true
+        schema:
+          type: integer
+          format: int32
+      responses:
+        '200':
+          description: A team
+        '400':
+          description: Invalid parameters
+        '401':
+          description: Unauthorized
+        '403':
+          description: API access is only for organizations on an active plan
+        '404':
+          description: Could not find record
+        '429':
+          description: Rate limit exceeded
+  /v2/teams/{team_id}/members:
+    get:
+      operationId: getV2TeamsTeamIdMembers
+      tags:
+      - Members
+      summary: List team members
+      description: 'Returns a collection of members for the given team.
+
+
+        Membership roles:
+
+        - manager - Can track time, view all data, change settings, and manage membership
+
+        - user - Can track time and view only their own data
+
+        - viewer - Can view reports but cannot make changes'
+      parameters:
+      - name: team_id
+        in: path
+        description: Team ID
+        required: true
+        schema:
+          type: integer
+          format: int32
+      - name: page_start_id
+        in: query
+        description: The page start ID.
+        schema:
+          type: integer
+          format: int32
+          default: 0
+      - name: page_limit
+        in: query
+        description: The default page size
+        schema:
+          type: integer
+          format: int32
+          default: null
+      - name: include
+        in: query
+        description: Specify related data to side load.
+        schema:
+          type: array
+          items:
+            type: string
+            enum:
+            - users
+      responses:
+        '200':
+          description: A list of members
+        '400':
+          description: Invalid parameters
+        '401':
+          description: Unauthorized
+        '403':
+          description: API access is only for organizations on an active plan
+        '404':
+          description: Could not find record
+        '429':
+          description: Rate limit exceeded
+  /v2/users/me:
+    get:
+      operationId: getV2UsersMe
+      tags:
+      - Users
+      summary: Get current user
+      description: Returns the authenticated user.
+      responses:
+        '200':
+          description: A user
+        '400':
+          description: Invalid parameters
+        '401':
+          description: Unauthorized
+        '403':
+          description: API access is only for organizations on an active plan
+        '429':
+          description: Rate limit exceeded
+  /v2/users/{user_id}:
+    get:
+      operationId: getV2UsersUserId
+      tags:
+      - Users
+      summary: Get user
+      description: Returns the user with the given ID.
+      parameters:
+      - name: user_id
+        in: path
+        description: User ID
+        required: true
+        schema:
+          type: integer
+          format: int32
+      responses:
+        '200':
+          description: A user
+        '400':
+          description: Invalid parameters
+        '401':
+          description: Unauthorized
+        '403':
+          description: API access is only for organizations on an active plan
+        '404':
+          description: Could not find record
+        '429':
+          description: Rate limit exceeded
+  /v2/organizations/{organization_id}/activities:
+    get:
+      operationId: getV2OrganizationsOrganizationIdActivities
+      tags:
+      - Activities
+      summary: List organization activities
+      description: 'Returns a collection of activities (10-minute time blocks) for the given organization.
+
+
+        Results can be filtered by user, task, project, and time range (time_slot[start], time_slot[stop]).
+
+
+        For aggregated daily data, use the daily_activities endpoint instead.
+
+
+        Note: Data may be delayed up to 20 minutes.
+
+        Note: Date range limit is 7 days. Earliest date is 6 months ago.'
+      parameters:
+      - name: organization_id
+        in: path
+        required: true
+        schema:
+          type: integer
+          format: int32
+      - name: page_start_id
+        in: query
+        description: The page start ID.
+        schema:
+          type: integer
+          format: int32
+          default: 0
+      - name: page_limit
+        in: query
+        description: The default page size
+        schema:
+          type: integer
+          format: int32
+          default: null
+      - name: time_slot[start]
+        in: query
+        description: Start time (ISO 8601)
+        required: true
+        schema:
+          type: string
+          format: date-time
+      - name: time_slot[stop]
+        in: query
+        description: Stop time (ISO 8601, Exclusive)
+        required: true
+        schema:
+          type: string
+          format: date-time
+      - name: user_ids
+        in: query
+        description: List of user IDs
+        schema:
+          type: array
+          items:
+            type: integer
+            format: int32
+      - name: task_ids
+        in: query
+        description: List of task IDs
+        schema:
+          type: array
+          items:
+            type: integer
+            format: int32
+      - name: global_todo_ids
+        in: query
+        description: List of global todo IDs
+        schema:
+          type: array
+          items:
+            type: integer
+            format: int32
+      - name: project_ids
+        in: query
+        description: List of project IDs
+        schema:
+          type: array
+          items:
+            type: integer
+            format: int32
+      - name: include
+        in: query
+        description: Specify related data to side load.
+        schema:
+          type: array
+          items:
+            type: string
+            enum:
+            - users
+            - projects
+            - tasks
+      - name: time_zone
+        in: query
+        description: The time zone name for the activity
+        schema:
+          type: string
+      responses:
+        '200':
+          description: A list of activities
+        '400':
+          description: Invalid parameters
+        '401':
+          description: Unauthorized
+        '403':
+          description: API access is only for organizations on an active plan
+        '404':
+          description: Could not find record
+        '429':
+          description: Rate limit exceeded
+  /v2/organizations/{organization_id}/activities/daily:
+    get:
+      operationId: getV2OrganizationsOrganizationIdActivitiesDaily
+      tags:
+      - Activities
+      summary: List organization daily activities
+      description: 'Returns daily aggregated time tracking data for the given organization.
+
+
+        Results can be filtered by user_ids[], task_ids[], project_ids[], and date[start]/[stop]. Data
+        is aggregated by organization timezone date.
+
+
+        Note: Date range limit is 31 days. Earliest date is 3 years ago.'
+      parameters:
+      - name: organization_id
+        in: path
+        required: true
+        schema:
+          type: integer
+          format: int32
+      - name: page_start_id
+        in: query
+        description: The page start ID.
+        schema:
+          type: integer
+          format: int32
+          default: 0
+      - name: page_limit
+        in: query
+        description: The default page size
+        schema:
+          type: integer
+          format: int32
+          default: null
+      - name: date[start]
+        in: query
+        description: Start date (ISO 8601)
+        required: true
+        schema:
+          type: string
+          format: date
+      - name: date[stop]
+        in: query
+        description: Stop date (ISO 8601, Inclusive)
+        required: true
+        schema:
+          type: string
+          format: date
+      - name: user_ids
+        in: query
+        description: List of user IDs
+        schema:
+          type: array
+          items:
+            type: integer
+            format: int32
+      - name: task_ids
+        in: query
+        description: List of task IDs
+        schema:
+          type: array
+          items:
+            type: integer
+            format: int32
+      - name: project_ids
+        in: query
+        description: List of project IDs
+        schema:
+          type: array
+          items:
+            type: integer
+            format: int32
+      - name: include
+        in: query
+        description: Specify related data to side load.
+        schema:
+          type: array
+          items:
+            type: string
+            enum:
+            - users
+            - projects
+            - tasks
+      responses:
+        '200':
+          description: A list of daily activities
+        '400':
+          description: Invalid parameters
+        '401':
+          description: Unauthorized
+        '403':
+          description: API access is only for organizations on an active plan
+        '404':
+          description: Could not find record
+        '429':
+          description: Rate limit exceeded
+  /v2/organizations/{organization_id}/last_activities:
+    get:
+      operationId: getV2OrganizationsOrganizationIdLastActivities
+      tags:
+      - Activities
+      summary: List organization last activities
+      description: Returns the most recent activity for each member in the organization.
+      parameters:
+      - name: organization_id
+        in: path
+        required: true
+        schema:
+          type: integer
+          format: int32
+      - name: page_start_id
+        in: query
+        description: The page start ID.
+        schema:
+          type: integer
+          format: int32
+          default: 0
+      - name: page_limit
+        in: query
+        description: The default page size
+        schema:
+          type: integer
+          format: int32
+          default: null
+      - name: include_removed
+        in: query
+        description: Include users that were removed
+        schema:
+          type: boolean
+          default: false
+      - name: include
+        in: query
+        description: Specify related data to side load.
+        schema:
+          type: array
+          items:
+            type: string
+            enum:
+            - users
+            - projects
+            - tasks
+      responses:
+        '200':
+          description: Last activities for members
+        '400':
+          description: Invalid parameters
+        '401':
+          description: Unauthorized
+        '403':
+          description: API access is only for organizations on an active plan
+        '404':
+          description: Could not find record
+        '429':
+          description: Rate limit exceeded
+  /v2/projects/{project_id}/activities:
+    get:
+      operationId: getV2ProjectsProjectIdActivities
+      tags:
+      - Activities
+      summary: List project activities
+      description: 'Returns a collection of activities (10-minute time blocks) for the given project.
+
+
+        Results can be filtered by user, task, project, and time range (time_slot[start], time_slot[stop]).
+
+
+        For aggregated daily data, use the daily_activities endpoint instead.
+
+
+        Note: Data may be delayed up to 20 minutes.
+
+        Note: Date range limit is 7 days. Earliest date is 6 months ago.'
+      parameters:
+      - name: project_id
+        in: path
+        required: true
+        schema:
+          type: integer
+          format: int32
+      - name: page_start_id
+        in: query
+        description: The page start ID.
+        schema:
+          type: integer
+          format: int32
+          default: 0
+      - name: page_limit
+        in: query
+        description: The default page size
+        schema:
+          type: integer
+          format: int32
+          default: null
+      - name: time_slot[start]
+        in: query
+        description: Start time (ISO 8601)
+        required: true
+        schema:
+          type: string
+          format: date-time
+      - name: time_slot[stop]
+        in: query
+        description: Stop time (ISO 8601, Exclusive)
+        required: true
+        schema:
+          type: string
+          format: date-time
+      - name: user_ids
+        in: query
+        description: List of user IDs
+        schema:
+          type: array
+          items:
+            type: integer
+            format: int32
+      - name: task_ids
+        in: query
+        description: List of task IDs
+        schema:
+          type: array
+          items:
+            type: integer
+            format: int32
+      - name: global_todo_ids
+        in: query
+        description: List of global todo IDs
+        schema:
+          type: array
+          items:
+            type: integer
+            format: int32
+      - name: include
+        in: query
+        description: Specify related data to side load.
+        schema:
+          type: array
+          items:
+            type: string
+            enum:
+            - users
+            - tasks
+      - name: time_zone
+        in: query
+        description: The time zone name for the activity
+        schema:
+          type: string
+      responses:
+        '200':
+          description: A list of activities
+        '400':
+          description: Invalid parameters
+        '401':
+          description: Unauthorized
+        '403':
+          description: API access is only for organizations on an active plan
+        '404':
+          description: Could not find record
+        '429':
+          description: Rate limit exceeded
+  /v2/projects/{project_id}/activities/daily:
+    get:
+      operationId: getV2ProjectsProjectIdActivitiesDaily
+      tags:
+      - Activities
+      summary: List project daily activities
+      description: 'Returns daily aggregated time tracking data for the given project.
+
+
+        Results can be filtered by user_ids[], task_ids[], project_ids[], and date[start]/[stop]. Data
+        is aggregated by organization timezone date.
+
+
+        Note: Date range limit is 31 days. Earliest date is 3 years ago.'
+      parameters:
+      - name: project_id
+        in: path
+        required: true
+        schema:
+          type: integer
+          format: int32
+      - name: page_start_id
+        in: query
+        description: The page start ID.
+        schema:
+          type: integer
+          format: int32
+          default: 0
+      - name: page_limit
+        in: query
+        description: The default page size
+        schema:
+          type: integer
+          format: int32
+          default: null
+      - name: date[start]
+        in: query
+        description: Start date (ISO 8601)
+        required: true
+        schema:
+          type: string
+          format: date
+      - name: date[stop]
+        in: query
+        description: Stop date (ISO 8601, Inclusive)
+        required: true
+        schema:
+          type: string
+          format: date
+      - name: user_ids
+        in: query
+        description: List of user IDs
+        schema:
+          type: array
+          items:
+            type: integer
+            format: int32
+      - name: task_ids
+        in: query
+        description: List of task IDs
+        schema:
+          type: array
+          items:
+            type: integer
+            format: int32
+      - name: include
+        in: query
+        description: Specify related data to side load.
+        schema:
+          type: array
+          items:
+            type: string
+            enum:
+            - users
+            - tasks
+      responses:
+        '200':
+          description: A list of daily activities
+        '400':
+          description: Invalid parameters
+        '401':
+          description: Unauthorized
+        '403':
+          description: API access is only for organizations on an active plan
+        '404':
+          description: Could not find record
+        '429':
+          description: Rate limit exceeded
+  /v2/users/{user_id}/time_entries:
+    post:
+      operationId: postV2UsersUserIdTimeEntries
+      tags:
+      - Time Entries
+      summary: Create time entry
+      description: 'Creates a new time entry.
+
+
+        Returns {success: true} on success.
+
+
+        Note: Manual time entries that require approval cannot be added through the API.'
+      parameters:
+      - name: user_id
+        in: path
+        required: true
+        schema:
+          type: integer
+          format: int32
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              type: object
+              description: Request payload. See the live Hubstaff API reference (https://api.hubstaff.com/v2/docs)
+                for the full schema.
+      responses:
+        '201':
+          description: Time entry created
+        '400':
+          description: Invalid parameters
+        '401':
+          description: Unauthorized
+        '403':
+          description: API access is only for organizations on an active plan
+        '404':
+          description: Could not find record
+        '429':
+          description: Rate limit exceeded
+  /v2/organizations/{organization_id}/timesheets:
+    get:
+      operationId: getV2OrganizationsOrganizationIdTimesheets
+      tags:
+      - Timesheets
+      summary: List organization timesheets
+      description: 'Returns a collection of timesheets (aggregate approval records) for the given organization.
+
+
+        Results can be filtered by date[start]/[stop], approved[start], and status.
+
+
+        Note: Timesheets are aggregate records used by the timesheet approval system, not individual time
+        entries.'
+      parameters:
+      - name: organization_id
+        in: path
+        required: true
+        schema:
+          type: integer
+          format: int32
+      - name: page_start_id
+        in: query
+        description: The page start ID.
+        schema:
+          type: integer
+          format: int32
+          default: 0
+      - name: page_limit
+        in: query
+        description: The default page size
+        schema:
+          type: integer
+          format: int32
+          default: null
+      - name: date[start]
+        in: query
+        description: Start date (ISO 8601)
+        schema:
+          type: string
+          format: date
+      - name: date[stop]
+        in: query
+        description: Stop date (ISO 8601, Inclusive)
+        schema:
+          type: string
+          format: date
+      - name: approved[start]
+        in: query
+        description: Includes timesheets approved since the specified start date, considering UTC timezone
+          (ISO 8601)
+        schema:
+          type: string
+          format: date
+      - name: status
+        in: query
+        description: Invoice status
+        schema:
+          type: string
+          enum:
+          - open
+          - submitted
+          - approved
+          - denied
+      - name: include
+        in: query
+        description: Specify related data to side load.
+        schema:
+          type: array
+          items:
+            type: string
+            enum:
+            - users
+      responses:
+        '200':
+          description: A list of timesheets
+        '400':
+          description: Invalid parameters
+        '401':
+          description: Unauthorized
+        '403':
+          description: API access is only for organizations on an active plan
+        '404':
+          description: Could not find record
+        '429':
+          description: Rate limit exceeded
+  /v2/timesheets/{timesheet_id}:
+    put:
+      operationId: putV2TimesheetsTimesheetId
+      tags:
+      - Timesheets
+      summary: Update timesheet status
+      description: 'Updates a timesheet status or updates the denial reason on an already denied timesheet.
+
+
+        Allowed statuses are open, submitted, approved, and denied. A denial_reason is required when transitioning
+        a timesheet to denied.
+
+
+        Approving a timesheet can require explicit confirmation when the period has pending manual time
+        requests or pending time off requests.
+
+        If pending manual time requests would be denied, the endpoint returns 422 with error_code 14905;
+        repeat the request with confirm_pending_manual_time_request_denial set to true.
+
+        If the period has pending time off requests, the endpoint returns 422 with error_code 14906; repeat
+        the request with acknowledge_pending_time_off_requests set to true.'
+      parameters:
+      - name: timesheet_id
+        in: path
+        description: Timesheet ID
+        required: true
+        schema:
+          type: integer
+          format: int32
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              type: object
+              description: Request payload. See the live Hubstaff API reference (https://api.hubstaff.com/v2/docs)
+                for the full schema.
+      responses:
+        '200':
+          description: The updated timesheet
+        '400':
+          description: Invalid parameters
+        '401':
+          description: Unauthorized
+        '403':
+          description: API access is only for organizations on an active plan
+        '404':
+          description: Could not find record
+        '429':
+          description: Rate limit exceeded
+  /v2/organizations/{organization_id}/time_edit_logs:
+    get:
+      operationId: getV2OrganizationsOrganizationIdTimeEditLogs
+      tags:
+      - Time Edit Logs
+      summary: List organization time edit logs
+      description: 'Returns a collection of time edit logs (manual time additions/edits/deletions) for
+        the given organization.
+
+
+        Results can be filtered by created[start]/[stop], user_ids[], task_ids[], and project_ids[].
+
+
+        Note: Date range limit is 31 days. Earliest date is 3 years ago.'
+      parameters:
+      - name: organization_id
+        in: path
+        required: true
+        schema:
+          type: integer
+          format: int32
+      - name: page_start_id
+        in: query
+        description: The page start ID.
+        schema:
+          type: integer
+          format: int32
+          default: 0
+      - name: page_limit
+        in: query
+        description: The default page size
+        schema:
+          type: integer
+          format: int32
+          default: null
+      - name: created[start]
+        in: query
+        description: Start time (ISO 8601)
+        required: true
+        schema:
+          type: string
+          format: date-time
+      - name: created[stop]
+        in: query
+        description: Stop time (ISO 8601, exclusive)
+        required: true
+        schema:
+          type: string
+          format: date-time
+      - name: user_ids
+        in: query
+        description: List of user IDs
+        schema:
+          type: array
+          items:
+            type: integer
+            format: int32
+      - name: task_ids
+        in: query
+        description: List of task IDs
+        schema:
+          type: array
+          items:
+            type: integer
+            format: int32
+      - name: project_ids
+        in: query
+        description: List of project IDs
+        schema:
+          type: array
+          items:
+            type: integer
+            format: int32
+      - name: include
+        in: query
+        description: Specify related data to side load.
+        schema:
+          type: array
+          items:
+            type: string
+            enum:
+            - users
+            - projects
+            - tasks
+      responses:
+        '200':
+          description: A list of time edit logs
+        '400':
+          description: Invalid parameters
+        '401':
+          description: Unauthorized
+        '403':
+          description: API access is only for organizations on an active plan
+        '404':
+          description: Could not find record
+        '429':
+          description: Rate limit exceeded
+  /v2/organizations/{organization_id}/projects:
+    get:
+      operationId: getV2OrganizationsOrganizationIdProjects
+      tags:
+      - Projects
+      summary: List organization projects
+      description: 'Returns a collection of projects for the given organization.
+
+
+        Results can be filtered by status (active/archived/all) and project_ids[].'
+      parameters:
+      - name: organization_id
+        in: path
+        required: true
+        schema:
+          type: integer
+          format: int32
+      - name: page_start_id
+        in: query
+        description: The page start ID.
+        schema:
+          type: integer
+          format: int32
+          default: 0
+      - name: page_limit
+        in: query
+        description: The default page size
+        schema:
+          type: integer
+          format: int32
+          default: null
+      - name: status
+        in: query
+        description: Project status
+        schema:
+          type: string
+          enum:
+          - active
+          - archived
+          - all
+          default: active
+      - name: include
+        in: query
+        description: Specify related data to side load.
+        schema:
+          type: array
+          items:
+            type: string
+            enum:
+            - clients
+      - name: project_ids
+        in: query
+        description: List of project IDs
+        schema:
+          type: array
+          items:
+            type: integer
+            format: int32
+      responses:
+        '200':
+          description: A list of projects
+        '400':
+          description: Invalid parameters
+        '401':
+          description: Unauthorized
+        '403':
+          description: API access is only for organizations on an active plan
+        '404':
+          description: Could not find record
+        '429':
+          description: Rate limit exceeded
+    post:
+      operationId: postV2OrganizationsOrganizationIdProjects
+      tags:
+      - Projects
+      summary: Create project
+      description: 'Creates a new project.
+
+
+        Returns the created project.
+
+
+        Only name is required. Members can optionally be added with roles: viewer, user, or manager.'
+      parameters:
+      - name: organization_id
+        in: path
+        required: true
+        schema:
+          type: integer
+          format: int32
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              type: object
+              description: Request payload. See the live Hubstaff API reference (https://api.hubstaff.com/v2/docs)
+                for the full schema.
+      responses:
+        '201':
+          description: A project
+        '400':
+          description: Invalid parameters
+        '401':
+          description: Unauthorized
+        '403':
+          description: API access is only for organizations on an active plan
+        '404':
+          description: Could not find record
+        '429':
+          description: Rate limit exceeded
+  /v2/projects/{project_id}:
+    get:
+      operationId: getV2ProjectsProjectId
+      tags:
+      - Projects
+      summary: Get project
+      description: Returns the project with the given ID.
+      parameters:
+      - name: project_id
+        in: path
+        description: Project ID
+        required: true
+        schema:
+          type: integer
+          format: int32
+      responses:
+        '200':
+          description: A project
+        '400':
+          description: Invalid parameters
+        '401':
+          description: Unauthorized
+        '403':
+          description: API access is only for organizations on an active plan
+        '404':
+          description: Could not find record
+        '429':
+          description: Rate limit exceeded
+    put:
+      operationId: putV2ProjectsProjectId
+      tags:
+      - Projects
+      summary: Update project
+      description: 'Updates a project.
+
+
+        Returns the updated project.
+
+
+        Only pass in the fields you want to change. To unset the budget, specify null. To update the budget,
+        you must specify the complete budget configuration.
+
+
+        When restoring an archived project, you can only change the status column.
+
+
+        Rate handling for pay_rate and bill_rate:
+
+        - To remove a rate, pass null (e.g., pay_rate: null)
+
+        - Custom user rates take precedence over default project rates
+
+        - To apply default project rate to a user, remove their custom rate first'
+      parameters:
+      - name: project_id
+        in: path
+        description: Project ID
+        required: true
+        schema:
+          type: integer
+          format: int32
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              type: object
+              description: Request payload. See the live Hubstaff API reference (https://api.hubstaff.com/v2/docs)
+                for the full schema.
+      responses:
+        '200':
+          description: A project
+        '400':
+          description: Invalid parameters
+        '401':
+          description: Unauthorized
+        '403':
+          description: API access is only for organizations on an active plan
+        '404':
+          description: Could not find record
+        '429':
+          description: Rate limit exceeded
+  /v2/projects/{project_id}/members:
+    get:
+      operationId: getV2ProjectsProjectIdMembers
+      tags:
+      - Members
+      summary: List project members
+      description: 'Returns a collection of members for the given project.
+
+
+        Results can be filtered by search, user IDs, membership role, and date range.
+
+
+        *membership_role* - The permission role the member has in this project
+
+        - *manager* - An manager can track time, see data for any member within the project, can change
+        settings, and manage membership within the project
+
+        - *user* - A user can track time against the project and see only their own data within the project
+
+        - *viewer* - A viewer can access reports based on data for any member within the project but can
+        not change anything
+
+
+        **Note**: A member must have membership within a project in order to track on that project, even
+        if they are an organization owner or manager
+
+
+        **Filtering by dates:**
+
+
+        You can filter members by when they were added to the project using the `created_at` parameter:
+
+        - Use `created_at[start]` to get members added on or after a specific date
+
+        - Use `created_at[stop]` to get members added before a specific date
+
+        - Use both to get members added within a date range
+
+
+        You can also filter by when membership was last updated using the `updated_at` parameter:
+
+        - Use `updated_at[start]` to get members updated on or after a specific date
+
+        - Use `updated_at[stop]` to get members updated before a specific date
+
+        - Use both to get members updated within a date range'
+      parameters:
+      - name: project_id
+        in: path
+        required: true
+        schema:
+          type: integer
+          format: int32
+      - name: page_start_id
+        in: query
+        description: The page start ID.
+        schema:
+          type: integer
+          format: int32
+          default: 0
+      - name: page_limit
+        in: query
+        description: The default page size
+        schema:
+          type: integer
+          format: int32
+          default: null
+      - name: search[email]
+        in: query
+        description: An email to search for members
+        schema:
+          type: string
+      - name: search[name]
+        in: query
+        description: A name to search for members
+        schema:
+          type: string
+      - name: include_removed
+        in: query
+        description: Include members that were removed from the project
+        schema:
+          type: boolean
+          default: false
+      - name: include_profile
+        in: query
+        description: Include member profile information
+        schema:
+          type: boolean
+          default: false
+      - name: direct_only
+        in: query
+        description: If true, only include members assigned directly to the project and not as member
+          of a team working on the project
+        schema:
+          type: boolean
+          default: false
+      - name: membership_roles
+        in: query
+        description: Search by membership role
+        schema:
+          type: array
+          items:
+            type: string
+            enum:
+            - manager
+            - user
+            - viewer
+      - name: created_at[start]
+        in: query
+        description: Start date for created_at filter (inclusive)
+        schema:
+          type: string
+          format: date-time
+      - name: created_at[stop]
+        in: query
+        description: End date for created_at filter (exclusive)
+        schema:
+          type: string
+          format: date-time
+      - name: updated_at[start]
+        in: query
+        description: Start date for updated_at filter (inclusive)
+        schema:
+          type: string
+          format: date-time
+      - name: updated_at[stop]
+        in: query
+        description: End date for updated_at filter (exclusive)
+        schema:
+          type: string
+          format: date-time
+      - name: user_ids
+        in: query
+        description: List of user IDs
+        schema:
+          type: array
+          items:
+            type: integer
+            format: int32
+      - name: include
+        in: query
+        description: Specify related data to side load.
+        schema:
+          type: array
+          items:
+            type: string
+            enum:
+            - users
+      responses:
+        '200':
+          description: A list of members
+        '400':
+          description: Invalid parameters
+        '401':
+          description: Unauthorized
+        '403':
+          description: API access is only for organizations on an active plan
+        '404':
+          description: Could not find record
+        '429':
+          description: Rate limit exceeded
+  /v2/organizations/{organization_id}/tasks:
+    get:
+      operationId: getV2OrganizationsOrganizationIdTasks
+      tags:
+      - Tasks
+      summary: List organization tasks
+      description: 'Returns a collection of tasks (to-dos) for the given organization.
+
+
+        Results can be filtered by status[] (active/completed/deleted), user_ids[], project_ids[], and
+        global_todo_ids[].'
+      parameters:
+      - name: organization_id
+        in: path
+        required: true
+        schema:
+          type: integer
+          format: int32
+      - name: page_start_id
+        in: query
+        description: The page start ID.
+        schema:
+          type: integer
+          format: int32
+          default: 0
+      - name: page_limit
+        in: query
+        description: The default page size
+        schema:
+          type: integer
+          format: int32
+          default: null
+      - name: status
+        in: query
+        description: A status or list of statuses to filter
+        schema:
+          type: array
+          items:
+            type: string
+            enum:
+            - active
+            - completed
+            - deleted
+            - archived
+            - archived_native_active
+            - archived_native_completed
+            - archived_native_deleted
+      - name: user_ids
+        in: query
+        description: List of user IDs
+        schema:
+          type: array
+          items:
+            type: integer
+            format: int32
+      - name: project_ids
+        in: query
+        description: List of project IDs
+        schema:
+          type: array
+          items:
+            type: integer
+            format: int32
+      - name: global_todo_ids
+        in: query
+        description: List of Global To-Do IDs
+        schema:
+          type: array
+          items:
+            type: integer
+            format: int32
+      - name: only_global_todos
+        in: query
+        description: Return only global to-dos
+        schema:
+          type: boolean
+      - name: include
+        in: query
+        description: Specify related data to side load.
+        schema:
+          type: array
+          items:
+            type: string
+            enum:
+            - users
+            - projects
+      responses:
+        '200':
+          description: A list of tasks
+        '400':
+          description: Invalid parameters
+        '401':
+          description: Unauthorized
+        '403':
+          description: API access is only for organizations on an active plan
+        '404':
+          description: Could not find record
+        '429':
+          description: Rate limit exceeded
+  /v2/projects/{project_id}/tasks:
+    get:
+      operationId: getV2ProjectsProjectIdTasks
+      tags:
+      - Tasks
+      summary: List project tasks
+      description: 'Returns a collection of tasks (to-dos) for the given project.
+
+
+        Results can be filtered by status[] (active/completed/deleted), user_ids[], project_ids[], and
+        global_todo_ids[].'
+      parameters:
+      - name: project_id
+        in: path
+        required: true
+        schema:
+          type: integer
+          format: int32
+      - name: page_start_id
+        in: query
+        description: The page start ID.
+        schema:
+          type: integer
+          format: int32
+          default: 0
+      - name: page_limit
+        in: query
+        description: The default page size
+        schema:
+          type: integer
+          format: int32
+          default: null
+      - name: status
+        in: query
+        description: A status or list of statuses to filter
+        schema:
+          type: array
+          items:
+            type: string
+            enum:
+            - active
+            - completed
+            - deleted
+            - archived
+            - archived_native_active
+            - archived_native_completed
+            - archived_native_deleted
+      - name: user_ids
+        in: query
+        description: List of user IDs
+        schema:
+          type: array
+          items:
+            type: integer
+            format: int32
+      - name: global_todo_ids
+        in: query
+        description: List of Global To-Do IDs
+        schema:
+          type: array
+          items:
+            type: integer
+            format: int32
+      - name: only_global_todos
+        in: query
+        description: Return only global to-dos
+        schema:
+          type: boolean
+      - name: include
+        in: query
+        description: Specify related data to side load.
+        schema:
+          type: array
+          items:
+            type: string
+            enum:
+            - users
+      responses:
+        '200':
+          description: A list of tasks
+        '400':
+          description: Invalid parameters
+        '401':
+          description: Unauthorized
+        '403':
+          description: API access is only for organizations on an active plan
+        '404':
+          description: Could not find record
+        '429':
+          description: Rate limit exceeded
+    post:
+      operationId: postV2ProjectsProjectIdTasks
+      tags:
+      - Tasks
+      summary: Create task
+      description: 'Creates a new task for this project.
+
+
+        Returns the created task.
+
+
+        Note: If this project is integrated with a 3rd party tool, you must create the task in that tool
+        instead.'
+      parameters:
+      - name: project_id
+        in: path
+        required: true
+        schema:
+          type: integer
+          format: int32
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              type: object
+              description: Request payload. See the live Hubstaff API reference (https://api.hubstaff.com/v2/docs)
+                for the full schema.
+      responses:
+        '200':
+          description: To-do created
+        '400':
+          description: Invalid parameters
+        '401':
+          description: Unauthorized
+        '403':
+          description: API access is only for organizations on an active plan
+        '404':
+          description: Could not find record
+        '429':
+          description: Rate limit exceeded
+  /v2/tasks/{task_id}:
+    get:
+      operationId: getV2TasksTaskId
+      tags:
+      - Tasks
+      summary: Get task
+      description: Returns the task with the given ID.
+      parameters:
+      - name: task_id
+        in: path
+        description: Task ID
+        required: true
+        schema:
+          type: integer
+          format: int32
+      responses:
+        '200':
+          description: A task
+        '400':
+          description: Invalid parameters
+        '401':
+          description: Unauthorized
+        '403':
+          description: API access is only for organizations on an active plan
+        '404':
+          description: Could not find record
+        '429':
+          description: Rate limit exceeded
+    put:
+      operationId: putV2TasksTaskId
+      tags:
+      - Tasks
+      summary: Update task
+      description: 'Updates a task.
+
+
+        Returns the updated task.
+
+
+        Only pass in the fields you want to change. Requires passing lock_version from the task fetch.
+
+
+        Note: Only simple todos can be updated. 3rd party tasks must be updated in their system.'
+      parameters:
+      - name: task_id
+        in: path
+        description: Task ID
+        required: true
+        schema:
+          type: integer
+          format: int32
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              type: object
+              description: Request payload. See the live Hubstaff API reference (https://api.hubstaff.com/v2/docs)
+                for the full schema.
+      responses:
+        '200':
+          description: To-do updated
+        '400':
+          description: Invalid parameters
+        '401':
+          description: Unauthorized
+        '403':
+          description: API access is only for organizations on an active plan
+        '404':
+          description: Could not find record
+        '429':
+          description: Rate limit exceeded
+    delete:
+      operationId: deleteV2TasksTaskId
+      tags:
+      - Tasks
+      summary: Delete task
+      description: 'Deletes a task.
+
+
+        Note: Only simple todos can be deleted. 3rd party tasks must be deleted in their system.'
+      parameters:
+      - name: task_id
+        in: path
+        description: Task ID
+        required: true
+        schema:
+          type: integer
+          format: int32
+      responses:
+        '204':
+          description: To-do deleted
+        '400':
+          description: Invalid parameters
+        '401':
+          description: Unauthorized
+        '403':
+          description: API access is only for organizations on an active plan
+        '404':
+          description: Could not find record
+        '429':
+          description: Rate limit exceeded
+  /v2/organizations/{organization_id}/clients:
+    get:
+      operationId: getV2OrganizationsOrganizationIdClients
+      tags:
+      - Clients
+      summary: List organization clients
+      description: 'Returns a collection of clients for the given organization.
+
+
+        Results can be filtered by status.'
+      parameters:
+      - name: organization_id
+        in: path
+        required: true
+        schema:
+          type: integer
+          format: int32
+      - name: page_start_id
+        in: query
+        description: The page start ID.
+        schema:
+          type: integer
+          format: int32
+          default: 0
+      - name: page_limit
+        in: query
+        description: The default page size
+        schema:
+          type: integer
+          format: int32
+          default: null
+      - name: status
+        in: query
+        description: Client status
+        schema:
+          type: string
+          enum:
+          - active
+          - archived
+          - all
+          default: active
+      - name: include
+        in: query
+        description: Specify related data to side load.
+        schema:
+          type: array
+          items:
+            type: string
+            enum:
+            - projects
+      responses:
+        '200':
+          description: A list of clients
+        '400':
+          description: Invalid parameters
+        '401':
+          description: Unauthorized
+        '403':
+          description: API access is only for organizations on an active plan
+        '404':
+          description: Could not find record
+        '429':
+          description: Rate limit exceeded
+    post:
+      operationId: postV2OrganizationsOrganizationIdClients
+      tags:
+      - Clients
+      summary: Create client
+      description: 'Creates a new client.
+
+
+        Returns the created client.'
+      parameters:
+      - name: organization_id
+        in: path
+        required: true
+        schema:
+          type: integer
+          format: int32
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              type: object
+              description: Request payload. See the live Hubstaff API reference (https://api.hubstaff.com/v2/docs)
+                for the full schema.
+      responses:
+        '200':
+          description: A client
+        '400':
+          description: Invalid parameters
+        '401':
+          description: Unauthorized
+        '403':
+          description: API access is only for organizations on an active plan
+        '404':
+          description: Could not find record
+        '429':
+          description: Rate limit exceeded
+  /v2/clients/{client_id}:
+    get:
+      operationId: getV2ClientsClientId
+      tags:
+      - Clients
+      summary: Get client
+      description: Returns the client with the given ID.
+      parameters:
+      - name: client_id
+        in: path
+        description: Client ID
+        required: true
+        schema:
+          type: integer
+          format: int32
+      responses:
+        '200':
+          description: A client
+        '400':
+          description: Invalid parameters
+        '401':
+          description: Unauthorized
+        '403':
+          description: API access is only for organizations on an active plan
+        '404':
+          description: Could not find record
+        '429':
+          description: Rate limit exceeded
+    put:
+      operationId: putV2ClientsClientId
+      tags:
+      - Clients
+      summary: Update client
+      description: 'Updates a client.
+
+
+        Returns the updated client.
+
+
+        Only pass in the fields you want to change. To unset the budget, specify null as the value. To
+        update the budget, you must specify the complete budget configuration. To clear invoice_notes
+        or net_terms (to use organization defaults), specify null as the value.'
+      parameters:
+      - name: client_id
+        in: path
+        description: Client ID
+        required: true
+        schema:
+          type: integer
+          format: int32
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              type: object
+              description: Request payload. See the live Hubstaff API reference (https://api.hubstaff.com/v2/docs)
+                for the full schema.
+      responses:
+        '200':
+          description: A client
+        '400':
+          description: Invalid parameters
+        '401':
+          description: Unauthorized
+        '403':
+          description: API access is only for organizations on an active plan
+        '404':
+          description: Could not find record
+        '429':
+          description: Rate limit exceeded
+  /v2/organizations/{organization_id}/client_invoices:
+    get:
+      operationId: getV2OrganizationsOrganizationIdClientInvoices
+      tags:
+      - Client Invoices
+      summary: List organization client invoices
+      description: 'Returns invoices sent to clients for the given organization.
+
+
+        Results can be filtered by client_ids[], issue_date[start]/[stop], and status. Use include_line_items=true
+        to include invoice line items.'
+      parameters:
+      - name: organization_id
+        in: path
+        required: true
+        schema:
+          type: integer
+          format: int32
+      - name: page_start_id
+        in: query
+        description: The page start ID.
+        schema:
+          type: integer
+          format: int32
+          default: 0
+      - name: page_limit
+        in: query
+        description: The default page size
+        schema:
+          type: integer
+          format: int32
+          default: null
+      - name: client_ids
+        in: query
+        description: List of client IDs
+        schema:
+          type: array
+          items:
+            type: integer
+            format: int32
+      - name: issue_date[start]
+        in: query
+        description: Start date (ISO 8601)
+        schema:
+          type: string
+          format: date
+      - name: issue_date[stop]
+        in: query
+        description: Stop date (ISO 8601)
+        schema:
+          type: string
+          format: date
+      - name: status
+        in: query
+        description: Invoice status
+        schema:
+          type: string
+          enum:
+          - draft
+          - open
+          - closed
+      - name: include_line_items
+        in: query
+        description: Include invoice line items
+        schema:
+          type: boolean
+          default: false
+      - name: include
+        in: query
+        description: Specify related data to side load.
+        schema:
+          type: array
+          items:
+            type: string
+            enum:
+            - users
+            - clients
+            - projects
+            - tasks
+      responses:
+        '200':
+          description: A list of client invoices
+        '400':
+          description: Invalid parameters
+        '401':
+          description: Unauthorized
+        '403':
+          description: API access is only for organizations on an active plan
+        '404':
+          description: Could not find record
+        '429':
+          description: Rate limit exceeded
+  /v2/organizations/{organization_id}/team_payments:
+    get:
+      operationId: getV2OrganizationsOrganizationIdTeamPayments
+      tags:
+      - Team Payments
+      summary: List organization team payments
+      description: 'Returns a collection of team payments (payroll disbursements) for the given organization.
+
+
+        Results can be filtered by created[start]/[stop], user_ids[], and project_ids[].
+
+
+        Note: If date filters are not provided, defaults to the last 3 years. Earliest date is 3 years
+        ago.'
+      parameters:
+      - name: organization_id
+        in: path
+        required: true
+        schema:
+          type: integer
+          format: int32
+      - name: page_start_id
+        in: query
+        description: The page start ID.
+        schema:
+          type: integer
+          format: int32
+          default: 0
+      - name: page_limit
+        in: query
+        description: The default page size
+        schema:
+          type: integer
+          format: int32
+          default: null
+      - name: created[start]
+        in: query
+        description: Start time (ISO 8601)
+        schema:
+          type: string
+          format: date-time
+      - name: created[stop]
+        in: query
+        description: Stop time (ISO 8601, Exclusive)
+        schema:
+          type: string
+          format: date-time
+      - name: user_ids
+        in: query
+        description: List of user IDs
+        schema:
+          type: array
+          items:
+            type: integer
+            format: int32
+      - name: project_ids
+        in: query
+        description: List of project IDs
+        schema:
+          type: array
+          items:
+            type: integer
+            format: int32
+      - name: include
+        in: query
+        description: Specify related data to side load.
+        schema:
+          type: array
+          items:
+            type: string
+            enum:
+            - users
+            - projects
+      responses:
+        '200':
+          description: A list of team payments
+        '400':
+          description: Invalid parameters
+        '401':
+          description: Unauthorized
+        '403':
+          description: API access is only for organizations on an active plan
+        '404':
+          description: Could not find record
+        '429':
+          description: Rate limit exceeded
+  /v2/organizations/{organization_id}/time_off_requests:
+    get:
+      operationId: getV2OrganizationsOrganizationIdTimeOffRequests
+      tags:
+      - Time Off
+      summary: List organization time off requests
+      description: 'Returns a collection of time off requests for the given organization.
+
+
+        Results can be filtered by created[start]/[stop], starts_at[start]/[stop], approved_at[start]/[stop],
+        and user_ids[].
+
+
+        Use include[] to sideload related users and time_off_policies.'
+      parameters:
+      - name: organization_id
+        in: path
+        required: true
+        schema:
+          type: integer
+          format: int32
+      - name: page_start_id
+        in: query
+        description: The page start ID.
+        schema:
+          type: integer
+          format: int32
+          default: 0
+      - name: page_limit
+        in: query
+        description: The default page size
+        schema:
+          type: integer
+          format: int32
+          default: null
+      - name: created[start]
+        in: query
+        description: Start time (ISO 8601)
+        schema:
+          type: string
+          format: date-time
+      - name: created[stop]
+        in: query
+        description: Stop time (ISO 8601, Exclusive)
+        schema:
+          type: string
+          format: date-time
+      - name: starts_at[start]
+        in: query
+        description: Start time (ISO 8601)
+        schema:
+          type: string
+          format: date-time
+      - name: starts_at[stop]
+        in: query
+        description: Stop time (ISO 8601, Exclusive)
+        schema:
+          type: string
+          format: date-time
+      - name: approved_at[start]
+        in: query
+        description: Approved start time (ISO 8601)
+        schema:
+          type: string
+          format: date-time
+      - name: approved_at[stop]
+        in: query
+        description: Approved stop time (ISO 8601, Exclusive)
+        schema:
+          type: string
+          format: date-time
+      - name: user_ids
+        in: query
+        description: List of user IDs
+        schema:
+          type: array
+          items:
+            type: integer
+            format: int32
+      - name: include
+        in: query
+        description: Specify related data to side load.
+        schema:
+          type: array
+          items:
+            type: string
+            enum:
+            - users
+            - time_off_policies
+      responses:
+        '200':
+          description: A list of time off requests
+        '400':
+          description: Invalid parameters
+        '401':
+          description: Unauthorized
+        '403':
+          description: API access is only for organizations on an active plan
+        '404':
+          description: Could not find record
+        '429':
+          description: Rate limit exceeded
+    post:
+      operationId: postV2OrganizationsOrganizationIdTimeOffRequests
+      tags:
+      - Time Off
+      summary: Create time off request
+      description: 'Creates a new time off request.
+
+
+        Returns the created time off request with a balance_preview showing the policy balance impact.
+
+
+        time_off_request_days must include one entry for every date from starts_at to stops_at. Each entry
+        requires a date and amount_used in seconds (typically 28800 for an 8-hour day). Set amount_used
+        to 0 for excluded weekend or holiday days.
+
+
+        Set require_no_shift_overlap to true to reject the request if it overlaps with scheduled attendance
+        shifts.
+
+
+        remove_shifts deletes overlapping attendance shifts only when the policy does not require approval
+        (the request is auto-approved on creation). When the policy requires approval, this field is ignored
+        — use the status endpoint to remove shifts at approval time instead.
+
+
+        Note: starts_at and stops_at are interpreted as wall-clock times in the target user''s configured
+        timezone (any timezone offset in the value is ignored). When all_day is true, times are normalized
+        to 09:00–17:00.'
+      parameters:
+      - name: organization_id
+        in: path
+        required: true
+        schema:
+          type: integer
+          format: int32
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              type: object
+              description: Request payload. See the live Hubstaff API reference (https://api.hubstaff.com/v2/docs)
+                for the full schema.
+      responses:
+        '201':
+          description: A time off request
+        '400':
+          description: Invalid parameters
+        '401':
+          description: Unauthorized
+        '403':
+          description: API access is only for organizations on an active plan
+        '404':
+          description: Could not find record
+        '429':
+          description: Rate limit exceeded
+  /v2/time_off_requests/{time_off_request_id}:
+    get:
+      operationId: getV2TimeOffRequestsTimeOffRequestId
+      tags:
+      - Time Off
+      summary: Get time off request
+      description: 'Returns the time off request with the given ID.
+
+
+        Includes time_off_request_days with per-day breakdown of dates, amounts, and holiday/paid status.
+
+
+        Also includes balance_preview showing the policy balance impact.'
+      parameters:
+      - name: time_off_request_id
+        in: path
+        description: Time off request ID
+        required: true
+        schema:
+          type: integer
+          format: int32
+      responses:
+        '200':
+          description: A time off request
+        '400':
+          description: Invalid parameters
+        '401':
+          description: Unauthorized
+        '403':
+          description: API access is only for organizations on an active plan
+        '404':
+          description: Could not find record
+        '429':
+          description: Rate limit exceeded
+    put:
+      operationId: putV2TimeOffRequestsTimeOffRequestId
+      tags:
+      - Time Off
+      summary: Update time off request
+      description: 'Updates a time off request''s details (dates, message, days, policy).
+
+
+        This is a full replacement — all fields must be provided, including time_off_request_days with
+        one entry per date (amount_used in seconds, typically 28800 for an 8-hour day).
+
+
+        Approved, paid, or partially paid requests cannot be edited.
+
+
+        If the request was denied, updating it automatically resubmits it (status → submitted).
+
+
+        If the policy does not require approval, the request is auto-approved on update.
+
+
+        Set require_no_shift_overlap to true to reject the update if it overlaps with scheduled attendance
+        shifts.
+
+
+        remove_shifts deletes overlapping attendance shifts only when the policy does not require approval
+        (the request is auto-approved on update). When the policy requires approval, this field is ignored
+        — use the status endpoint to remove shifts at approval time instead.
+
+
+        Note: starts_at and stops_at are interpreted as wall-clock times in the user''s configured timezone
+        (any timezone offset in the value is ignored). When all_day is true, times are normalized to 09:00–17:00.'
+      parameters:
+      - name: time_off_request_id
+        in: path
+        description: Time off request ID
+        required: true
+        schema:
+          type: integer
+          format: int32
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              type: object
+              description: Request payload. See the live Hubstaff API reference (https://api.hubstaff.com/v2/docs)
+                for the full schema.
+      responses:
+        '200':
+          description: The updated time off request
+        '400':
+          description: Invalid parameters
+        '401':
+          description: Unauthorized
+        '403':
+          description: API access is only for organizations on an active plan
+        '404':
+          description: Could not find record
+        '429':
+          description: Rate limit exceeded
+    delete:
+      operationId: deleteV2TimeOffRequestsTimeOffRequestId
+      tags:
+      - Time Off
+      summary: Delete time off request
+      description: 'Deletes the time off request.
+
+
+        Approved or paid time off requests cannot be deleted.'
+      parameters:
+      - name: time_off_request_id
+        in: path
+        description: Time off request ID
+        required: true
+        schema:
+          type: integer
+          format: int32
+      responses:
+        '204':
+          description: Deletion successful
+        '400':
+          description: Invalid parameters
+        '401':
+          description: Unauthorized
+        '403':
+          description: API access is only for organizations on an active plan
+        '404':
+          description: Could not find record
+        '429':
+          description: Rate limit exceeded
+  /v2/organizations/{organization_id}/time_off_policies:
+    get:
+      operationId: getV2OrganizationsOrganizationIdTimeOffPolicies
+      tags:
+      - Time Off
+      summary: List organization time off policies
+      description: Returns a collection of time off policies for the given organization.
+      parameters:
+      - name: organization_id
+        in: path
+        required: true
+        schema:
+          type: integer
+          format: int32
+      - name: page_start_id
+        in: query
+        description: The page start ID.
+        schema:
+          type: integer
+          format: int32
+          default: 0
+      - name: page_limit
+        in: query
+        description: The default page size
+        schema:
+          type: integer
+          format: int32
+          default: null
+      - name: status
+        in: query
+        description: Policy status
+        schema:
+          type: string
+          enum:
+          - active
+          - archived
+          - all
+          default: active
+      responses:
+        '200':
+          description: A list of time off policies
+        '400':
+          description: Invalid parameters
+        '401':
+          description: Unauthorized
+        '403':
+          description: API access is only for organizations on an active plan
+        '404':
+          description: Could not find record
+        '429':
+          description: Rate limit exceeded
+  /v2/organizations/{organization_id}/time_off_balances:
+    get:
+      operationId: getV2OrganizationsOrganizationIdTimeOffBalances
+      tags:
+      - Time Off
+      summary: List organization time off balances
+      description: 'Returns time off balances for the given organization.
+
+
+        Each entry represents one user''s balance for one time off policy in the requested year.
+
+
+        Use `year` to query balances for a specific year (defaults to current year in the organization''s
+        timezone).
+
+
+        Use `include[]` to sideload related users and time_off_policies.'
+      parameters:
+      - name: organization_id
+        in: path
+        required: true
+        schema:
+          type: integer
+          format: int32
+      - name: page_start_id
+        in: query
+        description: The page start ID.
+        schema:
+          type: integer
+          format: int32
+          default: 0
+      - name: page_limit
+        in: query
+        description: The default page size
+        schema:
+          type: integer
+          format: int32
+          default: null
+      - name: search
+        in: query
+        description: User name search
+        schema:
+          type: string
+      - name: user_ids
+        in: query
+        description: Filter by user IDs
+        schema:
+          type: array
+          items:
+            type: integer
+            format: int32
+      - name: time_off_policy_ids
+        in: query
+        description: Filter by time off policy IDs
+        schema:
+          type: array
+          items:
+            type: integer
+            format: int32
+      - name: year
+        in: query
+        description: 'Balance year (default: current year in organization timezone)'
+        schema:
+          type: integer
+          format: int32
+      - name: include
+        in: query
+        description: Specify related data to side load.
+        schema:
+          type: array
+          items:
+            type: string
+            enum:
+            - users
+            - time_off_policies
+      responses:
+        '200':
+          description: A list of time off balances
+        '400':
+          description: Invalid parameters
+        '401':
+          description: Unauthorized
+        '403':
+          description: API access is only for organizations on an active plan
+        '404':
+          description: Could not find record
+        '429':
+          description: Rate limit exceeded
+  /v2/organizations/{organization_id}/attendance_schedules:
+    get:
+      operationId: getV2OrganizationsOrganizationIdAttendanceSchedules
+      tags:
+      - Attendance
+      summary: List organization attendance schedules
+      description: 'Returns a collection of attendance schedules (expected work shifts) for the given
+        organization.
+
+
+        Use date[start] and date[stop] to filter schedules that cover the specified date range. Repeating
+        schedules are included if any occurrence falls within the range.'
+      parameters:
+      - name: organization_id
+        in: path
+        required: true
+        schema:
+          type: integer
+          format: int32
+      - name: page_start_id
+        in: query
+        description: The page start ID.
+        schema:
+          type: integer
+          format: int32
+          default: 0
+      - name: page_limit
+        in: query
+        description: The default page size
+        schema:
+          type: integer
+          format: int32
+          default: null
+      - name: date[start]
+        in: query
+        description: Start date (ISO 8601)
+        required: true
+        schema:
+          type: string
+          format: date
+      - name: date[stop]
+        in: query
+        description: Stop date (ISO 8601, Inclusive)
+        required: true
+        schema:
+          type: string
+          format: date
+      - name: include
+        in: query
+        description: Specify related data to side load.
+        schema:
+          type: array
+          items:
+            type: string
+            enum:
+            - users
+      responses:
+        '200':
+          description: A list of attendance schedules
+        '400':
+          description: Invalid parameters
+        '401':
+          description: Unauthorized
+        '403':
+          description: API access is only for organizations on an active plan
+        '404':
+          description: Could not find record
+        '429':
+          description: Rate limit exceeded
+    post:
+      operationId: postV2OrganizationsOrganizationIdAttendanceSchedules
+      tags:
+      - Attendance
+      summary: Create attendance schedule
+      description: 'Creates an expected work shift for a user.
+
+
+        Returns the created attendance schedule.
+
+
+        For repeating schedules, specify repeat_schedule (weekly/bi_weekly) and weekdays. Use repeat_until
+        to set an end date. Use excluded_dates to skip specific dates.'
+      parameters:
+      - name: organization_id
+        in: path
+        required: true
+        schema:
+          type: integer
+          format: int32
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              type: object
+              description: Request payload. See the live Hubstaff API reference (https://api.hubstaff.com/v2/docs)
+                for the full schema.
+      responses:
+        '200':
+          description: attendance schedule created
+        '400':
+          description: Invalid parameters
+        '401':
+          description: Unauthorized
+        '403':
+          description: API access is only for organizations on an active plan
+        '404':
+          description: Could not find record
+        '429':
+          description: Rate limit exceeded
+  /v2/organizations/{organization_id}/attendance_shifts:
+    get:
+      operationId: getV2OrganizationsOrganizationIdAttendanceShifts
+      tags:
+      - Attendance
+      summary: List organization attendance shifts
+      description: 'Returns actual work shifts (clock-in/clock-out records) for the given organization.
+
+
+        Use date[start] and date[stop] to filter shifts that fall within the specified date range.
+
+
+        Note: The maximum allowed difference between date[start] and date[stop] is 31 days.
+
+        Data is only available within organization’s retention period.
+
+        If date[start] falls outside this window, the request will fail.'
+      parameters:
+      - name: organization_id
+        in: path
+        required: true
+        schema:
+          type: integer
+          format: int32
+      - name: page_start_id
+        in: query
+        description: The page start ID.
+        schema:
+          type: integer
+          format: int32
+          default: 0
+      - name: page_limit
+        in: query
+        description: The default page size
+        schema:
+          type: integer
+          format: int32
+          default: null
+      - name: date[start]
+        in: query
+        description: Start date (ISO 8601)
+        required: true
+        schema:
+          type: string
+          format: date
+      - name: date[stop]
+        in: query
+        description: Stop date (ISO 8601, Inclusive)
+        required: true
+        schema:
+          type: string
+          format: date
+      - name: include
+        in: query
+        description: Specify related data to side load.
+        schema:
+          type: array
+          items:
+            type: string
+            enum:
+            - users
+            - attendance_schedules
+      responses:
+        '200':
+          description: A list of attendance shifts
+        '400':
+          description: Invalid parameters
+        '401':
+          description: Unauthorized
+        '403':
+          description: API access is only for organizations on an active plan
+        '404':
+          description: Could not find record
+        '429':
+          description: Rate limit exceeded
+  /v2/organizations/{organization_id}/holidays:
+    get:
+      operationId: getV2OrganizationsOrganizationIdHolidays
+      tags:
+      - Attendance
+      summary: List organization holidays
+      description: 'Returns a collection of holidays for the given organization.
+
+
+        Results can be filtered by created[start]/[stop] and date[start]/[stop].'
+      parameters:
+      - name: organization_id
+        in: path
+        required: true
+        schema:
+          type: integer
+          format: int32
+      - name: page_start_id
+        in: query
+        description: The page start ID.
+        schema:
+          type: integer
+          format: int32
+          default: 0
+      - name: page_limit
+        in: query
+        description: The default page size
+        schema:
+          type: integer
+          format: int32
+          default: null
+      - name: created[start]
+        in: query
+        description: Start time (ISO 8601)
+        schema:
+          type: string
+          format: date-time
+      - name: created[stop]
+        in: query
+        description: Stop time (ISO 8601, Exclusive)
+        schema:
+          type: string
+          format: date-time
+      - name: date[start]
+        in: query
+        description: Start date (ISO 8601)
+        schema:
+          type: string
+          format: date
+      - name: date[stop]
+        in: query
+        description: Stop date (ISO 8601, Inclusive)
+        schema:
+          type: string
+          format: date
+      responses:
+        '200':
+          description: A list of holidays
+        '400':
+          description: Invalid parameters
+        '401':
+          description: Unauthorized
+        '403':
+          description: API access is only for organizations on an active plan
+        '404':
+          description: Could not find record
+        '429':
+          description: Rate limit exceeded
+  /v2/organizations/{organization_id}/screenshots:
+    get:
+      operationId: getV2OrganizationsOrganizationIdScreenshots
+      tags:
+      - Screenshots
+      summary: List organization screenshots
+      description: 'Returns a collection of screenshots for the given organization.
+
+
+        Results can be filtered by user_ids[], project_ids[], and time_slot[start]/[stop].
+
+
+        Note: Date range limit is 7 days. Earliest date is 6 months ago.'
+      parameters:
+      - name: organization_id
+        in: path
+        required: true
+        schema:
+          type: integer
+          format: int32
+      - name: page_start_id
+        in: query
+        description: The page start ID.
+        schema:
+          type: integer
+          format: int32
+          default: 0
+      - name: page_limit
+        in: query
+        description: The default page size
+        schema:
+          type: integer
+          format: int32
+          default: null
+      - name: time_slot[start]
+        in: query
+        description: Start time (ISO 8601)
+        required: true
+        schema:
+          type: string
+          format: date-time
+      - name: time_slot[stop]
+        in: query
+        description: Stop time (ISO 8601, Exclusive)
+        required: true
+        schema:
+          type: string
+          format: date-time
+      - name: user_ids
+        in: query
+        description: List of user IDs
+        schema:
+          type: array
+          items:
+            type: integer
+            format: int32
+      - name: project_ids
+        in: query
+        description: List of project IDs
+        schema:
+          type: array
+          items:
+            type: integer
+            format: int32
+      - name: include
+        in: query
+        description: Specify related data to side load.
+        schema:
+          type: array
+          items:
+            type: string
+            enum:
+            - users
+            - projects
+      responses:
+        '200':
+          description: A list of screenshots
+        '400':
+          description: Invalid parameters
+        '401':
+          description: Unauthorized
+        '403':
+          description: API access is only for organizations on an active plan
+        '404':
+          description: Could not find record
+        '429':
+          description: Rate limit exceeded
+  /v2/organizations/{organization_id}/screenshots/{screenshot_id}:
+    get:
+      operationId: getV2OrganizationsOrganizationIdScreenshotsScreenshotId
+      tags:
+      - Screenshots
+      summary: Get screenshot
+      description: Returns the screenshot with the given ID.
+      parameters:
+      - name: organization_id
+        in: path
+        required: true
+        schema:
+          type: integer
+          format: int32
+      - name: screenshot_id
+        in: path
+        description: Screenshot ID
+        required: true
+        schema:
+          type: integer
+          format: int32
+      responses:
+        '200':
+          description: Screenshot found
+        '404':
+          description: Screenshot not found
+        '400':
+          description: Invalid parameters
+        '401':
+          description: Unauthorized
+        '403':
+          description: API access is only for organizations on an active plan
+        '429':
+          description: Rate limit exceeded
+  /v2/organizations/{organization_id}/tool_usages:
+    get:
+      operationId: getV2OrganizationsOrganizationIdToolUsages
+      tags:
+      - App & URL Tracking
+      summary: List organization tool usages
+      description: 'Returns a collection of tool usages (productivity tool usage) for the given organization.
+
+
+        Results can be filtered by time_slot[start]/[stop], user_ids[], task_ids[], project_ids[], and
+        tool_type.
+
+
+        The preferred endpoints to fetch tool usage data are the daily endpoints.
+
+
+        Requires Owner or Organization Manager role (with view others data permission).
+
+
+        Note: Date range limit is 7 days. Earliest date is 1 month ago.'
+      parameters:
+      - name: organization_id
+        in: path
+        required: true
+        schema:
+          type: integer
+          format: int32
+      - name: page_start_id
+        in: query
+        description: The page start ID.
+        schema:
+          type: integer
+          format: int32
+          default: 0
+      - name: page_limit
+        in: query
+        description: The default page size
+        schema:
+          type: integer
+          format: int32
+          default: null
+      - name: time_slot[start]
+        in: query
+        description: Start time (ISO 8601)
+        required: true
+        schema:
+          type: string
+          format: date-time
+      - name: time_slot[stop]
+        in: query
+        description: Stop time (ISO 8601, Exclusive)
+        required: true
+        schema:
+          type: string
+          format: date-time
+      - name: user_ids
+        in: query
+        description: List of user IDs
+        schema:
+          type: array
+          items:
+            type: integer
+            format: int32
+      - name: task_ids
+        in: query
+        description: List of task IDs
+        schema:
+          type: array
+          items:
+            type: integer
+            format: int32
+      - name: project_ids
+        in: query
+        description: List of project IDs
+        schema:
+          type: array
+          items:
+            type: integer
+            format: int32
+      - name: tool_type
+        in: query
+        description: Filter by tool type (application or url)
+        schema:
+          type: string
+          enum:
+          - application
+          - url
+      - name: include
+        in: query
+        description: Specify related data to side load.
+        schema:
+          type: array
+          items:
+            type: string
+            enum:
+            - users
+            - projects
+            - tasks
+      responses:
+        '200':
+          description: A list of tool usages
+        '400':
+          description: Invalid parameters
+        '401':
+          description: Unauthorized
+        '403':
+          description: API access is only for organizations on an active plan
+        '404':
+          description: Could not find record
+        '429':
+          description: Rate limit exceeded
+  /v2/organizations/{organization_id}/tool_usages/daily:
+    get:
+      operationId: getV2OrganizationsOrganizationIdToolUsagesDaily
+      tags:
+      - App & URL Tracking
+      summary: List organization daily tool usages
+      description: 'Returns daily aggregated time spent using productivity tools (apps and websites categorized
+        by Hubstaff).
+
+
+        Results can be filtered by user_ids[], task_ids[], project_ids[], tool_type, and date[start]/[stop].
+
+
+        Requires Owner or Organization Manager role (with view others data permission).
+
+
+        Note: Date range limit is 14 days. Earliest date is 1 month ago.'
+      parameters:
+      - name: organization_id
+        in: path
+        required: true
+        schema:
+          type: integer
+          format: int32
+      - name: page_start_id
+        in: query
+        description: The page start ID.
+        schema:
+          type: integer
+          format: int32
+          default: 0
+      - name: page_limit
+        in: query
+        description: The default page size
+        schema:
+          type: integer
+          format: int32
+          default: null
+      - name: date[start]
+        in: query
+        description: Start date (ISO 8601)
+        required: true
+        schema:
+          type: string
+          format: date
+      - name: date[stop]
+        in: query
+        description: Stop date (ISO 8601, Inclusive)
+        required: true
+        schema:
+          type: string
+          format: date
+      - name: user_ids
+        in: query
+        description: List of user IDs
+        schema:
+          type: array
+          items:
+            type: integer
+            format: int32
+      - name: task_ids
+        in: query
+        description: List of task IDs
+        schema:
+          type: array
+          items:
+            type: integer
+            format: int32
+      - name: project_ids
+        in: query
+        description: List of project IDs
+        schema:
+          type: array
+          items:
+            type: integer
+            format: int32
+      - name: tool_type
+        in: query
+        description: Filter by tool type (application or url)
+        schema:
+          type: string
+          enum:
+          - application
+          - url
+      - name: include
+        in: query
+        description: Specify related data to side load.
+        schema:
+          type: array
+          items:
+            type: string
+            enum:
+            - users
+            - projects
+            - tasks
+      responses:
+        '200':
+          description: A list of daily tool usages
+        '400':
+          description: Invalid parameters
+        '401':
+          description: Unauthorized
+        '403':
+          description: API access is only for organizations on an active plan
+        '404':
+          description: Could not find record
+        '429':
+          description: Rate limit exceeded
+  /v2/organizations/{organization_id}/app_and_url_tracking_settings:
+    get:
+      operationId: getV2OrganizationsOrganizationIdAppAndUrlTrackingSettings
+      tags:
+      - App & URL Tracking
+      summary: List member Track Apps & URLs settings
+      description: 'Returns the Track Apps & URLs setting for the organization''s members.
+
+
+        Results can be filtered to specific members with `user_ids`. When no filter is given,
+
+        all members are returned.
+
+
+        Only organization Owners and Managers may use this endpoint.'
+      parameters:
+      - name: organization_id
+        in: path
+        required: true
+        schema:
+          type: integer
+          format: int32
+      - name: page_start_id
+        in: query
+        description: The page start ID.
+        schema:
+          type: integer
+          format: int32
+          default: 0
+      - name: page_limit
+        in: query
+        description: The default page size
+        schema:
+          type: integer
+          format: int32
+          default: null
+      - name: user_ids
+        in: query
+        description: List of user IDs
+        schema:
+          type: array
+          items:
+            type: integer
+            format: int32
+      - name: include
+        in: query
+        description: Specify related data to side load.
+        schema:
+          type: array
+          items:
+            type: string
+            enum:
+            - users
+      responses:
+        '200':
+          description: A list of member Track Apps & URLs settings
+        '400':
+          description: Invalid parameters
+        '401':
+          description: Unauthorized
+        '403':
+          description: API access is only for organizations on an active plan
+        '404':
+          description: Could not find record
+        '429':
+          description: Rate limit exceeded
+    put:
+      operationId: putV2OrganizationsOrganizationIdAppAndUrlTrackingSettings
+      tags:
+      - App & URL Tracking
+      summary: Update member Track Apps & URLs settings
+      description: 'Sets the Track Apps & URLs setting for the organization''s members.
+
+
+        Allowed values: `off`, `apps`, `apps_and_urls`. Available only to organizations whose plan
+
+        includes Apps & URLs tracking.
+
+
+        Provide `user_ids` to update specific members. To change the organization-wide default
+
+        instead — which cascades to every current and future member — set `apply_to_all_members`
+
+        to `true` and omit `user_ids`. The organization-wide change is cautionary and irreversible
+
+        in bulk: the response reports `scope: "global"`, and for large organizations it is applied
+
+        in the background.
+
+
+        `user_ids` and `apply_to_all_members` are mutually exclusive, and exactly one of them must
+
+        be given (this prevents an accidental org-wide change when filters are omitted). When
+
+        targeting `user_ids`, omit `apply_to_all_members` entirely — sending it as `false` is
+
+        rejected.
+
+
+        Only organization Owners and Managers may use this endpoint.'
+      parameters:
+      - name: organization_id
+        in: path
+        required: true
+        schema:
+          type: integer
+          format: int32
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              type: object
+              description: Request payload. See the live Hubstaff API reference (https://api.hubstaff.com/v2/docs)
+                for the full schema.
+      responses:
+        '200':
+          description: Update result
+        '400':
+          description: Invalid parameters
+        '401':
+          description: Unauthorized
+        '403':
+          description: API access is only for organizations on an active plan
+        '404':
+          description: Could not find record
+        '429':
+          description: Rate limit exceeded
+  /v2/organizations/{organization_id}/webhooks:
+    post:
+      operationId: postV2OrganizationsOrganizationIdWebhooks
+      tags:
+      - Webhooks
+      summary: Create organization webhook
+      description: 'Creates a new webhook subscription for the organization. After creation, Hubstaff
+        will send a POST request to your `target_url` with an empty body and an `X-Hook-Secret` header.
+
+
+        Your endpoint must respond with HTTP 200 and echo the same `X-Hook-Secret` header to verify ownership.
+
+
+        Store the secret value - you''ll need it to activate the webhook.'
+      parameters:
+      - name: organization_id
+        in: path
+        required: true
+        schema:
+          type: integer
+          format: int32
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              type: object
+              description: Request payload. See the live Hubstaff API reference (https://api.hubstaff.com/v2/docs)
+                for the full schema.
+      responses:
+        '201':
+          description: Create organization webhook
+        '429':
+          description: Rate limit exceeded (1,000 requests per hour per application).
+  /v2/webhooks/{webhook_id}:
+    get:
+      operationId: getV2WebhooksWebhookId
+      tags:
+      - Webhooks
+      summary: Get webhook
+      description: Returns the details of a specific webhook including its status, events, and target
+        URL.
+      parameters:
+      - name: webhook_id
+        in: path
+        description: Webhook ID
+        required: true
+        schema:
+          type: string
+      responses:
+        '200':
+          description: Get webhook
+        '429':
+          description: Rate limit exceeded (1,000 requests per hour per application).
+    delete:
+      operationId: deleteV2WebhooksWebhookId
+      tags:
+      - Webhooks
+      summary: Delete webhook
+      description: Permanently deletes a webhook. The webhook will stop receiving events immediately.
+      parameters:
+      - name: webhook_id
+        in: path
+        description: Webhook ID
+        required: true
+        schema:
+          type: string
+      responses:
+        '204':
+          description: Delete webhook
+        '429':
+          description: Rate limit exceeded (1,000 requests per hour per application).
+  /v2/webhooks/{webhook_id}/activate:
+    post:
+      operationId: postV2WebhooksWebhookIdActivate
+      tags:
+      - Webhooks
+      summary: Activate webhook
+      description: 'Activates a webhook after endpoint verification.
+
+
+        You must include the `X-Hook-Secret` header with the secret value you received during the verification
+        step.
+
+
+        Once activated, the webhook will start receiving events.'
+      parameters:
+      - name: webhook_id
+        in: path
+        description: Webhook ID
+        required: true
+        schema:
+          type: string
+      responses:
+        '201':
+          description: Activate webhook
+        '429':
+          description: Rate limit exceeded (1,000 requests per hour per application).
+components:
+  securitySchemes:
+    oauth2:
+      type: oauth2
+      description: Hubstaff Account OpenID Connect / OAuth 2.0 authentication. Scopes are hubstaff:read
+        and hubstaff:write.
+      flows:
+        authorizationCode:
+          authorizationUrl: https://account.hubstaff.com/authorizations/new
+          tokenUrl: https://account.hubstaff.com/access_tokens
+          scopes:
+            hubstaff:read: Read access to the Hubstaff API
+            hubstaff:write: Write access to the Hubstaff API
+    personalAccessToken:
+      type: http
+      scheme: bearer
+      description: Access token obtained by exchanging a personal access token (created at https://developer.hubstaff.com/personal_access_tokens)
+        via the OAuth 2.0 refresh token grant at https://account.hubstaff.com/access_tokens. PATs expire
+        after 90 days.
