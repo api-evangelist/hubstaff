@@ -1,0 +1,328 @@
+{
+  "opencollection": "1.0.0",
+  "info": {
+    "name": "Hubstaff Activities Members API",
+    "version": "2.0"
+  },
+  "request": {
+    "auth": {
+      "type": "oauth2",
+      "flow": "authorization_code",
+      "authorizationUrl": "https://account.hubstaff.com/authorizations/new",
+      "accessTokenUrl": "https://account.hubstaff.com/access_tokens",
+      "credentials": {
+        "clientId": "{{clientId}}",
+        "clientSecret": "{{clientSecret}}"
+      }
+    }
+  },
+  "items": [
+    {
+      "info": {
+        "name": "Members",
+        "type": "folder"
+      },
+      "items": [
+        {
+          "info": {
+            "name": "List organization members",
+            "type": "http"
+          },
+          "http": {
+            "method": "GET",
+            "url": "https://api.hubstaff.com/v2/organizations/:organization_id/members",
+            "params": [
+              {
+                "name": "organization_id",
+                "value": "",
+                "type": "path"
+              },
+              {
+                "name": "page_start_id",
+                "value": "",
+                "type": "query",
+                "description": "The page start ID."
+              },
+              {
+                "name": "page_limit",
+                "value": "",
+                "type": "query",
+                "description": "The default page size"
+              },
+              {
+                "name": "search[email]",
+                "value": "",
+                "type": "query",
+                "description": "An email to search for members"
+              },
+              {
+                "name": "search[name]",
+                "value": "",
+                "type": "query",
+                "description": "A name to search for members"
+              },
+              {
+                "name": "include_removed",
+                "value": "",
+                "type": "query",
+                "description": "Include members that were removed from the organization"
+              },
+              {
+                "name": "include_profile",
+                "value": "",
+                "type": "query",
+                "description": "Include member profile information"
+              },
+              {
+                "name": "include_projects",
+                "value": "",
+                "type": "query",
+                "description": "Include project memberships for this member"
+              },
+              {
+                "name": "project_statuses",
+                "value": "",
+                "type": "query",
+                "description": "Filter projects by status when include_projects=true"
+              },
+              {
+                "name": "include_limits",
+                "value": "",
+                "type": "query",
+                "description": "Include member limits information"
+              },
+              {
+                "name": "membership_roles",
+                "value": "",
+                "type": "query",
+                "description": "Search by membership role"
+              },
+              {
+                "name": "created_at[start]",
+                "value": "",
+                "type": "query",
+                "description": "Start date for created_at filter (inclusive)"
+              },
+              {
+                "name": "created_at[stop]",
+                "value": "",
+                "type": "query",
+                "description": "End date for created_at filter (exclusive)"
+              },
+              {
+                "name": "updated_at[start]",
+                "value": "",
+                "type": "query",
+                "description": "Start date for updated_at filter (inclusive)"
+              },
+              {
+                "name": "updated_at[stop]",
+                "value": "",
+                "type": "query",
+                "description": "End date for updated_at filter (exclusive)"
+              },
+              {
+                "name": "user_ids",
+                "value": "",
+                "type": "query",
+                "description": "List of user IDs"
+              },
+              {
+                "name": "include",
+                "value": "",
+                "type": "query",
+                "description": "Specify related data to side load."
+              }
+            ]
+          },
+          "docs": "Returns a collection of members for the given organization.\n\nResults can be filtered by search, user IDs, membership role, and date range.\n\n*trackable* - Whether the user can track time.  This is one of 3 values\n- *false* -- meaning tracking has been explicitly disabled for this user regardless of their role\n- *true* -- meaning they are allowed to track time\n- *viewer* -- meaning they are allowed to track time, however as they are only a project viewer (or no\n  memberships) they implicitly can n"
+        },
+        {
+          "info": {
+            "name": "Create organization member",
+            "type": "http"
+          },
+          "http": {
+            "method": "POST",
+            "url": "https://api.hubstaff.com/v2/organizations/:organization_id/members",
+            "params": [
+              {
+                "name": "organization_id",
+                "value": "",
+                "type": "path"
+              }
+            ],
+            "body": {
+              "type": "json",
+              "data": "{}"
+            }
+          },
+          "docs": "Creates a new user and adds them to the organization as a member.\n\nReturns the created member.\n\nAvailable roles:\n- organization_manager - Organization manager\n- project_manager - Project manager\n- project_user - Project user\n- project_viewer - Project viewer\n\nAvailable pay periods:\n- none - Disables automatic payments\n- weekly - Pay users weekly\n- twice_per_month - Pay users twice a month\n- biweekly - Pay users bi-weekly\n- monthly - Pay users monthly"
+        },
+        {
+          "info": {
+            "name": "Update organization members",
+            "type": "http"
+          },
+          "http": {
+            "method": "PUT",
+            "url": "https://api.hubstaff.com/v2/organizations/:organization_id/update_members",
+            "params": [
+              {
+                "name": "organization_id",
+                "value": "",
+                "type": "path",
+                "description": "Organization ID"
+              }
+            ],
+            "body": {
+              "type": "json",
+              "data": "{}"
+            }
+          },
+          "docs": "Updates organization members.\n\nReturns {success: true} on success.\n\nOnly pass in the members you want to change.\n\nAvailable roles:\n- user - Member role determined by project membership\n- manager - Organization manager\n- owner - Organization owner\n- remove - Removes user from organization (and all projects/teams)\n\nLimits: Specify full limits config. Missing limits will be removed. Empty \"limits\" removes all limits.\n\nProjects: Specify project memberships to change. Available project roles: viewer,"
+        },
+        {
+          "info": {
+            "name": "List team members",
+            "type": "http"
+          },
+          "http": {
+            "method": "GET",
+            "url": "https://api.hubstaff.com/v2/teams/:team_id/members",
+            "params": [
+              {
+                "name": "team_id",
+                "value": "",
+                "type": "path",
+                "description": "Team ID"
+              },
+              {
+                "name": "page_start_id",
+                "value": "",
+                "type": "query",
+                "description": "The page start ID."
+              },
+              {
+                "name": "page_limit",
+                "value": "",
+                "type": "query",
+                "description": "The default page size"
+              },
+              {
+                "name": "include",
+                "value": "",
+                "type": "query",
+                "description": "Specify related data to side load."
+              }
+            ]
+          },
+          "docs": "Returns a collection of members for the given team.\n\nMembership roles:\n- manager - Can track time, view all data, change settings, and manage membership\n- user - Can track time and view only their own data\n- viewer - Can view reports but cannot make changes"
+        },
+        {
+          "info": {
+            "name": "List project members",
+            "type": "http"
+          },
+          "http": {
+            "method": "GET",
+            "url": "https://api.hubstaff.com/v2/projects/:project_id/members",
+            "params": [
+              {
+                "name": "project_id",
+                "value": "",
+                "type": "path"
+              },
+              {
+                "name": "page_start_id",
+                "value": "",
+                "type": "query",
+                "description": "The page start ID."
+              },
+              {
+                "name": "page_limit",
+                "value": "",
+                "type": "query",
+                "description": "The default page size"
+              },
+              {
+                "name": "search[email]",
+                "value": "",
+                "type": "query",
+                "description": "An email to search for members"
+              },
+              {
+                "name": "search[name]",
+                "value": "",
+                "type": "query",
+                "description": "A name to search for members"
+              },
+              {
+                "name": "include_removed",
+                "value": "",
+                "type": "query",
+                "description": "Include members that were removed from the project"
+              },
+              {
+                "name": "include_profile",
+                "value": "",
+                "type": "query",
+                "description": "Include member profile information"
+              },
+              {
+                "name": "direct_only",
+                "value": "",
+                "type": "query",
+                "description": "If true, only include members assigned directly to the project and not as member of a team working on the project"
+              },
+              {
+                "name": "membership_roles",
+                "value": "",
+                "type": "query",
+                "description": "Search by membership role"
+              },
+              {
+                "name": "created_at[start]",
+                "value": "",
+                "type": "query",
+                "description": "Start date for created_at filter (inclusive)"
+              },
+              {
+                "name": "created_at[stop]",
+                "value": "",
+                "type": "query",
+                "description": "End date for created_at filter (exclusive)"
+              },
+              {
+                "name": "updated_at[start]",
+                "value": "",
+                "type": "query",
+                "description": "Start date for updated_at filter (inclusive)"
+              },
+              {
+                "name": "updated_at[stop]",
+                "value": "",
+                "type": "query",
+                "description": "End date for updated_at filter (exclusive)"
+              },
+              {
+                "name": "user_ids",
+                "value": "",
+                "type": "query",
+                "description": "List of user IDs"
+              },
+              {
+                "name": "include",
+                "value": "",
+                "type": "query",
+                "description": "Specify related data to side load."
+              }
+            ]
+          },
+          "docs": "Returns a collection of members for the given project.\n\nResults can be filtered by search, user IDs, membership role, and date range.\n\n*membership_role* - The permission role the member has in this project\n- *manager* - An manager can track time, see data for any member within the project, can change settings, and manage membership within the project\n- *user* - A user can track time against the project and see only their own data within the project\n- *viewer* - A viewer can access reports based "
+        }
+      ]
+    }
+  ],
+  "bundled": true
+}

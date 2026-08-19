@@ -1,0 +1,1096 @@
+{
+  "item": [
+    {
+      "id": "49371b15-e7cb-413e-a1ea-e2180ef12d19",
+      "name": "Screenshots",
+      "description": {
+        "content": "Screenshots captured while tracking time.",
+        "type": "text/plain"
+      },
+      "item": [
+        {
+          "id": "45236971-8c3a-428a-8797-845b7bb077e3",
+          "name": "List organization screenshots",
+          "request": {
+            "name": "List organization screenshots",
+            "description": {
+              "content": "Returns a collection of screenshots for the given organization.\n\nResults can be filtered by user_ids[], project_ids[], and time_slot[start]/[stop].\n\nNote: Date range limit is 7 days. Earliest date is 6 months ago.",
+              "type": "text/plain"
+            },
+            "url": {
+              "path": [
+                "v2",
+                "organizations",
+                ":organization_id",
+                "screenshots"
+              ],
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "query": [
+                {
+                  "disabled": false,
+                  "key": "page_start_id",
+                  "value": "0",
+                  "description": "The page start ID."
+                },
+                {
+                  "disabled": false,
+                  "key": "page_limit",
+                  "value": "",
+                  "description": "The default page size"
+                },
+                {
+                  "disabled": false,
+                  "key": "time_slot[start]",
+                  "value": "<dateTime>",
+                  "description": "(Required) Start time (ISO 8601)"
+                },
+                {
+                  "disabled": false,
+                  "key": "time_slot[stop]",
+                  "value": "<dateTime>",
+                  "description": "(Required) Stop time (ISO 8601, Exclusive)"
+                },
+                {
+                  "disabled": false,
+                  "key": "user_ids",
+                  "value": "<integer>",
+                  "description": "List of user IDs"
+                },
+                {
+                  "disabled": false,
+                  "key": "user_ids",
+                  "value": "<integer>",
+                  "description": "List of user IDs"
+                },
+                {
+                  "disabled": false,
+                  "key": "project_ids",
+                  "value": "<integer>",
+                  "description": "List of project IDs"
+                },
+                {
+                  "disabled": false,
+                  "key": "project_ids",
+                  "value": "<integer>",
+                  "description": "List of project IDs"
+                },
+                {
+                  "disabled": false,
+                  "key": "include",
+                  "value": "<string>",
+                  "description": "Specify related data to side load."
+                },
+                {
+                  "disabled": false,
+                  "key": "include",
+                  "value": "<string>",
+                  "description": "Specify related data to side load."
+                }
+              ],
+              "variable": [
+                {
+                  "disabled": false,
+                  "type": "any",
+                  "value": "<integer>",
+                  "key": "organization_id",
+                  "description": "(Required) "
+                }
+              ]
+            },
+            "method": "GET",
+            "auth": null
+          },
+          "response": [
+            {
+              "id": "ca6c01d6-7d09-4e0d-b452-4964c7ec1e21",
+              "name": "A list of screenshots",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    "v2",
+                    "organizations",
+                    ":organization_id",
+                    "screenshots"
+                  ],
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "query": [
+                    {
+                      "key": "page_start_id",
+                      "value": "0"
+                    },
+                    {
+                      "key": "page_limit",
+                      "value": ""
+                    },
+                    {
+                      "key": "time_slot[start]",
+                      "value": "<dateTime>"
+                    },
+                    {
+                      "key": "time_slot[stop]",
+                      "value": "<dateTime>"
+                    },
+                    {
+                      "key": "user_ids",
+                      "value": "<integer>"
+                    },
+                    {
+                      "key": "user_ids",
+                      "value": "<integer>"
+                    },
+                    {
+                      "key": "project_ids",
+                      "value": "<integer>"
+                    },
+                    {
+                      "key": "project_ids",
+                      "value": "<integer>"
+                    },
+                    {
+                      "key": "include",
+                      "value": "<string>"
+                    },
+                    {
+                      "key": "include",
+                      "value": "<string>"
+                    }
+                  ],
+                  "variable": [
+                    {
+                      "disabled": false,
+                      "type": "any",
+                      "value": "<integer>",
+                      "key": "organization_id",
+                      "description": "(Required) "
+                    }
+                  ]
+                },
+                "header": [
+                  {
+                    "description": {
+                      "content": "Added as a part of security scheme: oauth2",
+                      "type": "text/plain"
+                    },
+                    "key": "Authorization",
+                    "value": "<token>"
+                  }
+                ],
+                "method": "GET",
+                "body": {}
+              },
+              "status": "OK",
+              "code": 200,
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "text/plain"
+                }
+              ],
+              "body": "",
+              "cookie": [],
+              "_postman_previewlanguage": "text"
+            },
+            {
+              "id": "9268c338-b71d-4e0b-9cc5-30eadca6badf",
+              "name": "Invalid parameters",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    "v2",
+                    "organizations",
+                    ":organization_id",
+                    "screenshots"
+                  ],
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "query": [
+                    {
+                      "key": "page_start_id",
+                      "value": "0"
+                    },
+                    {
+                      "key": "page_limit",
+                      "value": ""
+                    },
+                    {
+                      "key": "time_slot[start]",
+                      "value": "<dateTime>"
+                    },
+                    {
+                      "key": "time_slot[stop]",
+                      "value": "<dateTime>"
+                    },
+                    {
+                      "key": "user_ids",
+                      "value": "<integer>"
+                    },
+                    {
+                      "key": "user_ids",
+                      "value": "<integer>"
+                    },
+                    {
+                      "key": "project_ids",
+                      "value": "<integer>"
+                    },
+                    {
+                      "key": "project_ids",
+                      "value": "<integer>"
+                    },
+                    {
+                      "key": "include",
+                      "value": "<string>"
+                    },
+                    {
+                      "key": "include",
+                      "value": "<string>"
+                    }
+                  ],
+                  "variable": [
+                    {
+                      "disabled": false,
+                      "type": "any",
+                      "value": "<integer>",
+                      "key": "organization_id",
+                      "description": "(Required) "
+                    }
+                  ]
+                },
+                "header": [
+                  {
+                    "description": {
+                      "content": "Added as a part of security scheme: oauth2",
+                      "type": "text/plain"
+                    },
+                    "key": "Authorization",
+                    "value": "<token>"
+                  }
+                ],
+                "method": "GET",
+                "body": {}
+              },
+              "status": "Bad Request",
+              "code": 400,
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "text/plain"
+                }
+              ],
+              "body": "",
+              "cookie": [],
+              "_postman_previewlanguage": "text"
+            },
+            {
+              "id": "ab8be64f-751a-45f1-8f4e-97b7a68de8a9",
+              "name": "Unauthorized",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    "v2",
+                    "organizations",
+                    ":organization_id",
+                    "screenshots"
+                  ],
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "query": [
+                    {
+                      "key": "page_start_id",
+                      "value": "0"
+                    },
+                    {
+                      "key": "page_limit",
+                      "value": ""
+                    },
+                    {
+                      "key": "time_slot[start]",
+                      "value": "<dateTime>"
+                    },
+                    {
+                      "key": "time_slot[stop]",
+                      "value": "<dateTime>"
+                    },
+                    {
+                      "key": "user_ids",
+                      "value": "<integer>"
+                    },
+                    {
+                      "key": "user_ids",
+                      "value": "<integer>"
+                    },
+                    {
+                      "key": "project_ids",
+                      "value": "<integer>"
+                    },
+                    {
+                      "key": "project_ids",
+                      "value": "<integer>"
+                    },
+                    {
+                      "key": "include",
+                      "value": "<string>"
+                    },
+                    {
+                      "key": "include",
+                      "value": "<string>"
+                    }
+                  ],
+                  "variable": [
+                    {
+                      "disabled": false,
+                      "type": "any",
+                      "value": "<integer>",
+                      "key": "organization_id",
+                      "description": "(Required) "
+                    }
+                  ]
+                },
+                "header": [
+                  {
+                    "description": {
+                      "content": "Added as a part of security scheme: oauth2",
+                      "type": "text/plain"
+                    },
+                    "key": "Authorization",
+                    "value": "<token>"
+                  }
+                ],
+                "method": "GET",
+                "body": {}
+              },
+              "status": "Unauthorized",
+              "code": 401,
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "text/plain"
+                }
+              ],
+              "body": "",
+              "cookie": [],
+              "_postman_previewlanguage": "text"
+            },
+            {
+              "id": "5000168d-d5f0-4b6f-b173-9ab43a231ba4",
+              "name": "API access is only for organizations on an active plan",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    "v2",
+                    "organizations",
+                    ":organization_id",
+                    "screenshots"
+                  ],
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "query": [
+                    {
+                      "key": "page_start_id",
+                      "value": "0"
+                    },
+                    {
+                      "key": "page_limit",
+                      "value": ""
+                    },
+                    {
+                      "key": "time_slot[start]",
+                      "value": "<dateTime>"
+                    },
+                    {
+                      "key": "time_slot[stop]",
+                      "value": "<dateTime>"
+                    },
+                    {
+                      "key": "user_ids",
+                      "value": "<integer>"
+                    },
+                    {
+                      "key": "user_ids",
+                      "value": "<integer>"
+                    },
+                    {
+                      "key": "project_ids",
+                      "value": "<integer>"
+                    },
+                    {
+                      "key": "project_ids",
+                      "value": "<integer>"
+                    },
+                    {
+                      "key": "include",
+                      "value": "<string>"
+                    },
+                    {
+                      "key": "include",
+                      "value": "<string>"
+                    }
+                  ],
+                  "variable": [
+                    {
+                      "disabled": false,
+                      "type": "any",
+                      "value": "<integer>",
+                      "key": "organization_id",
+                      "description": "(Required) "
+                    }
+                  ]
+                },
+                "header": [
+                  {
+                    "description": {
+                      "content": "Added as a part of security scheme: oauth2",
+                      "type": "text/plain"
+                    },
+                    "key": "Authorization",
+                    "value": "<token>"
+                  }
+                ],
+                "method": "GET",
+                "body": {}
+              },
+              "status": "Forbidden",
+              "code": 403,
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "text/plain"
+                }
+              ],
+              "body": "",
+              "cookie": [],
+              "_postman_previewlanguage": "text"
+            },
+            {
+              "id": "92e31fe7-9ddc-410f-9418-9cda2ad32c40",
+              "name": "Could not find record",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    "v2",
+                    "organizations",
+                    ":organization_id",
+                    "screenshots"
+                  ],
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "query": [
+                    {
+                      "key": "page_start_id",
+                      "value": "0"
+                    },
+                    {
+                      "key": "page_limit",
+                      "value": ""
+                    },
+                    {
+                      "key": "time_slot[start]",
+                      "value": "<dateTime>"
+                    },
+                    {
+                      "key": "time_slot[stop]",
+                      "value": "<dateTime>"
+                    },
+                    {
+                      "key": "user_ids",
+                      "value": "<integer>"
+                    },
+                    {
+                      "key": "user_ids",
+                      "value": "<integer>"
+                    },
+                    {
+                      "key": "project_ids",
+                      "value": "<integer>"
+                    },
+                    {
+                      "key": "project_ids",
+                      "value": "<integer>"
+                    },
+                    {
+                      "key": "include",
+                      "value": "<string>"
+                    },
+                    {
+                      "key": "include",
+                      "value": "<string>"
+                    }
+                  ],
+                  "variable": [
+                    {
+                      "disabled": false,
+                      "type": "any",
+                      "value": "<integer>",
+                      "key": "organization_id",
+                      "description": "(Required) "
+                    }
+                  ]
+                },
+                "header": [
+                  {
+                    "description": {
+                      "content": "Added as a part of security scheme: oauth2",
+                      "type": "text/plain"
+                    },
+                    "key": "Authorization",
+                    "value": "<token>"
+                  }
+                ],
+                "method": "GET",
+                "body": {}
+              },
+              "status": "Not Found",
+              "code": 404,
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "text/plain"
+                }
+              ],
+              "body": "",
+              "cookie": [],
+              "_postman_previewlanguage": "text"
+            },
+            {
+              "id": "8c239f80-2fd3-4abe-a679-263929d24726",
+              "name": "Rate limit exceeded",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    "v2",
+                    "organizations",
+                    ":organization_id",
+                    "screenshots"
+                  ],
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "query": [
+                    {
+                      "key": "page_start_id",
+                      "value": "0"
+                    },
+                    {
+                      "key": "page_limit",
+                      "value": ""
+                    },
+                    {
+                      "key": "time_slot[start]",
+                      "value": "<dateTime>"
+                    },
+                    {
+                      "key": "time_slot[stop]",
+                      "value": "<dateTime>"
+                    },
+                    {
+                      "key": "user_ids",
+                      "value": "<integer>"
+                    },
+                    {
+                      "key": "user_ids",
+                      "value": "<integer>"
+                    },
+                    {
+                      "key": "project_ids",
+                      "value": "<integer>"
+                    },
+                    {
+                      "key": "project_ids",
+                      "value": "<integer>"
+                    },
+                    {
+                      "key": "include",
+                      "value": "<string>"
+                    },
+                    {
+                      "key": "include",
+                      "value": "<string>"
+                    }
+                  ],
+                  "variable": [
+                    {
+                      "disabled": false,
+                      "type": "any",
+                      "value": "<integer>",
+                      "key": "organization_id",
+                      "description": "(Required) "
+                    }
+                  ]
+                },
+                "header": [
+                  {
+                    "description": {
+                      "content": "Added as a part of security scheme: oauth2",
+                      "type": "text/plain"
+                    },
+                    "key": "Authorization",
+                    "value": "<token>"
+                  }
+                ],
+                "method": "GET",
+                "body": {}
+              },
+              "status": "Too Many Requests",
+              "code": 429,
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "text/plain"
+                }
+              ],
+              "body": "",
+              "cookie": [],
+              "_postman_previewlanguage": "text"
+            }
+          ],
+          "event": [],
+          "protocolProfileBehavior": {
+            "disableBodyPruning": true
+          }
+        },
+        {
+          "id": "d1effbf6-21f8-4b8d-b894-87286f81f834",
+          "name": "Get screenshot",
+          "request": {
+            "name": "Get screenshot",
+            "description": {
+              "content": "Returns the screenshot with the given ID.",
+              "type": "text/plain"
+            },
+            "url": {
+              "path": [
+                "v2",
+                "organizations",
+                ":organization_id",
+                "screenshots",
+                ":screenshot_id"
+              ],
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "query": [],
+              "variable": [
+                {
+                  "disabled": false,
+                  "type": "any",
+                  "value": "<integer>",
+                  "key": "organization_id",
+                  "description": "(Required) "
+                },
+                {
+                  "disabled": false,
+                  "type": "any",
+                  "value": "<integer>",
+                  "key": "screenshot_id",
+                  "description": "(Required) Screenshot ID"
+                }
+              ]
+            },
+            "method": "GET",
+            "auth": null
+          },
+          "response": [
+            {
+              "id": "ced91574-8b33-4f5d-8d56-4da7f5900b87",
+              "name": "Screenshot found",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    "v2",
+                    "organizations",
+                    ":organization_id",
+                    "screenshots",
+                    ":screenshot_id"
+                  ],
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "query": [],
+                  "variable": [
+                    {
+                      "disabled": false,
+                      "type": "any",
+                      "value": "<integer>",
+                      "key": "organization_id",
+                      "description": "(Required) "
+                    },
+                    {
+                      "disabled": false,
+                      "type": "any",
+                      "value": "<integer>",
+                      "key": "screenshot_id",
+                      "description": "(Required) Screenshot ID"
+                    }
+                  ]
+                },
+                "header": [
+                  {
+                    "description": {
+                      "content": "Added as a part of security scheme: oauth2",
+                      "type": "text/plain"
+                    },
+                    "key": "Authorization",
+                    "value": "<token>"
+                  }
+                ],
+                "method": "GET",
+                "body": {}
+              },
+              "status": "OK",
+              "code": 200,
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "text/plain"
+                }
+              ],
+              "body": "",
+              "cookie": [],
+              "_postman_previewlanguage": "text"
+            },
+            {
+              "id": "15d1cc32-47c7-4275-8b7a-f0f3bbcc26c8",
+              "name": "Invalid parameters",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    "v2",
+                    "organizations",
+                    ":organization_id",
+                    "screenshots",
+                    ":screenshot_id"
+                  ],
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "query": [],
+                  "variable": [
+                    {
+                      "disabled": false,
+                      "type": "any",
+                      "value": "<integer>",
+                      "key": "organization_id",
+                      "description": "(Required) "
+                    },
+                    {
+                      "disabled": false,
+                      "type": "any",
+                      "value": "<integer>",
+                      "key": "screenshot_id",
+                      "description": "(Required) Screenshot ID"
+                    }
+                  ]
+                },
+                "header": [
+                  {
+                    "description": {
+                      "content": "Added as a part of security scheme: oauth2",
+                      "type": "text/plain"
+                    },
+                    "key": "Authorization",
+                    "value": "<token>"
+                  }
+                ],
+                "method": "GET",
+                "body": {}
+              },
+              "status": "Bad Request",
+              "code": 400,
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "text/plain"
+                }
+              ],
+              "body": "",
+              "cookie": [],
+              "_postman_previewlanguage": "text"
+            },
+            {
+              "id": "311fc4cb-9768-4a62-8de0-90da9d655a03",
+              "name": "Unauthorized",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    "v2",
+                    "organizations",
+                    ":organization_id",
+                    "screenshots",
+                    ":screenshot_id"
+                  ],
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "query": [],
+                  "variable": [
+                    {
+                      "disabled": false,
+                      "type": "any",
+                      "value": "<integer>",
+                      "key": "organization_id",
+                      "description": "(Required) "
+                    },
+                    {
+                      "disabled": false,
+                      "type": "any",
+                      "value": "<integer>",
+                      "key": "screenshot_id",
+                      "description": "(Required) Screenshot ID"
+                    }
+                  ]
+                },
+                "header": [
+                  {
+                    "description": {
+                      "content": "Added as a part of security scheme: oauth2",
+                      "type": "text/plain"
+                    },
+                    "key": "Authorization",
+                    "value": "<token>"
+                  }
+                ],
+                "method": "GET",
+                "body": {}
+              },
+              "status": "Unauthorized",
+              "code": 401,
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "text/plain"
+                }
+              ],
+              "body": "",
+              "cookie": [],
+              "_postman_previewlanguage": "text"
+            },
+            {
+              "id": "cd0f9dc5-2c3a-49d1-93f0-dc3aea9c051e",
+              "name": "API access is only for organizations on an active plan",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    "v2",
+                    "organizations",
+                    ":organization_id",
+                    "screenshots",
+                    ":screenshot_id"
+                  ],
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "query": [],
+                  "variable": [
+                    {
+                      "disabled": false,
+                      "type": "any",
+                      "value": "<integer>",
+                      "key": "organization_id",
+                      "description": "(Required) "
+                    },
+                    {
+                      "disabled": false,
+                      "type": "any",
+                      "value": "<integer>",
+                      "key": "screenshot_id",
+                      "description": "(Required) Screenshot ID"
+                    }
+                  ]
+                },
+                "header": [
+                  {
+                    "description": {
+                      "content": "Added as a part of security scheme: oauth2",
+                      "type": "text/plain"
+                    },
+                    "key": "Authorization",
+                    "value": "<token>"
+                  }
+                ],
+                "method": "GET",
+                "body": {}
+              },
+              "status": "Forbidden",
+              "code": 403,
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "text/plain"
+                }
+              ],
+              "body": "",
+              "cookie": [],
+              "_postman_previewlanguage": "text"
+            },
+            {
+              "id": "1934a7d1-5885-40e3-8adf-95b31ca6b0a0",
+              "name": "Screenshot not found",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    "v2",
+                    "organizations",
+                    ":organization_id",
+                    "screenshots",
+                    ":screenshot_id"
+                  ],
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "query": [],
+                  "variable": [
+                    {
+                      "disabled": false,
+                      "type": "any",
+                      "value": "<integer>",
+                      "key": "organization_id",
+                      "description": "(Required) "
+                    },
+                    {
+                      "disabled": false,
+                      "type": "any",
+                      "value": "<integer>",
+                      "key": "screenshot_id",
+                      "description": "(Required) Screenshot ID"
+                    }
+                  ]
+                },
+                "header": [
+                  {
+                    "description": {
+                      "content": "Added as a part of security scheme: oauth2",
+                      "type": "text/plain"
+                    },
+                    "key": "Authorization",
+                    "value": "<token>"
+                  }
+                ],
+                "method": "GET",
+                "body": {}
+              },
+              "status": "Not Found",
+              "code": 404,
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "text/plain"
+                }
+              ],
+              "body": "",
+              "cookie": [],
+              "_postman_previewlanguage": "text"
+            },
+            {
+              "id": "7b3f47c6-05c5-48f5-a235-d08714d83ae3",
+              "name": "Rate limit exceeded",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    "v2",
+                    "organizations",
+                    ":organization_id",
+                    "screenshots",
+                    ":screenshot_id"
+                  ],
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "query": [],
+                  "variable": [
+                    {
+                      "disabled": false,
+                      "type": "any",
+                      "value": "<integer>",
+                      "key": "organization_id",
+                      "description": "(Required) "
+                    },
+                    {
+                      "disabled": false,
+                      "type": "any",
+                      "value": "<integer>",
+                      "key": "screenshot_id",
+                      "description": "(Required) Screenshot ID"
+                    }
+                  ]
+                },
+                "header": [
+                  {
+                    "description": {
+                      "content": "Added as a part of security scheme: oauth2",
+                      "type": "text/plain"
+                    },
+                    "key": "Authorization",
+                    "value": "<token>"
+                  }
+                ],
+                "method": "GET",
+                "body": {}
+              },
+              "status": "Too Many Requests",
+              "code": 429,
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "text/plain"
+                }
+              ],
+              "body": "",
+              "cookie": [],
+              "_postman_previewlanguage": "text"
+            }
+          ],
+          "event": [],
+          "protocolProfileBehavior": {
+            "disableBodyPruning": true
+          }
+        }
+      ],
+      "event": []
+    }
+  ],
+  "event": [],
+  "variable": [
+    {
+      "type": "string",
+      "value": "https://api.hubstaff.com",
+      "key": "baseUrl"
+    }
+  ],
+  "auth": {
+    "type": "oauth2",
+    "oauth2": [
+      {
+        "key": "scope",
+        "value": "hubstaff:read hubstaff:write"
+      },
+      {
+        "key": "accessTokenUrl",
+        "value": "https://account.hubstaff.com/access_tokens"
+      },
+      {
+        "key": "authUrl",
+        "value": "https://account.hubstaff.com/authorizations/new"
+      },
+      {
+        "key": "grant_type",
+        "value": "authorization_code"
+      }
+    ]
+  },
+  "info": {
+    "_postman_id": "4b82f85e-b625-4722-8de4-4fbe38107d9b",
+    "name": "Hubstaff Activities Screenshots API",
+    "schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json",
+    "description": {
+      "content": "The Hubstaff API v2 provides programmatic read and write access to Hubstaff's time tracking, timesheet, workforce management, and project management data - organizations, members, teams, projects, tasks, clients, activities (10-minute tracked time blocks with activity percentages), daily activity aggregates, time entries, timesheets and approvals, time off requests/policies/balances, attendance schedules and shifts, screenshots, app and URL usage, invoices, team payments, and webhooks.\n\nAuthentication uses OpenID Connect / OAuth 2.0 through Hubstaff Account (https://account.hubstaff.com). For server-side scripts, create a personal access token at https://developer.hubstaff.com/personal_access_tokens - the PAT acts as an OAuth refresh token (90-day expiry) that you exchange for short-lived access tokens at https://account.hubstaff.com/access_tokens. Send the access token as a Bearer token on every request.\n\nRate limit: authenticated users are allowed 1,000 requests per hour per application; individual requests time out after 30 seconds. All requests must use HTTPS. Collection endpoints use cursor pagination via page_start_id and page_limit. This document is a curated OpenAPI 3.0 rendering of the live Swagger 2.0 definition published at https://api.hubstaff.com/v2/docs, covering the primary resource areas; consult the live definition for the complete surface (insights, job sites, budgets, overtime policies, integrations, and more).\n\nContact Support:\n Name: Hubstaff Developer Portal",
+      "type": "text/plain"
+    }
+  }
+}

@@ -1,0 +1,100 @@
+{
+  "opencollection": "1.0.0",
+  "info": {
+    "name": "Hubstaff Activities Invites API",
+    "version": "2.0"
+  },
+  "request": {
+    "auth": {
+      "type": "oauth2",
+      "flow": "authorization_code",
+      "authorizationUrl": "https://account.hubstaff.com/authorizations/new",
+      "accessTokenUrl": "https://account.hubstaff.com/access_tokens",
+      "credentials": {
+        "clientId": "{{clientId}}",
+        "clientSecret": "{{clientSecret}}"
+      }
+    }
+  },
+  "items": [
+    {
+      "info": {
+        "name": "Invites",
+        "type": "folder"
+      },
+      "items": [
+        {
+          "info": {
+            "name": "List organization invites",
+            "type": "http"
+          },
+          "http": {
+            "method": "GET",
+            "url": "https://api.hubstaff.com/v2/organizations/:organization_id/invites",
+            "params": [
+              {
+                "name": "organization_id",
+                "value": "",
+                "type": "path"
+              },
+              {
+                "name": "page_start_id",
+                "value": "",
+                "type": "query",
+                "description": "The page start ID."
+              },
+              {
+                "name": "page_limit",
+                "value": "",
+                "type": "query",
+                "description": "The default page size"
+              },
+              {
+                "name": "email",
+                "value": "",
+                "type": "query",
+                "description": "An email to search for a pending invitation by"
+              },
+              {
+                "name": "status",
+                "value": "",
+                "type": "query",
+                "description": "Filter invites by status"
+              },
+              {
+                "name": "include",
+                "value": "",
+                "type": "query",
+                "description": "Specify related data to side load."
+              }
+            ]
+          },
+          "docs": "Returns a collection of invites for the given organization.\n\nResults can be filtered by email and status."
+        },
+        {
+          "info": {
+            "name": "Create invite",
+            "type": "http"
+          },
+          "http": {
+            "method": "POST",
+            "url": "https://api.hubstaff.com/v2/organizations/:organization_id/invites",
+            "params": [
+              {
+                "name": "organization_id",
+                "value": "",
+                "type": "path"
+              }
+            ],
+            "body": {
+              "type": "json",
+              "data": "{}"
+            }
+          },
+          "docs": "Creates a new invite.\n\nReturns the created invite.\n\nNote: If there is an account for the email in Hubstaff, the invite will be auto accepted.\nNote: There is a rate limit on how many invites you may create.\n\nAvailable roles:\n- organization_manager - Invited as an organization manager\n- project_manager - Invited as a project manager\n- project_user - Invited as a project user\n- project_viewer - Invited as a project viewer\n\nIf no project_ids are set, any project_* role will default to project_viewer"
+        }
+      ]
+    }
+  ],
+  "bundled": true
+}

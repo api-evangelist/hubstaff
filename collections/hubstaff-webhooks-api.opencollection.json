@@ -1,0 +1,109 @@
+{
+  "opencollection": "1.0.0",
+  "info": {
+    "name": "Hubstaff Activities Webhooks API",
+    "version": "2.0"
+  },
+  "request": {
+    "auth": {
+      "type": "oauth2",
+      "flow": "authorization_code",
+      "authorizationUrl": "https://account.hubstaff.com/authorizations/new",
+      "accessTokenUrl": "https://account.hubstaff.com/access_tokens",
+      "credentials": {
+        "clientId": "{{clientId}}",
+        "clientSecret": "{{clientSecret}}"
+      }
+    }
+  },
+  "items": [
+    {
+      "info": {
+        "name": "Webhooks",
+        "type": "folder"
+      },
+      "items": [
+        {
+          "info": {
+            "name": "Create organization webhook",
+            "type": "http"
+          },
+          "http": {
+            "method": "POST",
+            "url": "https://api.hubstaff.com/v2/organizations/:organization_id/webhooks",
+            "params": [
+              {
+                "name": "organization_id",
+                "value": "",
+                "type": "path"
+              }
+            ],
+            "body": {
+              "type": "json",
+              "data": "{}"
+            }
+          },
+          "docs": "Creates a new webhook subscription for the organization. After creation, Hubstaff will send a POST request to your `target_url` with an empty body and an `X-Hook-Secret` header.\n\nYour endpoint must respond with HTTP 200 and echo the same `X-Hook-Secret` header to verify ownership.\n\nStore the secret value - you'll need it to activate the webhook."
+        },
+        {
+          "info": {
+            "name": "Get webhook",
+            "type": "http"
+          },
+          "http": {
+            "method": "GET",
+            "url": "https://api.hubstaff.com/v2/webhooks/:webhook_id",
+            "params": [
+              {
+                "name": "webhook_id",
+                "value": "",
+                "type": "path",
+                "description": "Webhook ID"
+              }
+            ]
+          },
+          "docs": "Returns the details of a specific webhook including its status, events, and target URL."
+        },
+        {
+          "info": {
+            "name": "Delete webhook",
+            "type": "http"
+          },
+          "http": {
+            "method": "DELETE",
+            "url": "https://api.hubstaff.com/v2/webhooks/:webhook_id",
+            "params": [
+              {
+                "name": "webhook_id",
+                "value": "",
+                "type": "path",
+                "description": "Webhook ID"
+              }
+            ]
+          },
+          "docs": "Permanently deletes a webhook. The webhook will stop receiving events immediately."
+        },
+        {
+          "info": {
+            "name": "Activate webhook",
+            "type": "http"
+          },
+          "http": {
+            "method": "POST",
+            "url": "https://api.hubstaff.com/v2/webhooks/:webhook_id/activate",
+            "params": [
+              {
+                "name": "webhook_id",
+                "value": "",
+                "type": "path",
+                "description": "Webhook ID"
+              }
+            ]
+          },
+          "docs": "Activates a webhook after endpoint verification.\n\nYou must include the `X-Hook-Secret` header with the secret value you received during the verification step.\n\nOnce activated, the webhook will start receiving events."
+        }
+      ]
+    }
+  ],
+  "bundled": true
+}

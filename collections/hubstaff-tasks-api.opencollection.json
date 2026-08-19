@@ -1,0 +1,239 @@
+{
+  "opencollection": "1.0.0",
+  "info": {
+    "name": "Hubstaff Activities Tasks API",
+    "version": "2.0"
+  },
+  "request": {
+    "auth": {
+      "type": "oauth2",
+      "flow": "authorization_code",
+      "authorizationUrl": "https://account.hubstaff.com/authorizations/new",
+      "accessTokenUrl": "https://account.hubstaff.com/access_tokens",
+      "credentials": {
+        "clientId": "{{clientId}}",
+        "clientSecret": "{{clientSecret}}"
+      }
+    }
+  },
+  "items": [
+    {
+      "info": {
+        "name": "Tasks",
+        "type": "folder"
+      },
+      "items": [
+        {
+          "info": {
+            "name": "List organization tasks",
+            "type": "http"
+          },
+          "http": {
+            "method": "GET",
+            "url": "https://api.hubstaff.com/v2/organizations/:organization_id/tasks",
+            "params": [
+              {
+                "name": "organization_id",
+                "value": "",
+                "type": "path"
+              },
+              {
+                "name": "page_start_id",
+                "value": "",
+                "type": "query",
+                "description": "The page start ID."
+              },
+              {
+                "name": "page_limit",
+                "value": "",
+                "type": "query",
+                "description": "The default page size"
+              },
+              {
+                "name": "status",
+                "value": "",
+                "type": "query",
+                "description": "A status or list of statuses to filter"
+              },
+              {
+                "name": "user_ids",
+                "value": "",
+                "type": "query",
+                "description": "List of user IDs"
+              },
+              {
+                "name": "project_ids",
+                "value": "",
+                "type": "query",
+                "description": "List of project IDs"
+              },
+              {
+                "name": "global_todo_ids",
+                "value": "",
+                "type": "query",
+                "description": "List of Global To-Do IDs"
+              },
+              {
+                "name": "only_global_todos",
+                "value": "",
+                "type": "query",
+                "description": "Return only global to-dos"
+              },
+              {
+                "name": "include",
+                "value": "",
+                "type": "query",
+                "description": "Specify related data to side load."
+              }
+            ]
+          },
+          "docs": "Returns a collection of tasks (to-dos) for the given organization.\n\nResults can be filtered by status[] (active/completed/deleted), user_ids[], project_ids[], and global_todo_ids[]."
+        },
+        {
+          "info": {
+            "name": "List project tasks",
+            "type": "http"
+          },
+          "http": {
+            "method": "GET",
+            "url": "https://api.hubstaff.com/v2/projects/:project_id/tasks",
+            "params": [
+              {
+                "name": "project_id",
+                "value": "",
+                "type": "path"
+              },
+              {
+                "name": "page_start_id",
+                "value": "",
+                "type": "query",
+                "description": "The page start ID."
+              },
+              {
+                "name": "page_limit",
+                "value": "",
+                "type": "query",
+                "description": "The default page size"
+              },
+              {
+                "name": "status",
+                "value": "",
+                "type": "query",
+                "description": "A status or list of statuses to filter"
+              },
+              {
+                "name": "user_ids",
+                "value": "",
+                "type": "query",
+                "description": "List of user IDs"
+              },
+              {
+                "name": "global_todo_ids",
+                "value": "",
+                "type": "query",
+                "description": "List of Global To-Do IDs"
+              },
+              {
+                "name": "only_global_todos",
+                "value": "",
+                "type": "query",
+                "description": "Return only global to-dos"
+              },
+              {
+                "name": "include",
+                "value": "",
+                "type": "query",
+                "description": "Specify related data to side load."
+              }
+            ]
+          },
+          "docs": "Returns a collection of tasks (to-dos) for the given project.\n\nResults can be filtered by status[] (active/completed/deleted), user_ids[], project_ids[], and global_todo_ids[]."
+        },
+        {
+          "info": {
+            "name": "Create task",
+            "type": "http"
+          },
+          "http": {
+            "method": "POST",
+            "url": "https://api.hubstaff.com/v2/projects/:project_id/tasks",
+            "params": [
+              {
+                "name": "project_id",
+                "value": "",
+                "type": "path"
+              }
+            ],
+            "body": {
+              "type": "json",
+              "data": "{}"
+            }
+          },
+          "docs": "Creates a new task for this project.\n\nReturns the created task.\n\nNote: If this project is integrated with a 3rd party tool, you must create the task in that tool instead."
+        },
+        {
+          "info": {
+            "name": "Get task",
+            "type": "http"
+          },
+          "http": {
+            "method": "GET",
+            "url": "https://api.hubstaff.com/v2/tasks/:task_id",
+            "params": [
+              {
+                "name": "task_id",
+                "value": "",
+                "type": "path",
+                "description": "Task ID"
+              }
+            ]
+          },
+          "docs": "Returns the task with the given ID."
+        },
+        {
+          "info": {
+            "name": "Update task",
+            "type": "http"
+          },
+          "http": {
+            "method": "PUT",
+            "url": "https://api.hubstaff.com/v2/tasks/:task_id",
+            "params": [
+              {
+                "name": "task_id",
+                "value": "",
+                "type": "path",
+                "description": "Task ID"
+              }
+            ],
+            "body": {
+              "type": "json",
+              "data": "{}"
+            }
+          },
+          "docs": "Updates a task.\n\nReturns the updated task.\n\nOnly pass in the fields you want to change. Requires passing lock_version from the task fetch.\n\nNote: Only simple todos can be updated. 3rd party tasks must be updated in their system."
+        },
+        {
+          "info": {
+            "name": "Delete task",
+            "type": "http"
+          },
+          "http": {
+            "method": "DELETE",
+            "url": "https://api.hubstaff.com/v2/tasks/:task_id",
+            "params": [
+              {
+                "name": "task_id",
+                "value": "",
+                "type": "path",
+                "description": "Task ID"
+              }
+            ]
+          },
+          "docs": "Deletes a task.\n\nNote: Only simple todos can be deleted. 3rd party tasks must be deleted in their system."
+        }
+      ]
+    }
+  ],
+  "bundled": true
+}

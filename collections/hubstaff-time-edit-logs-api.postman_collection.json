@@ -1,0 +1,760 @@
+{
+  "item": [
+    {
+      "id": "257e0429-5f04-4309-9cd1-e2913fc68683",
+      "name": "Time Edit Logs",
+      "description": {
+        "content": "Audit trail of manual time edits.",
+        "type": "text/plain"
+      },
+      "item": [
+        {
+          "id": "70732dee-a34d-4d84-a30e-8e332b6c0a63",
+          "name": "List organization time edit logs",
+          "request": {
+            "name": "List organization time edit logs",
+            "description": {
+              "content": "Returns a collection of time edit logs (manual time additions/edits/deletions) for the given organization.\n\nResults can be filtered by created[start]/[stop], user_ids[], task_ids[], and project_ids[].\n\nNote: Date range limit is 31 days. Earliest date is 3 years ago.",
+              "type": "text/plain"
+            },
+            "url": {
+              "path": [
+                "v2",
+                "organizations",
+                ":organization_id",
+                "time_edit_logs"
+              ],
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "query": [
+                {
+                  "disabled": false,
+                  "key": "page_start_id",
+                  "value": "0",
+                  "description": "The page start ID."
+                },
+                {
+                  "disabled": false,
+                  "key": "page_limit",
+                  "value": "",
+                  "description": "The default page size"
+                },
+                {
+                  "disabled": false,
+                  "key": "created[start]",
+                  "value": "<dateTime>",
+                  "description": "(Required) Start time (ISO 8601)"
+                },
+                {
+                  "disabled": false,
+                  "key": "created[stop]",
+                  "value": "<dateTime>",
+                  "description": "(Required) Stop time (ISO 8601, exclusive)"
+                },
+                {
+                  "disabled": false,
+                  "key": "user_ids",
+                  "value": "<integer>",
+                  "description": "List of user IDs"
+                },
+                {
+                  "disabled": false,
+                  "key": "user_ids",
+                  "value": "<integer>",
+                  "description": "List of user IDs"
+                },
+                {
+                  "disabled": false,
+                  "key": "task_ids",
+                  "value": "<integer>",
+                  "description": "List of task IDs"
+                },
+                {
+                  "disabled": false,
+                  "key": "task_ids",
+                  "value": "<integer>",
+                  "description": "List of task IDs"
+                },
+                {
+                  "disabled": false,
+                  "key": "project_ids",
+                  "value": "<integer>",
+                  "description": "List of project IDs"
+                },
+                {
+                  "disabled": false,
+                  "key": "project_ids",
+                  "value": "<integer>",
+                  "description": "List of project IDs"
+                },
+                {
+                  "disabled": false,
+                  "key": "include",
+                  "value": "<string>",
+                  "description": "Specify related data to side load."
+                },
+                {
+                  "disabled": false,
+                  "key": "include",
+                  "value": "<string>",
+                  "description": "Specify related data to side load."
+                }
+              ],
+              "variable": [
+                {
+                  "disabled": false,
+                  "type": "any",
+                  "value": "<integer>",
+                  "key": "organization_id",
+                  "description": "(Required) "
+                }
+              ]
+            },
+            "method": "GET",
+            "auth": null
+          },
+          "response": [
+            {
+              "id": "0362165f-b243-4fba-a998-ae601af08d75",
+              "name": "A list of time edit logs",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    "v2",
+                    "organizations",
+                    ":organization_id",
+                    "time_edit_logs"
+                  ],
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "query": [
+                    {
+                      "key": "page_start_id",
+                      "value": "0"
+                    },
+                    {
+                      "key": "page_limit",
+                      "value": ""
+                    },
+                    {
+                      "key": "created[start]",
+                      "value": "<dateTime>"
+                    },
+                    {
+                      "key": "created[stop]",
+                      "value": "<dateTime>"
+                    },
+                    {
+                      "key": "user_ids",
+                      "value": "<integer>"
+                    },
+                    {
+                      "key": "user_ids",
+                      "value": "<integer>"
+                    },
+                    {
+                      "key": "task_ids",
+                      "value": "<integer>"
+                    },
+                    {
+                      "key": "task_ids",
+                      "value": "<integer>"
+                    },
+                    {
+                      "key": "project_ids",
+                      "value": "<integer>"
+                    },
+                    {
+                      "key": "project_ids",
+                      "value": "<integer>"
+                    },
+                    {
+                      "key": "include",
+                      "value": "<string>"
+                    },
+                    {
+                      "key": "include",
+                      "value": "<string>"
+                    }
+                  ],
+                  "variable": [
+                    {
+                      "disabled": false,
+                      "type": "any",
+                      "value": "<integer>",
+                      "key": "organization_id",
+                      "description": "(Required) "
+                    }
+                  ]
+                },
+                "header": [
+                  {
+                    "description": {
+                      "content": "Added as a part of security scheme: oauth2",
+                      "type": "text/plain"
+                    },
+                    "key": "Authorization",
+                    "value": "<token>"
+                  }
+                ],
+                "method": "GET",
+                "body": {}
+              },
+              "status": "OK",
+              "code": 200,
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "text/plain"
+                }
+              ],
+              "body": "",
+              "cookie": [],
+              "_postman_previewlanguage": "text"
+            },
+            {
+              "id": "f9ac90d0-db36-4d6d-a76e-0ca7798ec906",
+              "name": "Invalid parameters",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    "v2",
+                    "organizations",
+                    ":organization_id",
+                    "time_edit_logs"
+                  ],
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "query": [
+                    {
+                      "key": "page_start_id",
+                      "value": "0"
+                    },
+                    {
+                      "key": "page_limit",
+                      "value": ""
+                    },
+                    {
+                      "key": "created[start]",
+                      "value": "<dateTime>"
+                    },
+                    {
+                      "key": "created[stop]",
+                      "value": "<dateTime>"
+                    },
+                    {
+                      "key": "user_ids",
+                      "value": "<integer>"
+                    },
+                    {
+                      "key": "user_ids",
+                      "value": "<integer>"
+                    },
+                    {
+                      "key": "task_ids",
+                      "value": "<integer>"
+                    },
+                    {
+                      "key": "task_ids",
+                      "value": "<integer>"
+                    },
+                    {
+                      "key": "project_ids",
+                      "value": "<integer>"
+                    },
+                    {
+                      "key": "project_ids",
+                      "value": "<integer>"
+                    },
+                    {
+                      "key": "include",
+                      "value": "<string>"
+                    },
+                    {
+                      "key": "include",
+                      "value": "<string>"
+                    }
+                  ],
+                  "variable": [
+                    {
+                      "disabled": false,
+                      "type": "any",
+                      "value": "<integer>",
+                      "key": "organization_id",
+                      "description": "(Required) "
+                    }
+                  ]
+                },
+                "header": [
+                  {
+                    "description": {
+                      "content": "Added as a part of security scheme: oauth2",
+                      "type": "text/plain"
+                    },
+                    "key": "Authorization",
+                    "value": "<token>"
+                  }
+                ],
+                "method": "GET",
+                "body": {}
+              },
+              "status": "Bad Request",
+              "code": 400,
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "text/plain"
+                }
+              ],
+              "body": "",
+              "cookie": [],
+              "_postman_previewlanguage": "text"
+            },
+            {
+              "id": "4af87b5f-2d63-42bf-8af9-57d75a9fb940",
+              "name": "Unauthorized",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    "v2",
+                    "organizations",
+                    ":organization_id",
+                    "time_edit_logs"
+                  ],
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "query": [
+                    {
+                      "key": "page_start_id",
+                      "value": "0"
+                    },
+                    {
+                      "key": "page_limit",
+                      "value": ""
+                    },
+                    {
+                      "key": "created[start]",
+                      "value": "<dateTime>"
+                    },
+                    {
+                      "key": "created[stop]",
+                      "value": "<dateTime>"
+                    },
+                    {
+                      "key": "user_ids",
+                      "value": "<integer>"
+                    },
+                    {
+                      "key": "user_ids",
+                      "value": "<integer>"
+                    },
+                    {
+                      "key": "task_ids",
+                      "value": "<integer>"
+                    },
+                    {
+                      "key": "task_ids",
+                      "value": "<integer>"
+                    },
+                    {
+                      "key": "project_ids",
+                      "value": "<integer>"
+                    },
+                    {
+                      "key": "project_ids",
+                      "value": "<integer>"
+                    },
+                    {
+                      "key": "include",
+                      "value": "<string>"
+                    },
+                    {
+                      "key": "include",
+                      "value": "<string>"
+                    }
+                  ],
+                  "variable": [
+                    {
+                      "disabled": false,
+                      "type": "any",
+                      "value": "<integer>",
+                      "key": "organization_id",
+                      "description": "(Required) "
+                    }
+                  ]
+                },
+                "header": [
+                  {
+                    "description": {
+                      "content": "Added as a part of security scheme: oauth2",
+                      "type": "text/plain"
+                    },
+                    "key": "Authorization",
+                    "value": "<token>"
+                  }
+                ],
+                "method": "GET",
+                "body": {}
+              },
+              "status": "Unauthorized",
+              "code": 401,
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "text/plain"
+                }
+              ],
+              "body": "",
+              "cookie": [],
+              "_postman_previewlanguage": "text"
+            },
+            {
+              "id": "b6a16899-b4bf-40eb-aafa-d78ccdd7d8cb",
+              "name": "API access is only for organizations on an active plan",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    "v2",
+                    "organizations",
+                    ":organization_id",
+                    "time_edit_logs"
+                  ],
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "query": [
+                    {
+                      "key": "page_start_id",
+                      "value": "0"
+                    },
+                    {
+                      "key": "page_limit",
+                      "value": ""
+                    },
+                    {
+                      "key": "created[start]",
+                      "value": "<dateTime>"
+                    },
+                    {
+                      "key": "created[stop]",
+                      "value": "<dateTime>"
+                    },
+                    {
+                      "key": "user_ids",
+                      "value": "<integer>"
+                    },
+                    {
+                      "key": "user_ids",
+                      "value": "<integer>"
+                    },
+                    {
+                      "key": "task_ids",
+                      "value": "<integer>"
+                    },
+                    {
+                      "key": "task_ids",
+                      "value": "<integer>"
+                    },
+                    {
+                      "key": "project_ids",
+                      "value": "<integer>"
+                    },
+                    {
+                      "key": "project_ids",
+                      "value": "<integer>"
+                    },
+                    {
+                      "key": "include",
+                      "value": "<string>"
+                    },
+                    {
+                      "key": "include",
+                      "value": "<string>"
+                    }
+                  ],
+                  "variable": [
+                    {
+                      "disabled": false,
+                      "type": "any",
+                      "value": "<integer>",
+                      "key": "organization_id",
+                      "description": "(Required) "
+                    }
+                  ]
+                },
+                "header": [
+                  {
+                    "description": {
+                      "content": "Added as a part of security scheme: oauth2",
+                      "type": "text/plain"
+                    },
+                    "key": "Authorization",
+                    "value": "<token>"
+                  }
+                ],
+                "method": "GET",
+                "body": {}
+              },
+              "status": "Forbidden",
+              "code": 403,
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "text/plain"
+                }
+              ],
+              "body": "",
+              "cookie": [],
+              "_postman_previewlanguage": "text"
+            },
+            {
+              "id": "2179d23e-d67e-40f7-b19d-e8a159dab302",
+              "name": "Could not find record",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    "v2",
+                    "organizations",
+                    ":organization_id",
+                    "time_edit_logs"
+                  ],
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "query": [
+                    {
+                      "key": "page_start_id",
+                      "value": "0"
+                    },
+                    {
+                      "key": "page_limit",
+                      "value": ""
+                    },
+                    {
+                      "key": "created[start]",
+                      "value": "<dateTime>"
+                    },
+                    {
+                      "key": "created[stop]",
+                      "value": "<dateTime>"
+                    },
+                    {
+                      "key": "user_ids",
+                      "value": "<integer>"
+                    },
+                    {
+                      "key": "user_ids",
+                      "value": "<integer>"
+                    },
+                    {
+                      "key": "task_ids",
+                      "value": "<integer>"
+                    },
+                    {
+                      "key": "task_ids",
+                      "value": "<integer>"
+                    },
+                    {
+                      "key": "project_ids",
+                      "value": "<integer>"
+                    },
+                    {
+                      "key": "project_ids",
+                      "value": "<integer>"
+                    },
+                    {
+                      "key": "include",
+                      "value": "<string>"
+                    },
+                    {
+                      "key": "include",
+                      "value": "<string>"
+                    }
+                  ],
+                  "variable": [
+                    {
+                      "disabled": false,
+                      "type": "any",
+                      "value": "<integer>",
+                      "key": "organization_id",
+                      "description": "(Required) "
+                    }
+                  ]
+                },
+                "header": [
+                  {
+                    "description": {
+                      "content": "Added as a part of security scheme: oauth2",
+                      "type": "text/plain"
+                    },
+                    "key": "Authorization",
+                    "value": "<token>"
+                  }
+                ],
+                "method": "GET",
+                "body": {}
+              },
+              "status": "Not Found",
+              "code": 404,
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "text/plain"
+                }
+              ],
+              "body": "",
+              "cookie": [],
+              "_postman_previewlanguage": "text"
+            },
+            {
+              "id": "caceda69-0dc0-426c-8477-d50db8074911",
+              "name": "Rate limit exceeded",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    "v2",
+                    "organizations",
+                    ":organization_id",
+                    "time_edit_logs"
+                  ],
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "query": [
+                    {
+                      "key": "page_start_id",
+                      "value": "0"
+                    },
+                    {
+                      "key": "page_limit",
+                      "value": ""
+                    },
+                    {
+                      "key": "created[start]",
+                      "value": "<dateTime>"
+                    },
+                    {
+                      "key": "created[stop]",
+                      "value": "<dateTime>"
+                    },
+                    {
+                      "key": "user_ids",
+                      "value": "<integer>"
+                    },
+                    {
+                      "key": "user_ids",
+                      "value": "<integer>"
+                    },
+                    {
+                      "key": "task_ids",
+                      "value": "<integer>"
+                    },
+                    {
+                      "key": "task_ids",
+                      "value": "<integer>"
+                    },
+                    {
+                      "key": "project_ids",
+                      "value": "<integer>"
+                    },
+                    {
+                      "key": "project_ids",
+                      "value": "<integer>"
+                    },
+                    {
+                      "key": "include",
+                      "value": "<string>"
+                    },
+                    {
+                      "key": "include",
+                      "value": "<string>"
+                    }
+                  ],
+                  "variable": [
+                    {
+                      "disabled": false,
+                      "type": "any",
+                      "value": "<integer>",
+                      "key": "organization_id",
+                      "description": "(Required) "
+                    }
+                  ]
+                },
+                "header": [
+                  {
+                    "description": {
+                      "content": "Added as a part of security scheme: oauth2",
+                      "type": "text/plain"
+                    },
+                    "key": "Authorization",
+                    "value": "<token>"
+                  }
+                ],
+                "method": "GET",
+                "body": {}
+              },
+              "status": "Too Many Requests",
+              "code": 429,
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "text/plain"
+                }
+              ],
+              "body": "",
+              "cookie": [],
+              "_postman_previewlanguage": "text"
+            }
+          ],
+          "event": [],
+          "protocolProfileBehavior": {
+            "disableBodyPruning": true
+          }
+        }
+      ],
+      "event": []
+    }
+  ],
+  "event": [],
+  "variable": [
+    {
+      "type": "string",
+      "value": "https://api.hubstaff.com",
+      "key": "baseUrl"
+    }
+  ],
+  "auth": {
+    "type": "oauth2",
+    "oauth2": [
+      {
+        "key": "scope",
+        "value": "hubstaff:read hubstaff:write"
+      },
+      {
+        "key": "accessTokenUrl",
+        "value": "https://account.hubstaff.com/access_tokens"
+      },
+      {
+        "key": "authUrl",
+        "value": "https://account.hubstaff.com/authorizations/new"
+      },
+      {
+        "key": "grant_type",
+        "value": "authorization_code"
+      }
+    ]
+  },
+  "info": {
+    "_postman_id": "0db565cd-53a3-43ec-bf79-c1a5a1c91e9e",
+    "name": "Hubstaff Activities Time Edit Logs API",
+    "schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json",
+    "description": {
+      "content": "The Hubstaff API v2 provides programmatic read and write access to Hubstaff's time tracking, timesheet, workforce management, and project management data - organizations, members, teams, projects, tasks, clients, activities (10-minute tracked time blocks with activity percentages), daily activity aggregates, time entries, timesheets and approvals, time off requests/policies/balances, attendance schedules and shifts, screenshots, app and URL usage, invoices, team payments, and webhooks.\n\nAuthentication uses OpenID Connect / OAuth 2.0 through Hubstaff Account (https://account.hubstaff.com). For server-side scripts, create a personal access token at https://developer.hubstaff.com/personal_access_tokens - the PAT acts as an OAuth refresh token (90-day expiry) that you exchange for short-lived access tokens at https://account.hubstaff.com/access_tokens. Send the access token as a Bearer token on every request.\n\nRate limit: authenticated users are allowed 1,000 requests per hour per application; individual requests time out after 30 seconds. All requests must use HTTPS. Collection endpoints use cursor pagination via page_start_id and page_limit. This document is a curated OpenAPI 3.0 rendering of the live Swagger 2.0 definition published at https://api.hubstaff.com/v2/docs, covering the primary resource areas; consult the live definition for the complete surface (insights, job sites, budgets, overtime policies, integrations, and more).\n\nContact Support:\n Name: Hubstaff Developer Portal",
+      "type": "text/plain"
+    }
+  }
+}

@@ -1,0 +1,348 @@
+{
+  "opencollection": "1.0.0",
+  "info": {
+    "name": "Hubstaff Activities API",
+    "version": "2.0"
+  },
+  "request": {
+    "auth": {
+      "type": "oauth2",
+      "flow": "authorization_code",
+      "authorizationUrl": "https://account.hubstaff.com/authorizations/new",
+      "accessTokenUrl": "https://account.hubstaff.com/access_tokens",
+      "credentials": {
+        "clientId": "{{clientId}}",
+        "clientSecret": "{{clientSecret}}"
+      }
+    }
+  },
+  "items": [
+    {
+      "info": {
+        "name": "Activities",
+        "type": "folder"
+      },
+      "items": [
+        {
+          "info": {
+            "name": "List organization activities",
+            "type": "http"
+          },
+          "http": {
+            "method": "GET",
+            "url": "https://api.hubstaff.com/v2/organizations/:organization_id/activities",
+            "params": [
+              {
+                "name": "organization_id",
+                "value": "",
+                "type": "path"
+              },
+              {
+                "name": "page_start_id",
+                "value": "",
+                "type": "query",
+                "description": "The page start ID."
+              },
+              {
+                "name": "page_limit",
+                "value": "",
+                "type": "query",
+                "description": "The default page size"
+              },
+              {
+                "name": "time_slot[start]",
+                "value": "",
+                "type": "query",
+                "description": "Start time (ISO 8601)"
+              },
+              {
+                "name": "time_slot[stop]",
+                "value": "",
+                "type": "query",
+                "description": "Stop time (ISO 8601, Exclusive)"
+              },
+              {
+                "name": "user_ids",
+                "value": "",
+                "type": "query",
+                "description": "List of user IDs"
+              },
+              {
+                "name": "task_ids",
+                "value": "",
+                "type": "query",
+                "description": "List of task IDs"
+              },
+              {
+                "name": "global_todo_ids",
+                "value": "",
+                "type": "query",
+                "description": "List of global todo IDs"
+              },
+              {
+                "name": "project_ids",
+                "value": "",
+                "type": "query",
+                "description": "List of project IDs"
+              },
+              {
+                "name": "include",
+                "value": "",
+                "type": "query",
+                "description": "Specify related data to side load."
+              },
+              {
+                "name": "time_zone",
+                "value": "",
+                "type": "query",
+                "description": "The time zone name for the activity"
+              }
+            ]
+          },
+          "docs": "Returns a collection of activities (10-minute time blocks) for the given organization.\n\nResults can be filtered by user, task, project, and time range (time_slot[start], time_slot[stop]).\n\nFor aggregated daily data, use the daily_activities endpoint instead.\n\nNote: Data may be delayed up to 20 minutes.\nNote: Date range limit is 7 days. Earliest date is 6 months ago."
+        },
+        {
+          "info": {
+            "name": "List organization daily activities",
+            "type": "http"
+          },
+          "http": {
+            "method": "GET",
+            "url": "https://api.hubstaff.com/v2/organizations/:organization_id/activities/daily",
+            "params": [
+              {
+                "name": "organization_id",
+                "value": "",
+                "type": "path"
+              },
+              {
+                "name": "page_start_id",
+                "value": "",
+                "type": "query",
+                "description": "The page start ID."
+              },
+              {
+                "name": "page_limit",
+                "value": "",
+                "type": "query",
+                "description": "The default page size"
+              },
+              {
+                "name": "date[start]",
+                "value": "",
+                "type": "query",
+                "description": "Start date (ISO 8601)"
+              },
+              {
+                "name": "date[stop]",
+                "value": "",
+                "type": "query",
+                "description": "Stop date (ISO 8601, Inclusive)"
+              },
+              {
+                "name": "user_ids",
+                "value": "",
+                "type": "query",
+                "description": "List of user IDs"
+              },
+              {
+                "name": "task_ids",
+                "value": "",
+                "type": "query",
+                "description": "List of task IDs"
+              },
+              {
+                "name": "project_ids",
+                "value": "",
+                "type": "query",
+                "description": "List of project IDs"
+              },
+              {
+                "name": "include",
+                "value": "",
+                "type": "query",
+                "description": "Specify related data to side load."
+              }
+            ]
+          },
+          "docs": "Returns daily aggregated time tracking data for the given organization.\n\nResults can be filtered by user_ids[], task_ids[], project_ids[], and date[start]/[stop]. Data is aggregated by organization timezone date.\n\nNote: Date range limit is 31 days. Earliest date is 3 years ago."
+        },
+        {
+          "info": {
+            "name": "List organization last activities",
+            "type": "http"
+          },
+          "http": {
+            "method": "GET",
+            "url": "https://api.hubstaff.com/v2/organizations/:organization_id/last_activities",
+            "params": [
+              {
+                "name": "organization_id",
+                "value": "",
+                "type": "path"
+              },
+              {
+                "name": "page_start_id",
+                "value": "",
+                "type": "query",
+                "description": "The page start ID."
+              },
+              {
+                "name": "page_limit",
+                "value": "",
+                "type": "query",
+                "description": "The default page size"
+              },
+              {
+                "name": "include_removed",
+                "value": "",
+                "type": "query",
+                "description": "Include users that were removed"
+              },
+              {
+                "name": "include",
+                "value": "",
+                "type": "query",
+                "description": "Specify related data to side load."
+              }
+            ]
+          },
+          "docs": "Returns the most recent activity for each member in the organization."
+        },
+        {
+          "info": {
+            "name": "List project activities",
+            "type": "http"
+          },
+          "http": {
+            "method": "GET",
+            "url": "https://api.hubstaff.com/v2/projects/:project_id/activities",
+            "params": [
+              {
+                "name": "project_id",
+                "value": "",
+                "type": "path"
+              },
+              {
+                "name": "page_start_id",
+                "value": "",
+                "type": "query",
+                "description": "The page start ID."
+              },
+              {
+                "name": "page_limit",
+                "value": "",
+                "type": "query",
+                "description": "The default page size"
+              },
+              {
+                "name": "time_slot[start]",
+                "value": "",
+                "type": "query",
+                "description": "Start time (ISO 8601)"
+              },
+              {
+                "name": "time_slot[stop]",
+                "value": "",
+                "type": "query",
+                "description": "Stop time (ISO 8601, Exclusive)"
+              },
+              {
+                "name": "user_ids",
+                "value": "",
+                "type": "query",
+                "description": "List of user IDs"
+              },
+              {
+                "name": "task_ids",
+                "value": "",
+                "type": "query",
+                "description": "List of task IDs"
+              },
+              {
+                "name": "global_todo_ids",
+                "value": "",
+                "type": "query",
+                "description": "List of global todo IDs"
+              },
+              {
+                "name": "include",
+                "value": "",
+                "type": "query",
+                "description": "Specify related data to side load."
+              },
+              {
+                "name": "time_zone",
+                "value": "",
+                "type": "query",
+                "description": "The time zone name for the activity"
+              }
+            ]
+          },
+          "docs": "Returns a collection of activities (10-minute time blocks) for the given project.\n\nResults can be filtered by user, task, project, and time range (time_slot[start], time_slot[stop]).\n\nFor aggregated daily data, use the daily_activities endpoint instead.\n\nNote: Data may be delayed up to 20 minutes.\nNote: Date range limit is 7 days. Earliest date is 6 months ago."
+        },
+        {
+          "info": {
+            "name": "List project daily activities",
+            "type": "http"
+          },
+          "http": {
+            "method": "GET",
+            "url": "https://api.hubstaff.com/v2/projects/:project_id/activities/daily",
+            "params": [
+              {
+                "name": "project_id",
+                "value": "",
+                "type": "path"
+              },
+              {
+                "name": "page_start_id",
+                "value": "",
+                "type": "query",
+                "description": "The page start ID."
+              },
+              {
+                "name": "page_limit",
+                "value": "",
+                "type": "query",
+                "description": "The default page size"
+              },
+              {
+                "name": "date[start]",
+                "value": "",
+                "type": "query",
+                "description": "Start date (ISO 8601)"
+              },
+              {
+                "name": "date[stop]",
+                "value": "",
+                "type": "query",
+                "description": "Stop date (ISO 8601, Inclusive)"
+              },
+              {
+                "name": "user_ids",
+                "value": "",
+                "type": "query",
+                "description": "List of user IDs"
+              },
+              {
+                "name": "task_ids",
+                "value": "",
+                "type": "query",
+                "description": "List of task IDs"
+              },
+              {
+                "name": "include",
+                "value": "",
+                "type": "query",
+                "description": "Specify related data to side load."
+              }
+            ]
+          },
+          "docs": "Returns daily aggregated time tracking data for the given project.\n\nResults can be filtered by user_ids[], task_ids[], project_ids[], and date[start]/[stop]. Data is aggregated by organization timezone date.\n\nNote: Date range limit is 31 days. Earliest date is 3 years ago."
+        }
+      ]
+    }
+  ],
+  "bundled": true
+}

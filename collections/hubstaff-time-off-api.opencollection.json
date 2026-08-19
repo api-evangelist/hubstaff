@@ -1,0 +1,287 @@
+{
+  "opencollection": "1.0.0",
+  "info": {
+    "name": "Hubstaff Activities Time Off API",
+    "version": "2.0"
+  },
+  "request": {
+    "auth": {
+      "type": "oauth2",
+      "flow": "authorization_code",
+      "authorizationUrl": "https://account.hubstaff.com/authorizations/new",
+      "accessTokenUrl": "https://account.hubstaff.com/access_tokens",
+      "credentials": {
+        "clientId": "{{clientId}}",
+        "clientSecret": "{{clientSecret}}"
+      }
+    }
+  },
+  "items": [
+    {
+      "info": {
+        "name": "Time Off",
+        "type": "folder"
+      },
+      "items": [
+        {
+          "info": {
+            "name": "List organization time off requests",
+            "type": "http"
+          },
+          "http": {
+            "method": "GET",
+            "url": "https://api.hubstaff.com/v2/organizations/:organization_id/time_off_requests",
+            "params": [
+              {
+                "name": "organization_id",
+                "value": "",
+                "type": "path"
+              },
+              {
+                "name": "page_start_id",
+                "value": "",
+                "type": "query",
+                "description": "The page start ID."
+              },
+              {
+                "name": "page_limit",
+                "value": "",
+                "type": "query",
+                "description": "The default page size"
+              },
+              {
+                "name": "created[start]",
+                "value": "",
+                "type": "query",
+                "description": "Start time (ISO 8601)"
+              },
+              {
+                "name": "created[stop]",
+                "value": "",
+                "type": "query",
+                "description": "Stop time (ISO 8601, Exclusive)"
+              },
+              {
+                "name": "starts_at[start]",
+                "value": "",
+                "type": "query",
+                "description": "Start time (ISO 8601)"
+              },
+              {
+                "name": "starts_at[stop]",
+                "value": "",
+                "type": "query",
+                "description": "Stop time (ISO 8601, Exclusive)"
+              },
+              {
+                "name": "approved_at[start]",
+                "value": "",
+                "type": "query",
+                "description": "Approved start time (ISO 8601)"
+              },
+              {
+                "name": "approved_at[stop]",
+                "value": "",
+                "type": "query",
+                "description": "Approved stop time (ISO 8601, Exclusive)"
+              },
+              {
+                "name": "user_ids",
+                "value": "",
+                "type": "query",
+                "description": "List of user IDs"
+              },
+              {
+                "name": "include",
+                "value": "",
+                "type": "query",
+                "description": "Specify related data to side load."
+              }
+            ]
+          },
+          "docs": "Returns a collection of time off requests for the given organization.\n\nResults can be filtered by created[start]/[stop], starts_at[start]/[stop], approved_at[start]/[stop], and user_ids[].\n\nUse include[] to sideload related users and time_off_policies."
+        },
+        {
+          "info": {
+            "name": "Create time off request",
+            "type": "http"
+          },
+          "http": {
+            "method": "POST",
+            "url": "https://api.hubstaff.com/v2/organizations/:organization_id/time_off_requests",
+            "params": [
+              {
+                "name": "organization_id",
+                "value": "",
+                "type": "path"
+              }
+            ],
+            "body": {
+              "type": "json",
+              "data": "{}"
+            }
+          },
+          "docs": "Creates a new time off request.\n\nReturns the created time off request with a balance_preview showing the policy balance impact.\n\ntime_off_request_days must include one entry for every date from starts_at to stops_at. Each entry requires a date and amount_used in seconds (typically 28800 for an 8-hour day). Set amount_used to 0 for excluded weekend or holiday days.\n\nSet require_no_shift_overlap to true to reject the request if it overlaps with scheduled attendance shifts.\n\nremove_shifts deletes o"
+        },
+        {
+          "info": {
+            "name": "Get time off request",
+            "type": "http"
+          },
+          "http": {
+            "method": "GET",
+            "url": "https://api.hubstaff.com/v2/time_off_requests/:time_off_request_id",
+            "params": [
+              {
+                "name": "time_off_request_id",
+                "value": "",
+                "type": "path",
+                "description": "Time off request ID"
+              }
+            ]
+          },
+          "docs": "Returns the time off request with the given ID.\n\nIncludes time_off_request_days with per-day breakdown of dates, amounts, and holiday/paid status.\n\nAlso includes balance_preview showing the policy balance impact."
+        },
+        {
+          "info": {
+            "name": "Update time off request",
+            "type": "http"
+          },
+          "http": {
+            "method": "PUT",
+            "url": "https://api.hubstaff.com/v2/time_off_requests/:time_off_request_id",
+            "params": [
+              {
+                "name": "time_off_request_id",
+                "value": "",
+                "type": "path",
+                "description": "Time off request ID"
+              }
+            ],
+            "body": {
+              "type": "json",
+              "data": "{}"
+            }
+          },
+          "docs": "Updates a time off request's details (dates, message, days, policy).\n\nThis is a full replacement — all fields must be provided, including time_off_request_days with one entry per date (amount_used in seconds, typically 28800 for an 8-hour day).\n\nApproved, paid, or partially paid requests cannot be edited.\n\nIf the request was denied, updating it automatically resubmits it (status → submitted).\n\nIf the policy does not require approval, the request is auto-approved on update.\n\nSet require_no_shift_"
+        },
+        {
+          "info": {
+            "name": "Delete time off request",
+            "type": "http"
+          },
+          "http": {
+            "method": "DELETE",
+            "url": "https://api.hubstaff.com/v2/time_off_requests/:time_off_request_id",
+            "params": [
+              {
+                "name": "time_off_request_id",
+                "value": "",
+                "type": "path",
+                "description": "Time off request ID"
+              }
+            ]
+          },
+          "docs": "Deletes the time off request.\n\nApproved or paid time off requests cannot be deleted."
+        },
+        {
+          "info": {
+            "name": "List organization time off policies",
+            "type": "http"
+          },
+          "http": {
+            "method": "GET",
+            "url": "https://api.hubstaff.com/v2/organizations/:organization_id/time_off_policies",
+            "params": [
+              {
+                "name": "organization_id",
+                "value": "",
+                "type": "path"
+              },
+              {
+                "name": "page_start_id",
+                "value": "",
+                "type": "query",
+                "description": "The page start ID."
+              },
+              {
+                "name": "page_limit",
+                "value": "",
+                "type": "query",
+                "description": "The default page size"
+              },
+              {
+                "name": "status",
+                "value": "",
+                "type": "query",
+                "description": "Policy status"
+              }
+            ]
+          },
+          "docs": "Returns a collection of time off policies for the given organization."
+        },
+        {
+          "info": {
+            "name": "List organization time off balances",
+            "type": "http"
+          },
+          "http": {
+            "method": "GET",
+            "url": "https://api.hubstaff.com/v2/organizations/:organization_id/time_off_balances",
+            "params": [
+              {
+                "name": "organization_id",
+                "value": "",
+                "type": "path"
+              },
+              {
+                "name": "page_start_id",
+                "value": "",
+                "type": "query",
+                "description": "The page start ID."
+              },
+              {
+                "name": "page_limit",
+                "value": "",
+                "type": "query",
+                "description": "The default page size"
+              },
+              {
+                "name": "search",
+                "value": "",
+                "type": "query",
+                "description": "User name search"
+              },
+              {
+                "name": "user_ids",
+                "value": "",
+                "type": "query",
+                "description": "Filter by user IDs"
+              },
+              {
+                "name": "time_off_policy_ids",
+                "value": "",
+                "type": "query",
+                "description": "Filter by time off policy IDs"
+              },
+              {
+                "name": "year",
+                "value": "",
+                "type": "query",
+                "description": "Balance year (default: current year in organization timezone)"
+              },
+              {
+                "name": "include",
+                "value": "",
+                "type": "query",
+                "description": "Specify related data to side load."
+              }
+            ]
+          },
+          "docs": "Returns time off balances for the given organization.\n\nEach entry represents one user's balance for one time off policy in the requested year.\n\nUse `year` to query balances for a specific year (defaults to current year in the organization's timezone).\n\nUse `include[]` to sideload related users and time_off_policies."
+        }
+      ]
+    }
+  ],
+  "bundled": true
+}

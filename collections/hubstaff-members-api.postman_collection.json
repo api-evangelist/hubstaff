@@ -1,0 +1,3130 @@
+{
+  "item": [
+    {
+      "id": "f6adb26d-3b6e-4134-be8e-0d84d2ec2fbe",
+      "name": "Members",
+      "description": {
+        "content": "Organization membership - list, add, and update members and their pay/bill rates.",
+        "type": "text/plain"
+      },
+      "item": [
+        {
+          "id": "54774209-ea6f-4a72-b76c-74beae497339",
+          "name": "List organization members",
+          "request": {
+            "name": "List organization members",
+            "description": {
+              "content": "Returns a collection of members for the given organization.\n\nResults can be filtered by search, user IDs, membership role, and date range.\n\n*trackable* - Whether the user can track time.  This is one of 3 values\n- *false* -- meaning tracking has been explicitly disabled for this user regardless of their role\n- *true* -- meaning they are allowed to track time\n- *viewer* -- meaning they are allowed to track time, however as they are only a project viewer (or no\n  memberships) they implicitly can not track on any project\n\n*membership_role* - The basic role in this organization\n- *owner* - An owner of the organization.  This member can do anything within the organization.\n- *manager* - An manager of the organization.  This member can do anything within the organization\n  except things to do with money. (payroll, invoicing, account billing)\n- *user* - (By project). A member of the organization where permissions are defined by their project memberships\n\n*effective_role* - represents an effective role that combines a member's organization role and their project roles\n- *organization_owner* - The member is an organization owner\n- *organization_manager* - The member is an organization manager\n- *project_manager* - The member is an organization user and a manager on all projects and teams\n- *project_user* - The member is an organization user and a user on all projects and teams\n- *project_viewer* - The member is an organization user and a viewer on all projects and teams\n- *by_project* - The member is an organization user and has mixed roles on their projects and team memberships (advanced in the web UI)\n- *unassigned* - The member has no assigned role and no project memberships (No role in the web UI)\n\n*profile* - The profile information for the user. Only organization owners and managers may see this information.\n- *custom_fields* - The custom fields, defined for organization, in format of \"key\": \"value\". The meaning\n   of keys is defined in organization.member_profile_fields.\n\n**Filtering by dates:**\n\nYou can filter members by when they were added to the organization using the `created_at` parameter:\n- Use `created_at[start]` to get members added on or after a specific date\n- Use `created_at[stop]` to get members added before a specific date\n- Use both to get members added within a date range\n\nYou can also filter by when membership was last updated using the `updated_at` parameter:\n- Use `updated_at[start]` to get members updated on or after a specific date\n- Use `updated_at[stop]` to get members updated before a specific date\n- Use both to get members updated within a date range",
+              "type": "text/plain"
+            },
+            "url": {
+              "path": [
+                "v2",
+                "organizations",
+                ":organization_id",
+                "members"
+              ],
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "query": [
+                {
+                  "disabled": false,
+                  "key": "page_start_id",
+                  "value": "0",
+                  "description": "The page start ID."
+                },
+                {
+                  "disabled": false,
+                  "key": "page_limit",
+                  "value": "",
+                  "description": "The default page size"
+                },
+                {
+                  "disabled": false,
+                  "key": "search[email]",
+                  "value": "<string>",
+                  "description": "An email to search for members"
+                },
+                {
+                  "disabled": false,
+                  "key": "search[name]",
+                  "value": "<string>",
+                  "description": "A name to search for members"
+                },
+                {
+                  "disabled": false,
+                  "key": "include_removed",
+                  "value": "false",
+                  "description": "Include members that were removed from the organization"
+                },
+                {
+                  "disabled": false,
+                  "key": "include_profile",
+                  "value": "false",
+                  "description": "Include member profile information"
+                },
+                {
+                  "disabled": false,
+                  "key": "include_projects",
+                  "value": "false",
+                  "description": "Include project memberships for this member"
+                },
+                {
+                  "disabled": false,
+                  "key": "project_statuses",
+                  "value": "<string>",
+                  "description": "Filter projects by status when include_projects=true"
+                },
+                {
+                  "disabled": false,
+                  "key": "project_statuses",
+                  "value": "<string>",
+                  "description": "Filter projects by status when include_projects=true"
+                },
+                {
+                  "disabled": false,
+                  "key": "include_limits",
+                  "value": "false",
+                  "description": "Include member limits information"
+                },
+                {
+                  "disabled": false,
+                  "key": "membership_roles",
+                  "value": "<string>",
+                  "description": "Search by membership role"
+                },
+                {
+                  "disabled": false,
+                  "key": "membership_roles",
+                  "value": "<string>",
+                  "description": "Search by membership role"
+                },
+                {
+                  "disabled": false,
+                  "key": "created_at[start]",
+                  "value": "<dateTime>",
+                  "description": "Start date for created_at filter (inclusive)"
+                },
+                {
+                  "disabled": false,
+                  "key": "created_at[stop]",
+                  "value": "<dateTime>",
+                  "description": "End date for created_at filter (exclusive)"
+                },
+                {
+                  "disabled": false,
+                  "key": "updated_at[start]",
+                  "value": "<dateTime>",
+                  "description": "Start date for updated_at filter (inclusive)"
+                },
+                {
+                  "disabled": false,
+                  "key": "updated_at[stop]",
+                  "value": "<dateTime>",
+                  "description": "End date for updated_at filter (exclusive)"
+                },
+                {
+                  "disabled": false,
+                  "key": "user_ids",
+                  "value": "<integer>",
+                  "description": "List of user IDs"
+                },
+                {
+                  "disabled": false,
+                  "key": "user_ids",
+                  "value": "<integer>",
+                  "description": "List of user IDs"
+                },
+                {
+                  "disabled": false,
+                  "key": "include",
+                  "value": "<string>",
+                  "description": "Specify related data to side load."
+                },
+                {
+                  "disabled": false,
+                  "key": "include",
+                  "value": "<string>",
+                  "description": "Specify related data to side load."
+                }
+              ],
+              "variable": [
+                {
+                  "disabled": false,
+                  "type": "any",
+                  "value": "<integer>",
+                  "key": "organization_id",
+                  "description": "(Required) "
+                }
+              ]
+            },
+            "method": "GET",
+            "auth": null
+          },
+          "response": [
+            {
+              "id": "aa4b23d4-35c3-480d-9369-de3ed379a3e7",
+              "name": "A list of members",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    "v2",
+                    "organizations",
+                    ":organization_id",
+                    "members"
+                  ],
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "query": [
+                    {
+                      "key": "page_start_id",
+                      "value": "0"
+                    },
+                    {
+                      "key": "page_limit",
+                      "value": ""
+                    },
+                    {
+                      "key": "search[email]",
+                      "value": "<string>"
+                    },
+                    {
+                      "key": "search[name]",
+                      "value": "<string>"
+                    },
+                    {
+                      "key": "include_removed",
+                      "value": "false"
+                    },
+                    {
+                      "key": "include_profile",
+                      "value": "false"
+                    },
+                    {
+                      "key": "include_projects",
+                      "value": "false"
+                    },
+                    {
+                      "key": "project_statuses",
+                      "value": "<string>"
+                    },
+                    {
+                      "key": "project_statuses",
+                      "value": "<string>"
+                    },
+                    {
+                      "key": "include_limits",
+                      "value": "false"
+                    },
+                    {
+                      "key": "membership_roles",
+                      "value": "<string>"
+                    },
+                    {
+                      "key": "membership_roles",
+                      "value": "<string>"
+                    },
+                    {
+                      "key": "created_at[start]",
+                      "value": "<dateTime>"
+                    },
+                    {
+                      "key": "created_at[stop]",
+                      "value": "<dateTime>"
+                    },
+                    {
+                      "key": "updated_at[start]",
+                      "value": "<dateTime>"
+                    },
+                    {
+                      "key": "updated_at[stop]",
+                      "value": "<dateTime>"
+                    },
+                    {
+                      "key": "user_ids",
+                      "value": "<integer>"
+                    },
+                    {
+                      "key": "user_ids",
+                      "value": "<integer>"
+                    },
+                    {
+                      "key": "include",
+                      "value": "<string>"
+                    },
+                    {
+                      "key": "include",
+                      "value": "<string>"
+                    }
+                  ],
+                  "variable": [
+                    {
+                      "disabled": false,
+                      "type": "any",
+                      "value": "<integer>",
+                      "key": "organization_id",
+                      "description": "(Required) "
+                    }
+                  ]
+                },
+                "header": [
+                  {
+                    "description": {
+                      "content": "Added as a part of security scheme: oauth2",
+                      "type": "text/plain"
+                    },
+                    "key": "Authorization",
+                    "value": "<token>"
+                  }
+                ],
+                "method": "GET",
+                "body": {}
+              },
+              "status": "OK",
+              "code": 200,
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "text/plain"
+                }
+              ],
+              "body": "",
+              "cookie": [],
+              "_postman_previewlanguage": "text"
+            },
+            {
+              "id": "c8060afd-a694-4c1f-8964-897cfa754d9f",
+              "name": "Invalid parameters",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    "v2",
+                    "organizations",
+                    ":organization_id",
+                    "members"
+                  ],
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "query": [
+                    {
+                      "key": "page_start_id",
+                      "value": "0"
+                    },
+                    {
+                      "key": "page_limit",
+                      "value": ""
+                    },
+                    {
+                      "key": "search[email]",
+                      "value": "<string>"
+                    },
+                    {
+                      "key": "search[name]",
+                      "value": "<string>"
+                    },
+                    {
+                      "key": "include_removed",
+                      "value": "false"
+                    },
+                    {
+                      "key": "include_profile",
+                      "value": "false"
+                    },
+                    {
+                      "key": "include_projects",
+                      "value": "false"
+                    },
+                    {
+                      "key": "project_statuses",
+                      "value": "<string>"
+                    },
+                    {
+                      "key": "project_statuses",
+                      "value": "<string>"
+                    },
+                    {
+                      "key": "include_limits",
+                      "value": "false"
+                    },
+                    {
+                      "key": "membership_roles",
+                      "value": "<string>"
+                    },
+                    {
+                      "key": "membership_roles",
+                      "value": "<string>"
+                    },
+                    {
+                      "key": "created_at[start]",
+                      "value": "<dateTime>"
+                    },
+                    {
+                      "key": "created_at[stop]",
+                      "value": "<dateTime>"
+                    },
+                    {
+                      "key": "updated_at[start]",
+                      "value": "<dateTime>"
+                    },
+                    {
+                      "key": "updated_at[stop]",
+                      "value": "<dateTime>"
+                    },
+                    {
+                      "key": "user_ids",
+                      "value": "<integer>"
+                    },
+                    {
+                      "key": "user_ids",
+                      "value": "<integer>"
+                    },
+                    {
+                      "key": "include",
+                      "value": "<string>"
+                    },
+                    {
+                      "key": "include",
+                      "value": "<string>"
+                    }
+                  ],
+                  "variable": [
+                    {
+                      "disabled": false,
+                      "type": "any",
+                      "value": "<integer>",
+                      "key": "organization_id",
+                      "description": "(Required) "
+                    }
+                  ]
+                },
+                "header": [
+                  {
+                    "description": {
+                      "content": "Added as a part of security scheme: oauth2",
+                      "type": "text/plain"
+                    },
+                    "key": "Authorization",
+                    "value": "<token>"
+                  }
+                ],
+                "method": "GET",
+                "body": {}
+              },
+              "status": "Bad Request",
+              "code": 400,
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "text/plain"
+                }
+              ],
+              "body": "",
+              "cookie": [],
+              "_postman_previewlanguage": "text"
+            },
+            {
+              "id": "25a26f4a-36dc-41eb-a853-7689357f320f",
+              "name": "Unauthorized",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    "v2",
+                    "organizations",
+                    ":organization_id",
+                    "members"
+                  ],
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "query": [
+                    {
+                      "key": "page_start_id",
+                      "value": "0"
+                    },
+                    {
+                      "key": "page_limit",
+                      "value": ""
+                    },
+                    {
+                      "key": "search[email]",
+                      "value": "<string>"
+                    },
+                    {
+                      "key": "search[name]",
+                      "value": "<string>"
+                    },
+                    {
+                      "key": "include_removed",
+                      "value": "false"
+                    },
+                    {
+                      "key": "include_profile",
+                      "value": "false"
+                    },
+                    {
+                      "key": "include_projects",
+                      "value": "false"
+                    },
+                    {
+                      "key": "project_statuses",
+                      "value": "<string>"
+                    },
+                    {
+                      "key": "project_statuses",
+                      "value": "<string>"
+                    },
+                    {
+                      "key": "include_limits",
+                      "value": "false"
+                    },
+                    {
+                      "key": "membership_roles",
+                      "value": "<string>"
+                    },
+                    {
+                      "key": "membership_roles",
+                      "value": "<string>"
+                    },
+                    {
+                      "key": "created_at[start]",
+                      "value": "<dateTime>"
+                    },
+                    {
+                      "key": "created_at[stop]",
+                      "value": "<dateTime>"
+                    },
+                    {
+                      "key": "updated_at[start]",
+                      "value": "<dateTime>"
+                    },
+                    {
+                      "key": "updated_at[stop]",
+                      "value": "<dateTime>"
+                    },
+                    {
+                      "key": "user_ids",
+                      "value": "<integer>"
+                    },
+                    {
+                      "key": "user_ids",
+                      "value": "<integer>"
+                    },
+                    {
+                      "key": "include",
+                      "value": "<string>"
+                    },
+                    {
+                      "key": "include",
+                      "value": "<string>"
+                    }
+                  ],
+                  "variable": [
+                    {
+                      "disabled": false,
+                      "type": "any",
+                      "value": "<integer>",
+                      "key": "organization_id",
+                      "description": "(Required) "
+                    }
+                  ]
+                },
+                "header": [
+                  {
+                    "description": {
+                      "content": "Added as a part of security scheme: oauth2",
+                      "type": "text/plain"
+                    },
+                    "key": "Authorization",
+                    "value": "<token>"
+                  }
+                ],
+                "method": "GET",
+                "body": {}
+              },
+              "status": "Unauthorized",
+              "code": 401,
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "text/plain"
+                }
+              ],
+              "body": "",
+              "cookie": [],
+              "_postman_previewlanguage": "text"
+            },
+            {
+              "id": "f2e1cba5-5dfa-4b53-92da-d0e0c820ac18",
+              "name": "API access is only for organizations on an active plan",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    "v2",
+                    "organizations",
+                    ":organization_id",
+                    "members"
+                  ],
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "query": [
+                    {
+                      "key": "page_start_id",
+                      "value": "0"
+                    },
+                    {
+                      "key": "page_limit",
+                      "value": ""
+                    },
+                    {
+                      "key": "search[email]",
+                      "value": "<string>"
+                    },
+                    {
+                      "key": "search[name]",
+                      "value": "<string>"
+                    },
+                    {
+                      "key": "include_removed",
+                      "value": "false"
+                    },
+                    {
+                      "key": "include_profile",
+                      "value": "false"
+                    },
+                    {
+                      "key": "include_projects",
+                      "value": "false"
+                    },
+                    {
+                      "key": "project_statuses",
+                      "value": "<string>"
+                    },
+                    {
+                      "key": "project_statuses",
+                      "value": "<string>"
+                    },
+                    {
+                      "key": "include_limits",
+                      "value": "false"
+                    },
+                    {
+                      "key": "membership_roles",
+                      "value": "<string>"
+                    },
+                    {
+                      "key": "membership_roles",
+                      "value": "<string>"
+                    },
+                    {
+                      "key": "created_at[start]",
+                      "value": "<dateTime>"
+                    },
+                    {
+                      "key": "created_at[stop]",
+                      "value": "<dateTime>"
+                    },
+                    {
+                      "key": "updated_at[start]",
+                      "value": "<dateTime>"
+                    },
+                    {
+                      "key": "updated_at[stop]",
+                      "value": "<dateTime>"
+                    },
+                    {
+                      "key": "user_ids",
+                      "value": "<integer>"
+                    },
+                    {
+                      "key": "user_ids",
+                      "value": "<integer>"
+                    },
+                    {
+                      "key": "include",
+                      "value": "<string>"
+                    },
+                    {
+                      "key": "include",
+                      "value": "<string>"
+                    }
+                  ],
+                  "variable": [
+                    {
+                      "disabled": false,
+                      "type": "any",
+                      "value": "<integer>",
+                      "key": "organization_id",
+                      "description": "(Required) "
+                    }
+                  ]
+                },
+                "header": [
+                  {
+                    "description": {
+                      "content": "Added as a part of security scheme: oauth2",
+                      "type": "text/plain"
+                    },
+                    "key": "Authorization",
+                    "value": "<token>"
+                  }
+                ],
+                "method": "GET",
+                "body": {}
+              },
+              "status": "Forbidden",
+              "code": 403,
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "text/plain"
+                }
+              ],
+              "body": "",
+              "cookie": [],
+              "_postman_previewlanguage": "text"
+            },
+            {
+              "id": "fe95ed50-3774-4f65-8c15-92d16c7faca0",
+              "name": "Could not find record",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    "v2",
+                    "organizations",
+                    ":organization_id",
+                    "members"
+                  ],
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "query": [
+                    {
+                      "key": "page_start_id",
+                      "value": "0"
+                    },
+                    {
+                      "key": "page_limit",
+                      "value": ""
+                    },
+                    {
+                      "key": "search[email]",
+                      "value": "<string>"
+                    },
+                    {
+                      "key": "search[name]",
+                      "value": "<string>"
+                    },
+                    {
+                      "key": "include_removed",
+                      "value": "false"
+                    },
+                    {
+                      "key": "include_profile",
+                      "value": "false"
+                    },
+                    {
+                      "key": "include_projects",
+                      "value": "false"
+                    },
+                    {
+                      "key": "project_statuses",
+                      "value": "<string>"
+                    },
+                    {
+                      "key": "project_statuses",
+                      "value": "<string>"
+                    },
+                    {
+                      "key": "include_limits",
+                      "value": "false"
+                    },
+                    {
+                      "key": "membership_roles",
+                      "value": "<string>"
+                    },
+                    {
+                      "key": "membership_roles",
+                      "value": "<string>"
+                    },
+                    {
+                      "key": "created_at[start]",
+                      "value": "<dateTime>"
+                    },
+                    {
+                      "key": "created_at[stop]",
+                      "value": "<dateTime>"
+                    },
+                    {
+                      "key": "updated_at[start]",
+                      "value": "<dateTime>"
+                    },
+                    {
+                      "key": "updated_at[stop]",
+                      "value": "<dateTime>"
+                    },
+                    {
+                      "key": "user_ids",
+                      "value": "<integer>"
+                    },
+                    {
+                      "key": "user_ids",
+                      "value": "<integer>"
+                    },
+                    {
+                      "key": "include",
+                      "value": "<string>"
+                    },
+                    {
+                      "key": "include",
+                      "value": "<string>"
+                    }
+                  ],
+                  "variable": [
+                    {
+                      "disabled": false,
+                      "type": "any",
+                      "value": "<integer>",
+                      "key": "organization_id",
+                      "description": "(Required) "
+                    }
+                  ]
+                },
+                "header": [
+                  {
+                    "description": {
+                      "content": "Added as a part of security scheme: oauth2",
+                      "type": "text/plain"
+                    },
+                    "key": "Authorization",
+                    "value": "<token>"
+                  }
+                ],
+                "method": "GET",
+                "body": {}
+              },
+              "status": "Not Found",
+              "code": 404,
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "text/plain"
+                }
+              ],
+              "body": "",
+              "cookie": [],
+              "_postman_previewlanguage": "text"
+            },
+            {
+              "id": "2f143ce1-7c1d-4dda-87f6-32db104a5ce5",
+              "name": "Rate limit exceeded",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    "v2",
+                    "organizations",
+                    ":organization_id",
+                    "members"
+                  ],
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "query": [
+                    {
+                      "key": "page_start_id",
+                      "value": "0"
+                    },
+                    {
+                      "key": "page_limit",
+                      "value": ""
+                    },
+                    {
+                      "key": "search[email]",
+                      "value": "<string>"
+                    },
+                    {
+                      "key": "search[name]",
+                      "value": "<string>"
+                    },
+                    {
+                      "key": "include_removed",
+                      "value": "false"
+                    },
+                    {
+                      "key": "include_profile",
+                      "value": "false"
+                    },
+                    {
+                      "key": "include_projects",
+                      "value": "false"
+                    },
+                    {
+                      "key": "project_statuses",
+                      "value": "<string>"
+                    },
+                    {
+                      "key": "project_statuses",
+                      "value": "<string>"
+                    },
+                    {
+                      "key": "include_limits",
+                      "value": "false"
+                    },
+                    {
+                      "key": "membership_roles",
+                      "value": "<string>"
+                    },
+                    {
+                      "key": "membership_roles",
+                      "value": "<string>"
+                    },
+                    {
+                      "key": "created_at[start]",
+                      "value": "<dateTime>"
+                    },
+                    {
+                      "key": "created_at[stop]",
+                      "value": "<dateTime>"
+                    },
+                    {
+                      "key": "updated_at[start]",
+                      "value": "<dateTime>"
+                    },
+                    {
+                      "key": "updated_at[stop]",
+                      "value": "<dateTime>"
+                    },
+                    {
+                      "key": "user_ids",
+                      "value": "<integer>"
+                    },
+                    {
+                      "key": "user_ids",
+                      "value": "<integer>"
+                    },
+                    {
+                      "key": "include",
+                      "value": "<string>"
+                    },
+                    {
+                      "key": "include",
+                      "value": "<string>"
+                    }
+                  ],
+                  "variable": [
+                    {
+                      "disabled": false,
+                      "type": "any",
+                      "value": "<integer>",
+                      "key": "organization_id",
+                      "description": "(Required) "
+                    }
+                  ]
+                },
+                "header": [
+                  {
+                    "description": {
+                      "content": "Added as a part of security scheme: oauth2",
+                      "type": "text/plain"
+                    },
+                    "key": "Authorization",
+                    "value": "<token>"
+                  }
+                ],
+                "method": "GET",
+                "body": {}
+              },
+              "status": "Too Many Requests",
+              "code": 429,
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "text/plain"
+                }
+              ],
+              "body": "",
+              "cookie": [],
+              "_postman_previewlanguage": "text"
+            }
+          ],
+          "event": [],
+          "protocolProfileBehavior": {
+            "disableBodyPruning": true
+          }
+        },
+        {
+          "id": "5bc4d8a6-50fb-431f-9869-0db7c8c6670b",
+          "name": "Create organization member",
+          "request": {
+            "name": "Create organization member",
+            "description": {
+              "content": "Creates a new user and adds them to the organization as a member.\n\nReturns the created member.\n\nAvailable roles:\n- organization_manager - Organization manager\n- project_manager - Project manager\n- project_user - Project user\n- project_viewer - Project viewer\n\nAvailable pay periods:\n- none - Disables automatic payments\n- weekly - Pay users weekly\n- twice_per_month - Pay users twice a month\n- biweekly - Pay users bi-weekly\n- monthly - Pay users monthly",
+              "type": "text/plain"
+            },
+            "url": {
+              "path": [
+                "v2",
+                "organizations",
+                ":organization_id",
+                "members"
+              ],
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "query": [],
+              "variable": [
+                {
+                  "disabled": false,
+                  "type": "any",
+                  "value": "<integer>",
+                  "key": "organization_id",
+                  "description": "(Required) "
+                }
+              ]
+            },
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              }
+            ],
+            "method": "POST",
+            "auth": null,
+            "body": {
+              "mode": "raw",
+              "raw": "<object>",
+              "options": {
+                "raw": {
+                  "language": "json"
+                }
+              }
+            }
+          },
+          "response": [
+            {
+              "id": "fbfe1b56-4435-426d-aaea-1d84b7339315",
+              "name": "A member",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    "v2",
+                    "organizations",
+                    ":organization_id",
+                    "members"
+                  ],
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "query": [],
+                  "variable": [
+                    {
+                      "disabled": false,
+                      "type": "any",
+                      "value": "<integer>",
+                      "key": "organization_id",
+                      "description": "(Required) "
+                    }
+                  ]
+                },
+                "header": [
+                  {
+                    "description": {
+                      "content": "Added as a part of security scheme: oauth2",
+                      "type": "text/plain"
+                    },
+                    "key": "Authorization",
+                    "value": "<token>"
+                  }
+                ],
+                "method": "POST",
+                "body": {
+                  "mode": "raw",
+                  "raw": "<object>",
+                  "options": {
+                    "raw": {
+                      "language": "json"
+                    }
+                  }
+                }
+              },
+              "status": "Created",
+              "code": 201,
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "text/plain"
+                }
+              ],
+              "body": "",
+              "cookie": [],
+              "_postman_previewlanguage": "text"
+            },
+            {
+              "id": "8e55c61d-086f-40cd-bf93-dc9fd29d92a2",
+              "name": "Invalid parameters",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    "v2",
+                    "organizations",
+                    ":organization_id",
+                    "members"
+                  ],
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "query": [],
+                  "variable": [
+                    {
+                      "disabled": false,
+                      "type": "any",
+                      "value": "<integer>",
+                      "key": "organization_id",
+                      "description": "(Required) "
+                    }
+                  ]
+                },
+                "header": [
+                  {
+                    "description": {
+                      "content": "Added as a part of security scheme: oauth2",
+                      "type": "text/plain"
+                    },
+                    "key": "Authorization",
+                    "value": "<token>"
+                  }
+                ],
+                "method": "POST",
+                "body": {
+                  "mode": "raw",
+                  "raw": "<object>",
+                  "options": {
+                    "raw": {
+                      "language": "json"
+                    }
+                  }
+                }
+              },
+              "status": "Bad Request",
+              "code": 400,
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "text/plain"
+                }
+              ],
+              "body": "",
+              "cookie": [],
+              "_postman_previewlanguage": "text"
+            },
+            {
+              "id": "8ca99649-18a9-4819-9f4d-79d0146f3b76",
+              "name": "Unauthorized",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    "v2",
+                    "organizations",
+                    ":organization_id",
+                    "members"
+                  ],
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "query": [],
+                  "variable": [
+                    {
+                      "disabled": false,
+                      "type": "any",
+                      "value": "<integer>",
+                      "key": "organization_id",
+                      "description": "(Required) "
+                    }
+                  ]
+                },
+                "header": [
+                  {
+                    "description": {
+                      "content": "Added as a part of security scheme: oauth2",
+                      "type": "text/plain"
+                    },
+                    "key": "Authorization",
+                    "value": "<token>"
+                  }
+                ],
+                "method": "POST",
+                "body": {
+                  "mode": "raw",
+                  "raw": "<object>",
+                  "options": {
+                    "raw": {
+                      "language": "json"
+                    }
+                  }
+                }
+              },
+              "status": "Unauthorized",
+              "code": 401,
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "text/plain"
+                }
+              ],
+              "body": "",
+              "cookie": [],
+              "_postman_previewlanguage": "text"
+            },
+            {
+              "id": "ea75b38f-0534-4a47-8719-25dec9853506",
+              "name": "API access is only for organizations on an active plan",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    "v2",
+                    "organizations",
+                    ":organization_id",
+                    "members"
+                  ],
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "query": [],
+                  "variable": [
+                    {
+                      "disabled": false,
+                      "type": "any",
+                      "value": "<integer>",
+                      "key": "organization_id",
+                      "description": "(Required) "
+                    }
+                  ]
+                },
+                "header": [
+                  {
+                    "description": {
+                      "content": "Added as a part of security scheme: oauth2",
+                      "type": "text/plain"
+                    },
+                    "key": "Authorization",
+                    "value": "<token>"
+                  }
+                ],
+                "method": "POST",
+                "body": {
+                  "mode": "raw",
+                  "raw": "<object>",
+                  "options": {
+                    "raw": {
+                      "language": "json"
+                    }
+                  }
+                }
+              },
+              "status": "Forbidden",
+              "code": 403,
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "text/plain"
+                }
+              ],
+              "body": "",
+              "cookie": [],
+              "_postman_previewlanguage": "text"
+            },
+            {
+              "id": "5ae0eb49-f51a-4cce-b23a-4095db304215",
+              "name": "Could not find record",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    "v2",
+                    "organizations",
+                    ":organization_id",
+                    "members"
+                  ],
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "query": [],
+                  "variable": [
+                    {
+                      "disabled": false,
+                      "type": "any",
+                      "value": "<integer>",
+                      "key": "organization_id",
+                      "description": "(Required) "
+                    }
+                  ]
+                },
+                "header": [
+                  {
+                    "description": {
+                      "content": "Added as a part of security scheme: oauth2",
+                      "type": "text/plain"
+                    },
+                    "key": "Authorization",
+                    "value": "<token>"
+                  }
+                ],
+                "method": "POST",
+                "body": {
+                  "mode": "raw",
+                  "raw": "<object>",
+                  "options": {
+                    "raw": {
+                      "language": "json"
+                    }
+                  }
+                }
+              },
+              "status": "Not Found",
+              "code": 404,
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "text/plain"
+                }
+              ],
+              "body": "",
+              "cookie": [],
+              "_postman_previewlanguage": "text"
+            },
+            {
+              "id": "6fc57123-a208-4a7c-89d6-e457a323b337",
+              "name": "Rate limit exceeded",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    "v2",
+                    "organizations",
+                    ":organization_id",
+                    "members"
+                  ],
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "query": [],
+                  "variable": [
+                    {
+                      "disabled": false,
+                      "type": "any",
+                      "value": "<integer>",
+                      "key": "organization_id",
+                      "description": "(Required) "
+                    }
+                  ]
+                },
+                "header": [
+                  {
+                    "description": {
+                      "content": "Added as a part of security scheme: oauth2",
+                      "type": "text/plain"
+                    },
+                    "key": "Authorization",
+                    "value": "<token>"
+                  }
+                ],
+                "method": "POST",
+                "body": {
+                  "mode": "raw",
+                  "raw": "<object>",
+                  "options": {
+                    "raw": {
+                      "language": "json"
+                    }
+                  }
+                }
+              },
+              "status": "Too Many Requests",
+              "code": 429,
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "text/plain"
+                }
+              ],
+              "body": "",
+              "cookie": [],
+              "_postman_previewlanguage": "text"
+            }
+          ],
+          "event": [],
+          "protocolProfileBehavior": {
+            "disableBodyPruning": true
+          }
+        },
+        {
+          "id": "16c7a4ae-8cc9-4978-a7a3-249508d47051",
+          "name": "Update organization members",
+          "request": {
+            "name": "Update organization members",
+            "description": {
+              "content": "Updates organization members.\n\nReturns {success: true} on success.\n\nOnly pass in the members you want to change.\n\nAvailable roles:\n- user - Member role determined by project membership\n- manager - Organization manager\n- owner - Organization owner\n- remove - Removes user from organization (and all projects/teams)\n\nLimits: Specify full limits config. Missing limits will be removed. Empty \"limits\" removes all limits.\n\nProjects: Specify project memberships to change. Available project roles: viewer, user, manager, remove.\n\nMetadata: Only specify keys to change. Non-existent keys are created. Use null to remove a key.\n\nKey requirements:\n- 2-30 characters\n- Lowercase letters, numbers, and underscores only\n\nValue requirements:\n- Valid UTF-8 string\n- Maximum 200 characters\n\nBatch size: Up to 150 members per request. Larger requests are rejected with HTTP 400 and code \"too_many_members\".",
+              "type": "text/plain"
+            },
+            "url": {
+              "path": [
+                "v2",
+                "organizations",
+                ":organization_id",
+                "update_members"
+              ],
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "query": [],
+              "variable": [
+                {
+                  "disabled": false,
+                  "type": "any",
+                  "value": "<integer>",
+                  "key": "organization_id",
+                  "description": "(Required) Organization ID"
+                }
+              ]
+            },
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              }
+            ],
+            "method": "PUT",
+            "auth": null,
+            "body": {
+              "mode": "raw",
+              "raw": "<object>",
+              "options": {
+                "raw": {
+                  "language": "json"
+                }
+              }
+            }
+          },
+          "response": [
+            {
+              "id": "9ed9126f-8fff-4c53-8666-4a06f406fd48",
+              "name": "Updated successfully",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    "v2",
+                    "organizations",
+                    ":organization_id",
+                    "update_members"
+                  ],
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "query": [],
+                  "variable": [
+                    {
+                      "disabled": false,
+                      "type": "any",
+                      "value": "<integer>",
+                      "key": "organization_id",
+                      "description": "(Required) Organization ID"
+                    }
+                  ]
+                },
+                "header": [
+                  {
+                    "description": {
+                      "content": "Added as a part of security scheme: oauth2",
+                      "type": "text/plain"
+                    },
+                    "key": "Authorization",
+                    "value": "<token>"
+                  }
+                ],
+                "method": "PUT",
+                "body": {
+                  "mode": "raw",
+                  "raw": "<object>",
+                  "options": {
+                    "raw": {
+                      "language": "json"
+                    }
+                  }
+                }
+              },
+              "status": "OK",
+              "code": 200,
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "text/plain"
+                }
+              ],
+              "body": "",
+              "cookie": [],
+              "_postman_previewlanguage": "text"
+            },
+            {
+              "id": "4d1c62fb-e892-439e-9f4d-afc801145a1c",
+              "name": "Invalid parameters",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    "v2",
+                    "organizations",
+                    ":organization_id",
+                    "update_members"
+                  ],
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "query": [],
+                  "variable": [
+                    {
+                      "disabled": false,
+                      "type": "any",
+                      "value": "<integer>",
+                      "key": "organization_id",
+                      "description": "(Required) Organization ID"
+                    }
+                  ]
+                },
+                "header": [
+                  {
+                    "description": {
+                      "content": "Added as a part of security scheme: oauth2",
+                      "type": "text/plain"
+                    },
+                    "key": "Authorization",
+                    "value": "<token>"
+                  }
+                ],
+                "method": "PUT",
+                "body": {
+                  "mode": "raw",
+                  "raw": "<object>",
+                  "options": {
+                    "raw": {
+                      "language": "json"
+                    }
+                  }
+                }
+              },
+              "status": "Bad Request",
+              "code": 400,
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "text/plain"
+                }
+              ],
+              "body": "",
+              "cookie": [],
+              "_postman_previewlanguage": "text"
+            },
+            {
+              "id": "ffa8c167-9a88-47f4-8ce4-ff37fa69d65d",
+              "name": "Unauthorized",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    "v2",
+                    "organizations",
+                    ":organization_id",
+                    "update_members"
+                  ],
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "query": [],
+                  "variable": [
+                    {
+                      "disabled": false,
+                      "type": "any",
+                      "value": "<integer>",
+                      "key": "organization_id",
+                      "description": "(Required) Organization ID"
+                    }
+                  ]
+                },
+                "header": [
+                  {
+                    "description": {
+                      "content": "Added as a part of security scheme: oauth2",
+                      "type": "text/plain"
+                    },
+                    "key": "Authorization",
+                    "value": "<token>"
+                  }
+                ],
+                "method": "PUT",
+                "body": {
+                  "mode": "raw",
+                  "raw": "<object>",
+                  "options": {
+                    "raw": {
+                      "language": "json"
+                    }
+                  }
+                }
+              },
+              "status": "Unauthorized",
+              "code": 401,
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "text/plain"
+                }
+              ],
+              "body": "",
+              "cookie": [],
+              "_postman_previewlanguage": "text"
+            },
+            {
+              "id": "0bcf3ed9-5117-45ae-a00e-c1c1ca1d5d6a",
+              "name": "API access is only for organizations on an active plan",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    "v2",
+                    "organizations",
+                    ":organization_id",
+                    "update_members"
+                  ],
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "query": [],
+                  "variable": [
+                    {
+                      "disabled": false,
+                      "type": "any",
+                      "value": "<integer>",
+                      "key": "organization_id",
+                      "description": "(Required) Organization ID"
+                    }
+                  ]
+                },
+                "header": [
+                  {
+                    "description": {
+                      "content": "Added as a part of security scheme: oauth2",
+                      "type": "text/plain"
+                    },
+                    "key": "Authorization",
+                    "value": "<token>"
+                  }
+                ],
+                "method": "PUT",
+                "body": {
+                  "mode": "raw",
+                  "raw": "<object>",
+                  "options": {
+                    "raw": {
+                      "language": "json"
+                    }
+                  }
+                }
+              },
+              "status": "Forbidden",
+              "code": 403,
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "text/plain"
+                }
+              ],
+              "body": "",
+              "cookie": [],
+              "_postman_previewlanguage": "text"
+            },
+            {
+              "id": "3bed81a8-5271-40fe-8b6d-2e9be3376307",
+              "name": "Could not find record",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    "v2",
+                    "organizations",
+                    ":organization_id",
+                    "update_members"
+                  ],
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "query": [],
+                  "variable": [
+                    {
+                      "disabled": false,
+                      "type": "any",
+                      "value": "<integer>",
+                      "key": "organization_id",
+                      "description": "(Required) Organization ID"
+                    }
+                  ]
+                },
+                "header": [
+                  {
+                    "description": {
+                      "content": "Added as a part of security scheme: oauth2",
+                      "type": "text/plain"
+                    },
+                    "key": "Authorization",
+                    "value": "<token>"
+                  }
+                ],
+                "method": "PUT",
+                "body": {
+                  "mode": "raw",
+                  "raw": "<object>",
+                  "options": {
+                    "raw": {
+                      "language": "json"
+                    }
+                  }
+                }
+              },
+              "status": "Not Found",
+              "code": 404,
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "text/plain"
+                }
+              ],
+              "body": "",
+              "cookie": [],
+              "_postman_previewlanguage": "text"
+            },
+            {
+              "id": "c66ab132-5106-4acb-b8a7-885af35116c8",
+              "name": "Rate limit exceeded",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    "v2",
+                    "organizations",
+                    ":organization_id",
+                    "update_members"
+                  ],
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "query": [],
+                  "variable": [
+                    {
+                      "disabled": false,
+                      "type": "any",
+                      "value": "<integer>",
+                      "key": "organization_id",
+                      "description": "(Required) Organization ID"
+                    }
+                  ]
+                },
+                "header": [
+                  {
+                    "description": {
+                      "content": "Added as a part of security scheme: oauth2",
+                      "type": "text/plain"
+                    },
+                    "key": "Authorization",
+                    "value": "<token>"
+                  }
+                ],
+                "method": "PUT",
+                "body": {
+                  "mode": "raw",
+                  "raw": "<object>",
+                  "options": {
+                    "raw": {
+                      "language": "json"
+                    }
+                  }
+                }
+              },
+              "status": "Too Many Requests",
+              "code": 429,
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "text/plain"
+                }
+              ],
+              "body": "",
+              "cookie": [],
+              "_postman_previewlanguage": "text"
+            }
+          ],
+          "event": [],
+          "protocolProfileBehavior": {
+            "disableBodyPruning": true
+          }
+        },
+        {
+          "id": "35727d90-1dbf-49a6-968c-12d535b26614",
+          "name": "List team members",
+          "request": {
+            "name": "List team members",
+            "description": {
+              "content": "Returns a collection of members for the given team.\n\nMembership roles:\n- manager - Can track time, view all data, change settings, and manage membership\n- user - Can track time and view only their own data\n- viewer - Can view reports but cannot make changes",
+              "type": "text/plain"
+            },
+            "url": {
+              "path": [
+                "v2",
+                "teams",
+                ":team_id",
+                "members"
+              ],
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "query": [
+                {
+                  "disabled": false,
+                  "key": "page_start_id",
+                  "value": "0",
+                  "description": "The page start ID."
+                },
+                {
+                  "disabled": false,
+                  "key": "page_limit",
+                  "value": "",
+                  "description": "The default page size"
+                },
+                {
+                  "disabled": false,
+                  "key": "include",
+                  "value": "<string>",
+                  "description": "Specify related data to side load."
+                },
+                {
+                  "disabled": false,
+                  "key": "include",
+                  "value": "<string>",
+                  "description": "Specify related data to side load."
+                }
+              ],
+              "variable": [
+                {
+                  "disabled": false,
+                  "type": "any",
+                  "value": "<integer>",
+                  "key": "team_id",
+                  "description": "(Required) Team ID"
+                }
+              ]
+            },
+            "method": "GET",
+            "auth": null
+          },
+          "response": [
+            {
+              "id": "65f19612-c89a-477d-b6c8-70bc38daa0f0",
+              "name": "A list of members",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    "v2",
+                    "teams",
+                    ":team_id",
+                    "members"
+                  ],
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "query": [
+                    {
+                      "key": "page_start_id",
+                      "value": "0"
+                    },
+                    {
+                      "key": "page_limit",
+                      "value": ""
+                    },
+                    {
+                      "key": "include",
+                      "value": "<string>"
+                    },
+                    {
+                      "key": "include",
+                      "value": "<string>"
+                    }
+                  ],
+                  "variable": [
+                    {
+                      "disabled": false,
+                      "type": "any",
+                      "value": "<integer>",
+                      "key": "team_id",
+                      "description": "(Required) Team ID"
+                    }
+                  ]
+                },
+                "header": [
+                  {
+                    "description": {
+                      "content": "Added as a part of security scheme: oauth2",
+                      "type": "text/plain"
+                    },
+                    "key": "Authorization",
+                    "value": "<token>"
+                  }
+                ],
+                "method": "GET",
+                "body": {}
+              },
+              "status": "OK",
+              "code": 200,
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "text/plain"
+                }
+              ],
+              "body": "",
+              "cookie": [],
+              "_postman_previewlanguage": "text"
+            },
+            {
+              "id": "7b5908c0-f3bd-437f-bd9c-c457d642b2e4",
+              "name": "Invalid parameters",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    "v2",
+                    "teams",
+                    ":team_id",
+                    "members"
+                  ],
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "query": [
+                    {
+                      "key": "page_start_id",
+                      "value": "0"
+                    },
+                    {
+                      "key": "page_limit",
+                      "value": ""
+                    },
+                    {
+                      "key": "include",
+                      "value": "<string>"
+                    },
+                    {
+                      "key": "include",
+                      "value": "<string>"
+                    }
+                  ],
+                  "variable": [
+                    {
+                      "disabled": false,
+                      "type": "any",
+                      "value": "<integer>",
+                      "key": "team_id",
+                      "description": "(Required) Team ID"
+                    }
+                  ]
+                },
+                "header": [
+                  {
+                    "description": {
+                      "content": "Added as a part of security scheme: oauth2",
+                      "type": "text/plain"
+                    },
+                    "key": "Authorization",
+                    "value": "<token>"
+                  }
+                ],
+                "method": "GET",
+                "body": {}
+              },
+              "status": "Bad Request",
+              "code": 400,
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "text/plain"
+                }
+              ],
+              "body": "",
+              "cookie": [],
+              "_postman_previewlanguage": "text"
+            },
+            {
+              "id": "483b1528-87a8-4f19-8c85-fbd96b8781ce",
+              "name": "Unauthorized",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    "v2",
+                    "teams",
+                    ":team_id",
+                    "members"
+                  ],
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "query": [
+                    {
+                      "key": "page_start_id",
+                      "value": "0"
+                    },
+                    {
+                      "key": "page_limit",
+                      "value": ""
+                    },
+                    {
+                      "key": "include",
+                      "value": "<string>"
+                    },
+                    {
+                      "key": "include",
+                      "value": "<string>"
+                    }
+                  ],
+                  "variable": [
+                    {
+                      "disabled": false,
+                      "type": "any",
+                      "value": "<integer>",
+                      "key": "team_id",
+                      "description": "(Required) Team ID"
+                    }
+                  ]
+                },
+                "header": [
+                  {
+                    "description": {
+                      "content": "Added as a part of security scheme: oauth2",
+                      "type": "text/plain"
+                    },
+                    "key": "Authorization",
+                    "value": "<token>"
+                  }
+                ],
+                "method": "GET",
+                "body": {}
+              },
+              "status": "Unauthorized",
+              "code": 401,
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "text/plain"
+                }
+              ],
+              "body": "",
+              "cookie": [],
+              "_postman_previewlanguage": "text"
+            },
+            {
+              "id": "ce4958bb-ec14-49a0-b23d-e7f3c6491024",
+              "name": "API access is only for organizations on an active plan",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    "v2",
+                    "teams",
+                    ":team_id",
+                    "members"
+                  ],
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "query": [
+                    {
+                      "key": "page_start_id",
+                      "value": "0"
+                    },
+                    {
+                      "key": "page_limit",
+                      "value": ""
+                    },
+                    {
+                      "key": "include",
+                      "value": "<string>"
+                    },
+                    {
+                      "key": "include",
+                      "value": "<string>"
+                    }
+                  ],
+                  "variable": [
+                    {
+                      "disabled": false,
+                      "type": "any",
+                      "value": "<integer>",
+                      "key": "team_id",
+                      "description": "(Required) Team ID"
+                    }
+                  ]
+                },
+                "header": [
+                  {
+                    "description": {
+                      "content": "Added as a part of security scheme: oauth2",
+                      "type": "text/plain"
+                    },
+                    "key": "Authorization",
+                    "value": "<token>"
+                  }
+                ],
+                "method": "GET",
+                "body": {}
+              },
+              "status": "Forbidden",
+              "code": 403,
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "text/plain"
+                }
+              ],
+              "body": "",
+              "cookie": [],
+              "_postman_previewlanguage": "text"
+            },
+            {
+              "id": "c775e035-12cc-4edc-be68-f2e05b568b23",
+              "name": "Could not find record",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    "v2",
+                    "teams",
+                    ":team_id",
+                    "members"
+                  ],
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "query": [
+                    {
+                      "key": "page_start_id",
+                      "value": "0"
+                    },
+                    {
+                      "key": "page_limit",
+                      "value": ""
+                    },
+                    {
+                      "key": "include",
+                      "value": "<string>"
+                    },
+                    {
+                      "key": "include",
+                      "value": "<string>"
+                    }
+                  ],
+                  "variable": [
+                    {
+                      "disabled": false,
+                      "type": "any",
+                      "value": "<integer>",
+                      "key": "team_id",
+                      "description": "(Required) Team ID"
+                    }
+                  ]
+                },
+                "header": [
+                  {
+                    "description": {
+                      "content": "Added as a part of security scheme: oauth2",
+                      "type": "text/plain"
+                    },
+                    "key": "Authorization",
+                    "value": "<token>"
+                  }
+                ],
+                "method": "GET",
+                "body": {}
+              },
+              "status": "Not Found",
+              "code": 404,
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "text/plain"
+                }
+              ],
+              "body": "",
+              "cookie": [],
+              "_postman_previewlanguage": "text"
+            },
+            {
+              "id": "dd9425e7-5bd2-4d30-b2e1-7690ee8fbb11",
+              "name": "Rate limit exceeded",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    "v2",
+                    "teams",
+                    ":team_id",
+                    "members"
+                  ],
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "query": [
+                    {
+                      "key": "page_start_id",
+                      "value": "0"
+                    },
+                    {
+                      "key": "page_limit",
+                      "value": ""
+                    },
+                    {
+                      "key": "include",
+                      "value": "<string>"
+                    },
+                    {
+                      "key": "include",
+                      "value": "<string>"
+                    }
+                  ],
+                  "variable": [
+                    {
+                      "disabled": false,
+                      "type": "any",
+                      "value": "<integer>",
+                      "key": "team_id",
+                      "description": "(Required) Team ID"
+                    }
+                  ]
+                },
+                "header": [
+                  {
+                    "description": {
+                      "content": "Added as a part of security scheme: oauth2",
+                      "type": "text/plain"
+                    },
+                    "key": "Authorization",
+                    "value": "<token>"
+                  }
+                ],
+                "method": "GET",
+                "body": {}
+              },
+              "status": "Too Many Requests",
+              "code": 429,
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "text/plain"
+                }
+              ],
+              "body": "",
+              "cookie": [],
+              "_postman_previewlanguage": "text"
+            }
+          ],
+          "event": [],
+          "protocolProfileBehavior": {
+            "disableBodyPruning": true
+          }
+        },
+        {
+          "id": "1645e2b9-ad5c-4d1b-ad64-827a9c26cd17",
+          "name": "List project members",
+          "request": {
+            "name": "List project members",
+            "description": {
+              "content": "Returns a collection of members for the given project.\n\nResults can be filtered by search, user IDs, membership role, and date range.\n\n*membership_role* - The permission role the member has in this project\n- *manager* - An manager can track time, see data for any member within the project, can change settings, and manage membership within the project\n- *user* - A user can track time against the project and see only their own data within the project\n- *viewer* - A viewer can access reports based on data for any member within the project but can not change anything\n\n**Note**: A member must have membership within a project in order to track on that project, even if they are an organization owner or manager\n\n**Filtering by dates:**\n\nYou can filter members by when they were added to the project using the `created_at` parameter:\n- Use `created_at[start]` to get members added on or after a specific date\n- Use `created_at[stop]` to get members added before a specific date\n- Use both to get members added within a date range\n\nYou can also filter by when membership was last updated using the `updated_at` parameter:\n- Use `updated_at[start]` to get members updated on or after a specific date\n- Use `updated_at[stop]` to get members updated before a specific date\n- Use both to get members updated within a date range",
+              "type": "text/plain"
+            },
+            "url": {
+              "path": [
+                "v2",
+                "projects",
+                ":project_id",
+                "members"
+              ],
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "query": [
+                {
+                  "disabled": false,
+                  "key": "page_start_id",
+                  "value": "0",
+                  "description": "The page start ID."
+                },
+                {
+                  "disabled": false,
+                  "key": "page_limit",
+                  "value": "",
+                  "description": "The default page size"
+                },
+                {
+                  "disabled": false,
+                  "key": "search[email]",
+                  "value": "<string>",
+                  "description": "An email to search for members"
+                },
+                {
+                  "disabled": false,
+                  "key": "search[name]",
+                  "value": "<string>",
+                  "description": "A name to search for members"
+                },
+                {
+                  "disabled": false,
+                  "key": "include_removed",
+                  "value": "false",
+                  "description": "Include members that were removed from the project"
+                },
+                {
+                  "disabled": false,
+                  "key": "include_profile",
+                  "value": "false",
+                  "description": "Include member profile information"
+                },
+                {
+                  "disabled": false,
+                  "key": "direct_only",
+                  "value": "false",
+                  "description": "If true, only include members assigned directly to the project and not as member of a team working on the project"
+                },
+                {
+                  "disabled": false,
+                  "key": "membership_roles",
+                  "value": "<string>",
+                  "description": "Search by membership role"
+                },
+                {
+                  "disabled": false,
+                  "key": "membership_roles",
+                  "value": "<string>",
+                  "description": "Search by membership role"
+                },
+                {
+                  "disabled": false,
+                  "key": "created_at[start]",
+                  "value": "<dateTime>",
+                  "description": "Start date for created_at filter (inclusive)"
+                },
+                {
+                  "disabled": false,
+                  "key": "created_at[stop]",
+                  "value": "<dateTime>",
+                  "description": "End date for created_at filter (exclusive)"
+                },
+                {
+                  "disabled": false,
+                  "key": "updated_at[start]",
+                  "value": "<dateTime>",
+                  "description": "Start date for updated_at filter (inclusive)"
+                },
+                {
+                  "disabled": false,
+                  "key": "updated_at[stop]",
+                  "value": "<dateTime>",
+                  "description": "End date for updated_at filter (exclusive)"
+                },
+                {
+                  "disabled": false,
+                  "key": "user_ids",
+                  "value": "<integer>",
+                  "description": "List of user IDs"
+                },
+                {
+                  "disabled": false,
+                  "key": "user_ids",
+                  "value": "<integer>",
+                  "description": "List of user IDs"
+                },
+                {
+                  "disabled": false,
+                  "key": "include",
+                  "value": "<string>",
+                  "description": "Specify related data to side load."
+                },
+                {
+                  "disabled": false,
+                  "key": "include",
+                  "value": "<string>",
+                  "description": "Specify related data to side load."
+                }
+              ],
+              "variable": [
+                {
+                  "disabled": false,
+                  "type": "any",
+                  "value": "<integer>",
+                  "key": "project_id",
+                  "description": "(Required) "
+                }
+              ]
+            },
+            "method": "GET",
+            "auth": null
+          },
+          "response": [
+            {
+              "id": "3ec7eaa6-36ef-45bd-b47e-8a264309356d",
+              "name": "A list of members",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    "v2",
+                    "projects",
+                    ":project_id",
+                    "members"
+                  ],
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "query": [
+                    {
+                      "key": "page_start_id",
+                      "value": "0"
+                    },
+                    {
+                      "key": "page_limit",
+                      "value": ""
+                    },
+                    {
+                      "key": "search[email]",
+                      "value": "<string>"
+                    },
+                    {
+                      "key": "search[name]",
+                      "value": "<string>"
+                    },
+                    {
+                      "key": "include_removed",
+                      "value": "false"
+                    },
+                    {
+                      "key": "include_profile",
+                      "value": "false"
+                    },
+                    {
+                      "key": "direct_only",
+                      "value": "false"
+                    },
+                    {
+                      "key": "membership_roles",
+                      "value": "<string>"
+                    },
+                    {
+                      "key": "membership_roles",
+                      "value": "<string>"
+                    },
+                    {
+                      "key": "created_at[start]",
+                      "value": "<dateTime>"
+                    },
+                    {
+                      "key": "created_at[stop]",
+                      "value": "<dateTime>"
+                    },
+                    {
+                      "key": "updated_at[start]",
+                      "value": "<dateTime>"
+                    },
+                    {
+                      "key": "updated_at[stop]",
+                      "value": "<dateTime>"
+                    },
+                    {
+                      "key": "user_ids",
+                      "value": "<integer>"
+                    },
+                    {
+                      "key": "user_ids",
+                      "value": "<integer>"
+                    },
+                    {
+                      "key": "include",
+                      "value": "<string>"
+                    },
+                    {
+                      "key": "include",
+                      "value": "<string>"
+                    }
+                  ],
+                  "variable": [
+                    {
+                      "disabled": false,
+                      "type": "any",
+                      "value": "<integer>",
+                      "key": "project_id",
+                      "description": "(Required) "
+                    }
+                  ]
+                },
+                "header": [
+                  {
+                    "description": {
+                      "content": "Added as a part of security scheme: oauth2",
+                      "type": "text/plain"
+                    },
+                    "key": "Authorization",
+                    "value": "<token>"
+                  }
+                ],
+                "method": "GET",
+                "body": {}
+              },
+              "status": "OK",
+              "code": 200,
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "text/plain"
+                }
+              ],
+              "body": "",
+              "cookie": [],
+              "_postman_previewlanguage": "text"
+            },
+            {
+              "id": "7c0d8a9e-9678-45bc-bf11-a7cb639d2698",
+              "name": "Invalid parameters",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    "v2",
+                    "projects",
+                    ":project_id",
+                    "members"
+                  ],
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "query": [
+                    {
+                      "key": "page_start_id",
+                      "value": "0"
+                    },
+                    {
+                      "key": "page_limit",
+                      "value": ""
+                    },
+                    {
+                      "key": "search[email]",
+                      "value": "<string>"
+                    },
+                    {
+                      "key": "search[name]",
+                      "value": "<string>"
+                    },
+                    {
+                      "key": "include_removed",
+                      "value": "false"
+                    },
+                    {
+                      "key": "include_profile",
+                      "value": "false"
+                    },
+                    {
+                      "key": "direct_only",
+                      "value": "false"
+                    },
+                    {
+                      "key": "membership_roles",
+                      "value": "<string>"
+                    },
+                    {
+                      "key": "membership_roles",
+                      "value": "<string>"
+                    },
+                    {
+                      "key": "created_at[start]",
+                      "value": "<dateTime>"
+                    },
+                    {
+                      "key": "created_at[stop]",
+                      "value": "<dateTime>"
+                    },
+                    {
+                      "key": "updated_at[start]",
+                      "value": "<dateTime>"
+                    },
+                    {
+                      "key": "updated_at[stop]",
+                      "value": "<dateTime>"
+                    },
+                    {
+                      "key": "user_ids",
+                      "value": "<integer>"
+                    },
+                    {
+                      "key": "user_ids",
+                      "value": "<integer>"
+                    },
+                    {
+                      "key": "include",
+                      "value": "<string>"
+                    },
+                    {
+                      "key": "include",
+                      "value": "<string>"
+                    }
+                  ],
+                  "variable": [
+                    {
+                      "disabled": false,
+                      "type": "any",
+                      "value": "<integer>",
+                      "key": "project_id",
+                      "description": "(Required) "
+                    }
+                  ]
+                },
+                "header": [
+                  {
+                    "description": {
+                      "content": "Added as a part of security scheme: oauth2",
+                      "type": "text/plain"
+                    },
+                    "key": "Authorization",
+                    "value": "<token>"
+                  }
+                ],
+                "method": "GET",
+                "body": {}
+              },
+              "status": "Bad Request",
+              "code": 400,
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "text/plain"
+                }
+              ],
+              "body": "",
+              "cookie": [],
+              "_postman_previewlanguage": "text"
+            },
+            {
+              "id": "92cae2ac-8b57-4b45-be97-e8407b9ea04f",
+              "name": "Unauthorized",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    "v2",
+                    "projects",
+                    ":project_id",
+                    "members"
+                  ],
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "query": [
+                    {
+                      "key": "page_start_id",
+                      "value": "0"
+                    },
+                    {
+                      "key": "page_limit",
+                      "value": ""
+                    },
+                    {
+                      "key": "search[email]",
+                      "value": "<string>"
+                    },
+                    {
+                      "key": "search[name]",
+                      "value": "<string>"
+                    },
+                    {
+                      "key": "include_removed",
+                      "value": "false"
+                    },
+                    {
+                      "key": "include_profile",
+                      "value": "false"
+                    },
+                    {
+                      "key": "direct_only",
+                      "value": "false"
+                    },
+                    {
+                      "key": "membership_roles",
+                      "value": "<string>"
+                    },
+                    {
+                      "key": "membership_roles",
+                      "value": "<string>"
+                    },
+                    {
+                      "key": "created_at[start]",
+                      "value": "<dateTime>"
+                    },
+                    {
+                      "key": "created_at[stop]",
+                      "value": "<dateTime>"
+                    },
+                    {
+                      "key": "updated_at[start]",
+                      "value": "<dateTime>"
+                    },
+                    {
+                      "key": "updated_at[stop]",
+                      "value": "<dateTime>"
+                    },
+                    {
+                      "key": "user_ids",
+                      "value": "<integer>"
+                    },
+                    {
+                      "key": "user_ids",
+                      "value": "<integer>"
+                    },
+                    {
+                      "key": "include",
+                      "value": "<string>"
+                    },
+                    {
+                      "key": "include",
+                      "value": "<string>"
+                    }
+                  ],
+                  "variable": [
+                    {
+                      "disabled": false,
+                      "type": "any",
+                      "value": "<integer>",
+                      "key": "project_id",
+                      "description": "(Required) "
+                    }
+                  ]
+                },
+                "header": [
+                  {
+                    "description": {
+                      "content": "Added as a part of security scheme: oauth2",
+                      "type": "text/plain"
+                    },
+                    "key": "Authorization",
+                    "value": "<token>"
+                  }
+                ],
+                "method": "GET",
+                "body": {}
+              },
+              "status": "Unauthorized",
+              "code": 401,
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "text/plain"
+                }
+              ],
+              "body": "",
+              "cookie": [],
+              "_postman_previewlanguage": "text"
+            },
+            {
+              "id": "d50de273-efad-4557-900c-73a2384e96a5",
+              "name": "API access is only for organizations on an active plan",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    "v2",
+                    "projects",
+                    ":project_id",
+                    "members"
+                  ],
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "query": [
+                    {
+                      "key": "page_start_id",
+                      "value": "0"
+                    },
+                    {
+                      "key": "page_limit",
+                      "value": ""
+                    },
+                    {
+                      "key": "search[email]",
+                      "value": "<string>"
+                    },
+                    {
+                      "key": "search[name]",
+                      "value": "<string>"
+                    },
+                    {
+                      "key": "include_removed",
+                      "value": "false"
+                    },
+                    {
+                      "key": "include_profile",
+                      "value": "false"
+                    },
+                    {
+                      "key": "direct_only",
+                      "value": "false"
+                    },
+                    {
+                      "key": "membership_roles",
+                      "value": "<string>"
+                    },
+                    {
+                      "key": "membership_roles",
+                      "value": "<string>"
+                    },
+                    {
+                      "key": "created_at[start]",
+                      "value": "<dateTime>"
+                    },
+                    {
+                      "key": "created_at[stop]",
+                      "value": "<dateTime>"
+                    },
+                    {
+                      "key": "updated_at[start]",
+                      "value": "<dateTime>"
+                    },
+                    {
+                      "key": "updated_at[stop]",
+                      "value": "<dateTime>"
+                    },
+                    {
+                      "key": "user_ids",
+                      "value": "<integer>"
+                    },
+                    {
+                      "key": "user_ids",
+                      "value": "<integer>"
+                    },
+                    {
+                      "key": "include",
+                      "value": "<string>"
+                    },
+                    {
+                      "key": "include",
+                      "value": "<string>"
+                    }
+                  ],
+                  "variable": [
+                    {
+                      "disabled": false,
+                      "type": "any",
+                      "value": "<integer>",
+                      "key": "project_id",
+                      "description": "(Required) "
+                    }
+                  ]
+                },
+                "header": [
+                  {
+                    "description": {
+                      "content": "Added as a part of security scheme: oauth2",
+                      "type": "text/plain"
+                    },
+                    "key": "Authorization",
+                    "value": "<token>"
+                  }
+                ],
+                "method": "GET",
+                "body": {}
+              },
+              "status": "Forbidden",
+              "code": 403,
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "text/plain"
+                }
+              ],
+              "body": "",
+              "cookie": [],
+              "_postman_previewlanguage": "text"
+            },
+            {
+              "id": "c7c1d111-d403-4626-973d-5a2b5359a79b",
+              "name": "Could not find record",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    "v2",
+                    "projects",
+                    ":project_id",
+                    "members"
+                  ],
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "query": [
+                    {
+                      "key": "page_start_id",
+                      "value": "0"
+                    },
+                    {
+                      "key": "page_limit",
+                      "value": ""
+                    },
+                    {
+                      "key": "search[email]",
+                      "value": "<string>"
+                    },
+                    {
+                      "key": "search[name]",
+                      "value": "<string>"
+                    },
+                    {
+                      "key": "include_removed",
+                      "value": "false"
+                    },
+                    {
+                      "key": "include_profile",
+                      "value": "false"
+                    },
+                    {
+                      "key": "direct_only",
+                      "value": "false"
+                    },
+                    {
+                      "key": "membership_roles",
+                      "value": "<string>"
+                    },
+                    {
+                      "key": "membership_roles",
+                      "value": "<string>"
+                    },
+                    {
+                      "key": "created_at[start]",
+                      "value": "<dateTime>"
+                    },
+                    {
+                      "key": "created_at[stop]",
+                      "value": "<dateTime>"
+                    },
+                    {
+                      "key": "updated_at[start]",
+                      "value": "<dateTime>"
+                    },
+                    {
+                      "key": "updated_at[stop]",
+                      "value": "<dateTime>"
+                    },
+                    {
+                      "key": "user_ids",
+                      "value": "<integer>"
+                    },
+                    {
+                      "key": "user_ids",
+                      "value": "<integer>"
+                    },
+                    {
+                      "key": "include",
+                      "value": "<string>"
+                    },
+                    {
+                      "key": "include",
+                      "value": "<string>"
+                    }
+                  ],
+                  "variable": [
+                    {
+                      "disabled": false,
+                      "type": "any",
+                      "value": "<integer>",
+                      "key": "project_id",
+                      "description": "(Required) "
+                    }
+                  ]
+                },
+                "header": [
+                  {
+                    "description": {
+                      "content": "Added as a part of security scheme: oauth2",
+                      "type": "text/plain"
+                    },
+                    "key": "Authorization",
+                    "value": "<token>"
+                  }
+                ],
+                "method": "GET",
+                "body": {}
+              },
+              "status": "Not Found",
+              "code": 404,
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "text/plain"
+                }
+              ],
+              "body": "",
+              "cookie": [],
+              "_postman_previewlanguage": "text"
+            },
+            {
+              "id": "6e89cfcf-a6df-4c8a-a7ba-c2d8beaeb998",
+              "name": "Rate limit exceeded",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    "v2",
+                    "projects",
+                    ":project_id",
+                    "members"
+                  ],
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "query": [
+                    {
+                      "key": "page_start_id",
+                      "value": "0"
+                    },
+                    {
+                      "key": "page_limit",
+                      "value": ""
+                    },
+                    {
+                      "key": "search[email]",
+                      "value": "<string>"
+                    },
+                    {
+                      "key": "search[name]",
+                      "value": "<string>"
+                    },
+                    {
+                      "key": "include_removed",
+                      "value": "false"
+                    },
+                    {
+                      "key": "include_profile",
+                      "value": "false"
+                    },
+                    {
+                      "key": "direct_only",
+                      "value": "false"
+                    },
+                    {
+                      "key": "membership_roles",
+                      "value": "<string>"
+                    },
+                    {
+                      "key": "membership_roles",
+                      "value": "<string>"
+                    },
+                    {
+                      "key": "created_at[start]",
+                      "value": "<dateTime>"
+                    },
+                    {
+                      "key": "created_at[stop]",
+                      "value": "<dateTime>"
+                    },
+                    {
+                      "key": "updated_at[start]",
+                      "value": "<dateTime>"
+                    },
+                    {
+                      "key": "updated_at[stop]",
+                      "value": "<dateTime>"
+                    },
+                    {
+                      "key": "user_ids",
+                      "value": "<integer>"
+                    },
+                    {
+                      "key": "user_ids",
+                      "value": "<integer>"
+                    },
+                    {
+                      "key": "include",
+                      "value": "<string>"
+                    },
+                    {
+                      "key": "include",
+                      "value": "<string>"
+                    }
+                  ],
+                  "variable": [
+                    {
+                      "disabled": false,
+                      "type": "any",
+                      "value": "<integer>",
+                      "key": "project_id",
+                      "description": "(Required) "
+                    }
+                  ]
+                },
+                "header": [
+                  {
+                    "description": {
+                      "content": "Added as a part of security scheme: oauth2",
+                      "type": "text/plain"
+                    },
+                    "key": "Authorization",
+                    "value": "<token>"
+                  }
+                ],
+                "method": "GET",
+                "body": {}
+              },
+              "status": "Too Many Requests",
+              "code": 429,
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "text/plain"
+                }
+              ],
+              "body": "",
+              "cookie": [],
+              "_postman_previewlanguage": "text"
+            }
+          ],
+          "event": [],
+          "protocolProfileBehavior": {
+            "disableBodyPruning": true
+          }
+        }
+      ],
+      "event": []
+    }
+  ],
+  "event": [],
+  "variable": [
+    {
+      "type": "string",
+      "value": "https://api.hubstaff.com",
+      "key": "baseUrl"
+    }
+  ],
+  "auth": {
+    "type": "oauth2",
+    "oauth2": [
+      {
+        "key": "scope",
+        "value": "hubstaff:read hubstaff:write"
+      },
+      {
+        "key": "accessTokenUrl",
+        "value": "https://account.hubstaff.com/access_tokens"
+      },
+      {
+        "key": "authUrl",
+        "value": "https://account.hubstaff.com/authorizations/new"
+      },
+      {
+        "key": "grant_type",
+        "value": "authorization_code"
+      }
+    ]
+  },
+  "info": {
+    "_postman_id": "c385a5fe-0230-447d-b41a-6dc31eae3421",
+    "name": "Hubstaff Activities Members API",
+    "schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json",
+    "description": {
+      "content": "The Hubstaff API v2 provides programmatic read and write access to Hubstaff's time tracking, timesheet, workforce management, and project management data - organizations, members, teams, projects, tasks, clients, activities (10-minute tracked time blocks with activity percentages), daily activity aggregates, time entries, timesheets and approvals, time off requests/policies/balances, attendance schedules and shifts, screenshots, app and URL usage, invoices, team payments, and webhooks.\n\nAuthentication uses OpenID Connect / OAuth 2.0 through Hubstaff Account (https://account.hubstaff.com). For server-side scripts, create a personal access token at https://developer.hubstaff.com/personal_access_tokens - the PAT acts as an OAuth refresh token (90-day expiry) that you exchange for short-lived access tokens at https://account.hubstaff.com/access_tokens. Send the access token as a Bearer token on every request.\n\nRate limit: authenticated users are allowed 1,000 requests per hour per application; individual requests time out after 30 seconds. All requests must use HTTPS. Collection endpoints use cursor pagination via page_start_id and page_limit. This document is a curated OpenAPI 3.0 rendering of the live Swagger 2.0 definition published at https://api.hubstaff.com/v2/docs, covering the primary resource areas; consult the live definition for the complete surface (insights, job sites, budgets, overtime policies, integrations, and more).\n\nContact Support:\n Name: Hubstaff Developer Portal",
+      "type": "text/plain"
+    }
+  }
+}

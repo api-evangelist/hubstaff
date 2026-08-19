@@ -1,0 +1,96 @@
+{
+  "opencollection": "1.0.0",
+  "info": {
+    "name": "Hubstaff Activities Client Invoices API",
+    "version": "2.0"
+  },
+  "request": {
+    "auth": {
+      "type": "oauth2",
+      "flow": "authorization_code",
+      "authorizationUrl": "https://account.hubstaff.com/authorizations/new",
+      "accessTokenUrl": "https://account.hubstaff.com/access_tokens",
+      "credentials": {
+        "clientId": "{{clientId}}",
+        "clientSecret": "{{clientSecret}}"
+      }
+    }
+  },
+  "items": [
+    {
+      "info": {
+        "name": "Client Invoices",
+        "type": "folder"
+      },
+      "items": [
+        {
+          "info": {
+            "name": "List organization client invoices",
+            "type": "http"
+          },
+          "http": {
+            "method": "GET",
+            "url": "https://api.hubstaff.com/v2/organizations/:organization_id/client_invoices",
+            "params": [
+              {
+                "name": "organization_id",
+                "value": "",
+                "type": "path"
+              },
+              {
+                "name": "page_start_id",
+                "value": "",
+                "type": "query",
+                "description": "The page start ID."
+              },
+              {
+                "name": "page_limit",
+                "value": "",
+                "type": "query",
+                "description": "The default page size"
+              },
+              {
+                "name": "client_ids",
+                "value": "",
+                "type": "query",
+                "description": "List of client IDs"
+              },
+              {
+                "name": "issue_date[start]",
+                "value": "",
+                "type": "query",
+                "description": "Start date (ISO 8601)"
+              },
+              {
+                "name": "issue_date[stop]",
+                "value": "",
+                "type": "query",
+                "description": "Stop date (ISO 8601)"
+              },
+              {
+                "name": "status",
+                "value": "",
+                "type": "query",
+                "description": "Invoice status"
+              },
+              {
+                "name": "include_line_items",
+                "value": "",
+                "type": "query",
+                "description": "Include invoice line items"
+              },
+              {
+                "name": "include",
+                "value": "",
+                "type": "query",
+                "description": "Specify related data to side load."
+              }
+            ]
+          },
+          "docs": "Returns invoices sent to clients for the given organization.\n\nResults can be filtered by client_ids[], issue_date[start]/[stop], and status. Use include_line_items=true to include invoice line items."
+        }
+      ]
+    }
+  ],
+  "bundled": true
+}

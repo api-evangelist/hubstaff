@@ -1,0 +1,90 @@
+{
+  "opencollection": "1.0.0",
+  "info": {
+    "name": "Hubstaff Activities Team Payments API",
+    "version": "2.0"
+  },
+  "request": {
+    "auth": {
+      "type": "oauth2",
+      "flow": "authorization_code",
+      "authorizationUrl": "https://account.hubstaff.com/authorizations/new",
+      "accessTokenUrl": "https://account.hubstaff.com/access_tokens",
+      "credentials": {
+        "clientId": "{{clientId}}",
+        "clientSecret": "{{clientSecret}}"
+      }
+    }
+  },
+  "items": [
+    {
+      "info": {
+        "name": "Team Payments",
+        "type": "folder"
+      },
+      "items": [
+        {
+          "info": {
+            "name": "List organization team payments",
+            "type": "http"
+          },
+          "http": {
+            "method": "GET",
+            "url": "https://api.hubstaff.com/v2/organizations/:organization_id/team_payments",
+            "params": [
+              {
+                "name": "organization_id",
+                "value": "",
+                "type": "path"
+              },
+              {
+                "name": "page_start_id",
+                "value": "",
+                "type": "query",
+                "description": "The page start ID."
+              },
+              {
+                "name": "page_limit",
+                "value": "",
+                "type": "query",
+                "description": "The default page size"
+              },
+              {
+                "name": "created[start]",
+                "value": "",
+                "type": "query",
+                "description": "Start time (ISO 8601)"
+              },
+              {
+                "name": "created[stop]",
+                "value": "",
+                "type": "query",
+                "description": "Stop time (ISO 8601, Exclusive)"
+              },
+              {
+                "name": "user_ids",
+                "value": "",
+                "type": "query",
+                "description": "List of user IDs"
+              },
+              {
+                "name": "project_ids",
+                "value": "",
+                "type": "query",
+                "description": "List of project IDs"
+              },
+              {
+                "name": "include",
+                "value": "",
+                "type": "query",
+                "description": "Specify related data to side load."
+              }
+            ]
+          },
+          "docs": "Returns a collection of team payments (payroll disbursements) for the given organization.\n\nResults can be filtered by created[start]/[stop], user_ids[], and project_ids[].\n\nNote: If date filters are not provided, defaults to the last 3 years. Earliest date is 3 years ago."
+        }
+      ]
+    }
+  ],
+  "bundled": true
+}

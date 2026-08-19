@@ -1,0 +1,202 @@
+{
+  "opencollection": "1.0.0",
+  "info": {
+    "name": "Hubstaff Activities Attendance API",
+    "version": "2.0"
+  },
+  "request": {
+    "auth": {
+      "type": "oauth2",
+      "flow": "authorization_code",
+      "authorizationUrl": "https://account.hubstaff.com/authorizations/new",
+      "accessTokenUrl": "https://account.hubstaff.com/access_tokens",
+      "credentials": {
+        "clientId": "{{clientId}}",
+        "clientSecret": "{{clientSecret}}"
+      }
+    }
+  },
+  "items": [
+    {
+      "info": {
+        "name": "Attendance",
+        "type": "folder"
+      },
+      "items": [
+        {
+          "info": {
+            "name": "List organization attendance schedules",
+            "type": "http"
+          },
+          "http": {
+            "method": "GET",
+            "url": "https://api.hubstaff.com/v2/organizations/:organization_id/attendance_schedules",
+            "params": [
+              {
+                "name": "organization_id",
+                "value": "",
+                "type": "path"
+              },
+              {
+                "name": "page_start_id",
+                "value": "",
+                "type": "query",
+                "description": "The page start ID."
+              },
+              {
+                "name": "page_limit",
+                "value": "",
+                "type": "query",
+                "description": "The default page size"
+              },
+              {
+                "name": "date[start]",
+                "value": "",
+                "type": "query",
+                "description": "Start date (ISO 8601)"
+              },
+              {
+                "name": "date[stop]",
+                "value": "",
+                "type": "query",
+                "description": "Stop date (ISO 8601, Inclusive)"
+              },
+              {
+                "name": "include",
+                "value": "",
+                "type": "query",
+                "description": "Specify related data to side load."
+              }
+            ]
+          },
+          "docs": "Returns a collection of attendance schedules (expected work shifts) for the given organization.\n\nUse date[start] and date[stop] to filter schedules that cover the specified date range. Repeating schedules are included if any occurrence falls within the range."
+        },
+        {
+          "info": {
+            "name": "Create attendance schedule",
+            "type": "http"
+          },
+          "http": {
+            "method": "POST",
+            "url": "https://api.hubstaff.com/v2/organizations/:organization_id/attendance_schedules",
+            "params": [
+              {
+                "name": "organization_id",
+                "value": "",
+                "type": "path"
+              }
+            ],
+            "body": {
+              "type": "json",
+              "data": "{}"
+            }
+          },
+          "docs": "Creates an expected work shift for a user.\n\nReturns the created attendance schedule.\n\nFor repeating schedules, specify repeat_schedule (weekly/bi_weekly) and weekdays. Use repeat_until to set an end date. Use excluded_dates to skip specific dates."
+        },
+        {
+          "info": {
+            "name": "List organization attendance shifts",
+            "type": "http"
+          },
+          "http": {
+            "method": "GET",
+            "url": "https://api.hubstaff.com/v2/organizations/:organization_id/attendance_shifts",
+            "params": [
+              {
+                "name": "organization_id",
+                "value": "",
+                "type": "path"
+              },
+              {
+                "name": "page_start_id",
+                "value": "",
+                "type": "query",
+                "description": "The page start ID."
+              },
+              {
+                "name": "page_limit",
+                "value": "",
+                "type": "query",
+                "description": "The default page size"
+              },
+              {
+                "name": "date[start]",
+                "value": "",
+                "type": "query",
+                "description": "Start date (ISO 8601)"
+              },
+              {
+                "name": "date[stop]",
+                "value": "",
+                "type": "query",
+                "description": "Stop date (ISO 8601, Inclusive)"
+              },
+              {
+                "name": "include",
+                "value": "",
+                "type": "query",
+                "description": "Specify related data to side load."
+              }
+            ]
+          },
+          "docs": "Returns actual work shifts (clock-in/clock-out records) for the given organization.\n\nUse date[start] and date[stop] to filter shifts that fall within the specified date range.\n\nNote: The maximum allowed difference between date[start] and date[stop] is 31 days.\nData is only available within organization’s retention period.\nIf date[start] falls outside this window, the request will fail."
+        },
+        {
+          "info": {
+            "name": "List organization holidays",
+            "type": "http"
+          },
+          "http": {
+            "method": "GET",
+            "url": "https://api.hubstaff.com/v2/organizations/:organization_id/holidays",
+            "params": [
+              {
+                "name": "organization_id",
+                "value": "",
+                "type": "path"
+              },
+              {
+                "name": "page_start_id",
+                "value": "",
+                "type": "query",
+                "description": "The page start ID."
+              },
+              {
+                "name": "page_limit",
+                "value": "",
+                "type": "query",
+                "description": "The default page size"
+              },
+              {
+                "name": "created[start]",
+                "value": "",
+                "type": "query",
+                "description": "Start time (ISO 8601)"
+              },
+              {
+                "name": "created[stop]",
+                "value": "",
+                "type": "query",
+                "description": "Stop time (ISO 8601, Exclusive)"
+              },
+              {
+                "name": "date[start]",
+                "value": "",
+                "type": "query",
+                "description": "Start date (ISO 8601)"
+              },
+              {
+                "name": "date[stop]",
+                "value": "",
+                "type": "query",
+                "description": "Stop date (ISO 8601, Inclusive)"
+              }
+            ]
+          },
+          "docs": "Returns a collection of holidays for the given organization.\n\nResults can be filtered by created[start]/[stop] and date[start]/[stop]."
+        }
+      ]
+    }
+  ],
+  "bundled": true
+}

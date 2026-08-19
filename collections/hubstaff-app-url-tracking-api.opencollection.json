@@ -1,0 +1,238 @@
+{
+  "opencollection": "1.0.0",
+  "info": {
+    "name": "Hubstaff Activities App & URL Tracking API",
+    "version": "2.0"
+  },
+  "request": {
+    "auth": {
+      "type": "oauth2",
+      "flow": "authorization_code",
+      "authorizationUrl": "https://account.hubstaff.com/authorizations/new",
+      "accessTokenUrl": "https://account.hubstaff.com/access_tokens",
+      "credentials": {
+        "clientId": "{{clientId}}",
+        "clientSecret": "{{clientSecret}}"
+      }
+    }
+  },
+  "items": [
+    {
+      "info": {
+        "name": "App & URL Tracking",
+        "type": "folder"
+      },
+      "items": [
+        {
+          "info": {
+            "name": "List organization tool usages",
+            "type": "http"
+          },
+          "http": {
+            "method": "GET",
+            "url": "https://api.hubstaff.com/v2/organizations/:organization_id/tool_usages",
+            "params": [
+              {
+                "name": "organization_id",
+                "value": "",
+                "type": "path"
+              },
+              {
+                "name": "page_start_id",
+                "value": "",
+                "type": "query",
+                "description": "The page start ID."
+              },
+              {
+                "name": "page_limit",
+                "value": "",
+                "type": "query",
+                "description": "The default page size"
+              },
+              {
+                "name": "time_slot[start]",
+                "value": "",
+                "type": "query",
+                "description": "Start time (ISO 8601)"
+              },
+              {
+                "name": "time_slot[stop]",
+                "value": "",
+                "type": "query",
+                "description": "Stop time (ISO 8601, Exclusive)"
+              },
+              {
+                "name": "user_ids",
+                "value": "",
+                "type": "query",
+                "description": "List of user IDs"
+              },
+              {
+                "name": "task_ids",
+                "value": "",
+                "type": "query",
+                "description": "List of task IDs"
+              },
+              {
+                "name": "project_ids",
+                "value": "",
+                "type": "query",
+                "description": "List of project IDs"
+              },
+              {
+                "name": "tool_type",
+                "value": "",
+                "type": "query",
+                "description": "Filter by tool type (application or url)"
+              },
+              {
+                "name": "include",
+                "value": "",
+                "type": "query",
+                "description": "Specify related data to side load."
+              }
+            ]
+          },
+          "docs": "Returns a collection of tool usages (productivity tool usage) for the given organization.\n\nResults can be filtered by time_slot[start]/[stop], user_ids[], task_ids[], project_ids[], and tool_type.\n\nThe preferred endpoints to fetch tool usage data are the daily endpoints.\n\nRequires Owner or Organization Manager role (with view others data permission).\n\nNote: Date range limit is 7 days. Earliest date is 1 month ago."
+        },
+        {
+          "info": {
+            "name": "List organization daily tool usages",
+            "type": "http"
+          },
+          "http": {
+            "method": "GET",
+            "url": "https://api.hubstaff.com/v2/organizations/:organization_id/tool_usages/daily",
+            "params": [
+              {
+                "name": "organization_id",
+                "value": "",
+                "type": "path"
+              },
+              {
+                "name": "page_start_id",
+                "value": "",
+                "type": "query",
+                "description": "The page start ID."
+              },
+              {
+                "name": "page_limit",
+                "value": "",
+                "type": "query",
+                "description": "The default page size"
+              },
+              {
+                "name": "date[start]",
+                "value": "",
+                "type": "query",
+                "description": "Start date (ISO 8601)"
+              },
+              {
+                "name": "date[stop]",
+                "value": "",
+                "type": "query",
+                "description": "Stop date (ISO 8601, Inclusive)"
+              },
+              {
+                "name": "user_ids",
+                "value": "",
+                "type": "query",
+                "description": "List of user IDs"
+              },
+              {
+                "name": "task_ids",
+                "value": "",
+                "type": "query",
+                "description": "List of task IDs"
+              },
+              {
+                "name": "project_ids",
+                "value": "",
+                "type": "query",
+                "description": "List of project IDs"
+              },
+              {
+                "name": "tool_type",
+                "value": "",
+                "type": "query",
+                "description": "Filter by tool type (application or url)"
+              },
+              {
+                "name": "include",
+                "value": "",
+                "type": "query",
+                "description": "Specify related data to side load."
+              }
+            ]
+          },
+          "docs": "Returns daily aggregated time spent using productivity tools (apps and websites categorized by Hubstaff).\n\nResults can be filtered by user_ids[], task_ids[], project_ids[], tool_type, and date[start]/[stop].\n\nRequires Owner or Organization Manager role (with view others data permission).\n\nNote: Date range limit is 14 days. Earliest date is 1 month ago."
+        },
+        {
+          "info": {
+            "name": "List member Track Apps & URLs settings",
+            "type": "http"
+          },
+          "http": {
+            "method": "GET",
+            "url": "https://api.hubstaff.com/v2/organizations/:organization_id/app_and_url_tracking_settings",
+            "params": [
+              {
+                "name": "organization_id",
+                "value": "",
+                "type": "path"
+              },
+              {
+                "name": "page_start_id",
+                "value": "",
+                "type": "query",
+                "description": "The page start ID."
+              },
+              {
+                "name": "page_limit",
+                "value": "",
+                "type": "query",
+                "description": "The default page size"
+              },
+              {
+                "name": "user_ids",
+                "value": "",
+                "type": "query",
+                "description": "List of user IDs"
+              },
+              {
+                "name": "include",
+                "value": "",
+                "type": "query",
+                "description": "Specify related data to side load."
+              }
+            ]
+          },
+          "docs": "Returns the Track Apps & URLs setting for the organization's members.\n\nResults can be filtered to specific members with `user_ids`. When no filter is given,\nall members are returned.\n\nOnly organization Owners and Managers may use this endpoint."
+        },
+        {
+          "info": {
+            "name": "Update member Track Apps & URLs settings",
+            "type": "http"
+          },
+          "http": {
+            "method": "PUT",
+            "url": "https://api.hubstaff.com/v2/organizations/:organization_id/app_and_url_tracking_settings",
+            "params": [
+              {
+                "name": "organization_id",
+                "value": "",
+                "type": "path"
+              }
+            ],
+            "body": {
+              "type": "json",
+              "data": "{}"
+            }
+          },
+          "docs": "Sets the Track Apps & URLs setting for the organization's members.\n\nAllowed values: `off`, `apps`, `apps_and_urls`. Available only to organizations whose plan\nincludes Apps & URLs tracking.\n\nProvide `user_ids` to update specific members. To change the organization-wide default\ninstead — which cascades to every current and future member — set `apply_to_all_members`\nto `true` and omit `user_ids`. The organization-wide change is cautionary and irreversible\nin bulk: the response reports `scope: \"glo"
+        }
+      ]
+    }
+  ],
+  "bundled": true
+}
