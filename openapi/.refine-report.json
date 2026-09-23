@@ -1,25 +1,7 @@
 {
   "provider": "hubstaff",
   "sources": [
-    "hubstaff-activities-api-openapi.yml",
-    "hubstaff-app-url-tracking-api-openapi.yml",
-    "hubstaff-attendance-api-openapi.yml",
-    "hubstaff-client-invoices-api-openapi.yml",
-    "hubstaff-clients-api-openapi.yml",
-    "hubstaff-invites-api-openapi.yml",
-    "hubstaff-members-api-openapi.yml",
-    "hubstaff-organizations-api-openapi.yml",
-    "hubstaff-projects-api-openapi.yml",
-    "hubstaff-screenshots-api-openapi.yml",
-    "hubstaff-tasks-api-openapi.yml",
-    "hubstaff-team-payments-api-openapi.yml",
-    "hubstaff-teams-api-openapi.yml",
-    "hubstaff-time-edit-logs-api-openapi.yml",
-    "hubstaff-time-entries-api-openapi.yml",
-    "hubstaff-time-off-api-openapi.yml",
-    "hubstaff-timesheets-api-openapi.yml",
-    "hubstaff-users-api-openapi.yml",
-    "hubstaff-webhooks-api-openapi.yml"
+    "_original/hubstaff-openapi.yml"
   ],
   "outputs": [
     "hubstaff-activities-api-openapi.yml",
@@ -45,6 +27,30 @@
   "archived": [],
   "errors": [],
   "warnings": [],
-  "notes": [],
-  "skipped": []
+  "notes": [
+    "sourced from openapi/_original/ (1 archived document(s)); previously refined output at the top level was skipped rather than re-split",
+    "hubstaff-openapi.yml: upgraded openapi 3.0.3 -> OpenAPI 3.2.0",
+    "apis.yml register: already-registered"
+  ],
+  "skipped": [
+    "hubstaff-activities-api-openapi.yml: previously refined output, superseded by openapi/_original/",
+    "hubstaff-app-url-tracking-api-openapi.yml: previously refined output, superseded by openapi/_original/",
+    "hubstaff-attendance-api-openapi.yml: previously refined output, superseded by openapi/_original/",
+    "hubstaff-client-invoices-api-openapi.yml: previously refined output, superseded by openapi/_original/",
+    "hubstaff-clients-api-openapi.yml: previously refined output, superseded by openapi/_original/",
+    "hubstaff-invites-api-openapi.yml: previously refined output, superseded by openapi/_original/",
+    "hubstaff-members-api-openapi.yml: previously refined output, superseded by openapi/_original/",
+    "hubstaff-organizations-api-openapi.yml: previously refined output, superseded by openapi/_original/",
+    "hubstaff-projects-api-openapi.yml: previously refined output, superseded by openapi/_original/",
+    "hubstaff-screenshots-api-openapi.yml: previously refined output, superseded by openapi/_original/",
+    "hubstaff-tasks-api-openapi.yml: previously refined output, superseded by openapi/_original/",
+    "hubstaff-team-payments-api-openapi.yml: previously refined output, superseded by openapi/_original/",
+    "hubstaff-teams-api-openapi.yml: previously refined output, superseded by openapi/_original/",
+    "hubstaff-time-edit-logs-api-openapi.yml: previously refined output, superseded by openapi/_original/",
+    "hubstaff-time-entries-api-openapi.yml: previously refined output, superseded by openapi/_original/",
+    "hubstaff-time-off-api-openapi.yml: previously refined output, superseded by openapi/_original/",
+    "hubstaff-timesheets-api-openapi.yml: previously refined output, superseded by openapi/_original/",
+    "hubstaff-users-api-openapi.yml: previously refined output, superseded by openapi/_original/",
+    "hubstaff-webhooks-api-openapi.yml: previously refined output, superseded by openapi/_original/"
+  ]
 }
