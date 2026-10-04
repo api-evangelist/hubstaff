@@ -1,0 +1,46 @@
+slug: hubstaff
+provider: Hubstaff
+generated_by: planning/capability-mapping/scripts/classify_capabilities.py
+model: claude-opus-5
+frame:
+- Software & Technology
+min_confidence: 0.7
+capability_model:
+  source: https://github.com/vincentmakes/turbo-ea-capabilities
+  license: CC-BY-4.0
+  attribution: Turbo EA Capabilities by Vincent Verdet — Turbo EA, https://github.com/vincentmakes/turbo-ea-capabilities,
+    CC BY 4.0
+  notice: NOTICE
+edge_count: 3
+edges:
+- tag: Time Off
+  spec_file: hubstaff-time-off-api-openapi.yml
+  capability_id: BC-300.70
+  capability_id_l1: BC-300
+  capability_name: HR Operations Management
+  confidence: 0.75
+  evidence: POST /v2/organizations/{organization_id}/time_off_requests  Create time off request; GET .../time_off_policies;
+    GET .../time_off_balances
+  reason: Leave requests, policies and balances are absence management, a core HR operations/administration
+    function; some ambiguity with Compensation & Benefits keeps it below 0.8.
+- tag: Timesheets
+  spec_file: hubstaff-timesheets-api-openapi.yml
+  capability_id: BC-300.70
+  capability_id_l1: BC-300
+  capability_name: HR Operations Management
+  confidence: 0.72
+  evidence: GET /v2/organizations/{organization_id}/timesheets  List organization timesheets; PUT /v2/timesheets/{timesheet_id}  Update
+    timesheet status
+  reason: Timesheet listing and approval status changes are time-and-attendance administration feeding
+    payroll, i.e. HR operations service delivery.
+- tag: Attendance
+  spec_file: hubstaff-attendance-api-openapi.yml
+  capability_id: BC-300
+  capability_id_l1: BC-300
+  capability_name: Human Capital Management
+  confidence: 0.7
+  evidence: '"List organization attendance schedules", "Create attendance schedule", "List organization
+    attendance shifts", "List organization holidays"'
+  reason: Attendance schedules, shifts and holiday calendars for organization members is workforce time-and-attendance
+    administration, part of Human Capital Management. No candidate L2 cleanly covers shift scheduling,
+    so L1 only.

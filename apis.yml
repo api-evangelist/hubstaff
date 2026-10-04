@@ -329,6 +329,9 @@ apis:
   - type: Documentation
     url: https://support.hubstaff.com/time-tracking-api/
 common:
+- type: CapabilityMap
+  url: capabilities/hubstaff-capability-edges.yml
+  name: Hubstaff Business Capability Map
 - type: AgenticAccess
   url: agentic-access/hubstaff-agentic-access.yml
 - type: VulnerabilityDisclosure
