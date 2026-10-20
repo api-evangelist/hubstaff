@@ -1,5 +1,22 @@
 generated: '2026-10-15'
 edges:
+- partner_name: Slack (own)
+  partner: slack
+  partner_match: mirror
+  mirror_match: domain+product
+  type: marketplace
+  relationship: platform-app
+  direction: third-party
+  channel: partner-built
+  marketplace: own
+  evidence: https://slack.com/marketplace/A019CQLK404-hubstaff
+  mirror_of: slack/integrations/slack-integration-edges.yml
+  apps:
+  - Hubstaff
+  listing_count: 1
+  detected: '2026-10-18'
+  detected_by: mirror-platform-listings.py
+  category: Slack app
 - partner_name: Zapier
   partner: zapier
   partner_match: aggregator
@@ -33,7 +50,7 @@ edges:
   channel: open-source-node
   relationship: ipaas-bridge
   direction: third-party
-  evidence: https://github.com/PipedreamHQ/pipedream/tree/94800dd6de6640b942c65ea7ee655f71ac56d438/components/hubstaff
+  evidence: https://github.com/PipedreamHQ/pipedream/tree/d5872355ef27b4efa769f05352f2820c299a456e/components/hubstaff
   category: null
   contract_reference:
     register: Pipedream components (PipedreamHQ/pipedream components/)
@@ -51,26 +68,10 @@ edges:
     builder: Pipedream repo (component)
   detected_by: sweep-workflow-automation.py
   first_seen: '2026-10-15'
-- partner_name: Slack (own)
-  partner: slack
-  partner_match: mirror
-  mirror_match: domain+product
-  type: marketplace
-  relationship: platform-app
-  direction: third-party
-  channel: partner-built
-  marketplace: own
-  evidence: https://slack.com/marketplace/A019CQLK404-hubstaff
-  mirror_of: slack/integrations/slack-integration-edges.yml
-  apps:
-  - Hubstaff
-  listing_count: 1
-  detected: '2026-10-18'
-  detected_by: mirror-platform-listings.py
-  category: Slack app
 method: searched
 checked:
 - https://github.com/PipedreamHQ/pipedream/tree/94800dd6de6640b942c65ea7ee655f71ac56d438/components/
+- https://github.com/PipedreamHQ/pipedream/tree/d5872355ef27b4efa769f05352f2820c299a456e/components/
 - https://zapier.com/api/v4/apps/
 - slack/integrations/slack-integration-edges.yml
 source:
