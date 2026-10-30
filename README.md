@@ -1,4 +1,4 @@
-# Hubstaff (hubstaff)
+# Hubstaff
 
 <!-- API-EVANGELIST-PROVENANCE:BEGIN -->
 > ### About this repository
@@ -64,229 +64,165 @@
 > Full detail: **[Where this data comes from](https://apievangelist.com/about/where-our-data-comes-from)**
 <!-- API-EVANGELIST-PROVENANCE:END -->
 
-Hubstaff is a time tracking and workforce analytics platform for remote, hybrid, and field teams. The Hubstaff API v2 (`https://api.hubstaff.com/v2`) provides read and write access to tracked time (10-minute activity blocks and daily aggregates), time entries, timesheets and approvals, time off, attendance schedules and shifts, organizations, members, teams, projects, tasks, clients, invoices, team payments, screenshots, app and URL usage, and webhooks.
+Hubstaff is a time tracking and workforce analytics platform for remote, hybrid, and field teams. The Hubstaff API v2 provides read and write access to tracked time (10-minute activity blocks and daily aggregates), time entries, timesheets and approvals, time off, attendance schedules and shifts, organizations, members, teams, projects, tasks, clients, invoices, team payments, screenshots, app and URL usage, and webhooks - authenticated with OAuth 2.0 / OpenID Connect or personal access tokens.
 
-The API is publicly documented at the [Hubstaff Developer Portal](https://developer.hubstaff.com/), with a live machine-readable definition published at [https://api.hubstaff.com/v2/docs](https://api.hubstaff.com/v2/docs). Access requires a Hubstaff account: authentication is OpenID Connect / OAuth 2.0 through Hubstaff Account (`https://account.hubstaff.com`), with scopes `hubstaff:read` and `hubstaff:write`. For server-side scripts, Hubstaff issues personal access tokens (created at [developer.hubstaff.com/personal_access_tokens](https://developer.hubstaff.com/personal_access_tokens)) that act as OAuth refresh tokens - they expire after 90 days and are exchanged for short-lived access tokens via the standard refresh-token grant at `https://account.hubstaff.com/access_tokens`. Authenticated users are allowed 1,000 requests per hour per application, and all requests must use HTTPS. API v1 is deprecated; v2 is the current version.
+**Areas:** Time Tracking · Timesheets · Workforce Management · Productivity · Employee Monitoring · Project Management · Payroll
 
-**APIs.json:** [https://raw.githubusercontent.com/api-evangelist/hubstaff/refs/heads/main/apis.yml](https://raw.githubusercontent.com/api-evangelist/hubstaff/refs/heads/main/apis.yml)
+## Hubstaff on APIs.io
 
-## Tags
+Everything profiled for Hubstaff is published on APIs.io rather than in this repository. Start at the provider page — **[apis.io/providers/hubstaff/](https://apis.io/providers/hubstaff/)** — or go straight to one of the APIs or properties below.
 
-- Time Tracking
-- Timesheets
-- Workforce Management
-- Productivity
-- Employee Monitoring
-- Project Management
-- Payroll
+### APIs (19)
 
-## Timestamps
+- [Hubstaff Activities API](https://apis.io/apis/hubstaff/hubstaff-activities-api/) — Tracked time as 10-minute activity blocks and daily aggregates, with keyboard/mouse activity percentages.
+- [Hubstaff App & URL Tracking API](https://apis.io/apis/hubstaff/hubstaff-app-url-tracking-api/) — Application and URL usage captured while tracking, plus tracking settings.
+- [Hubstaff Attendance API](https://apis.io/apis/hubstaff/hubstaff-attendance-api/) — Expected work shifts (schedules), actual clock-in/clock-out shifts, and holidays.
+- [Hubstaff Client Invoices API](https://apis.io/apis/hubstaff/hubstaff-client-invoices-api/) — Invoices issued to clients.
+- [Hubstaff Clients API](https://apis.io/apis/hubstaff/hubstaff-clients-api/) — Clients that projects are billed to.
+- [Hubstaff Invites API](https://apis.io/apis/hubstaff/hubstaff-invites-api/) — Invite users to an organization.
+- [Hubstaff Members API](https://apis.io/apis/hubstaff/hubstaff-members-api/) — Organization membership - list, add, and update members and their pay/bill rates.
+- [Hubstaff Organizations API](https://apis.io/apis/hubstaff/hubstaff-organizations-api/) — Organizations the authenticated user belongs to, plus seat usage.
+- [Hubstaff Projects API](https://apis.io/apis/hubstaff/hubstaff-projects-api/) — Projects within an organization, including budgets and project members.
+- [Hubstaff Screenshots API](https://apis.io/apis/hubstaff/hubstaff-screenshots-api/) — Screenshots captured while tracking time.
+- [Hubstaff Tasks API](https://apis.io/apis/hubstaff/hubstaff-tasks-api/) — Tasks (to-dos) within projects and organizations.
+- [Hubstaff Team Payments API](https://apis.io/apis/hubstaff/hubstaff-team-payments-api/) — Payments made to team members (payroll).
+- [Hubstaff Teams API](https://apis.io/apis/hubstaff/hubstaff-teams-api/) — Teams within an organization and their membership.
+- [Hubstaff Time Edit Logs API](https://apis.io/apis/hubstaff/hubstaff-time-edit-logs-api/) — Audit trail of manual time edits.
+- [Hubstaff Time Entries API](https://apis.io/apis/hubstaff/hubstaff-time-entries-api/) — Create time entries for a user (manual time via the API).
+- [Hubstaff Time Off API](https://apis.io/apis/hubstaff/hubstaff-time-off-api/) — Time off requests, policies, and balances.
+- [Hubstaff Timesheets API](https://apis.io/apis/hubstaff/hubstaff-timesheets-api/) — Timesheet approval records - list and update status (open, submitted, approved, denied).
+- [Hubstaff Users API](https://apis.io/apis/hubstaff/hubstaff-users-api/) — The authenticated user and user profiles.
+- [Hubstaff Webhooks API](https://apis.io/apis/hubstaff/hubstaff-webhooks-api/) — Webhook subscriptions delivering real-time event notifications (timer.start, timer.stop, task.create, shift.late, etc.).
 
-- **Created:** 2026-07-11
-- **Modified:** 2026-07-11
+### Published properties
 
-## APIs
+Each property below is a page on APIs.io carrying the machine-readable artifact and what it says.
 
-### Hubstaff Activities and Time Tracking API
+#### MCP servers (1)
 
-Tracked time as 10-minute activity blocks with keyboard and mouse activity percentages, pre-aggregated daily activities, and the most recent activity per member - filterable by user, project, task, and time range at both the organization and project level.
+Model Context Protocol servers that expose the API to agents.
 
-- **Human URL:** [https://developer.hubstaff.com/docs/hubstaff_v2](https://developer.hubstaff.com/docs/hubstaff_v2)
-- **Base URL:** `https://api.hubstaff.com/v2`
+- [hubstaff](https://apis.io/servers/hubstaff/hubstaff/)
 
-#### Tags
+#### Agentic access (1)
 
-- Time Tracking
-- Activities
-- Productivity
+Which operations an agent can call, which act, and which need a human in the loop.
 
-#### Properties
+- [Hubstaff Agentic Access](https://apis.io/agentic-access/hubstaff/hubstaff-agentic-access/)
 
-- [API Reference](https://developer.hubstaff.com/docs/hubstaff_v2)
-- [Documentation](https://support.hubstaff.com/time-tracking-api/)
-- [OpenAPI](openapi/hubstaff-openapi.yml) — [OpenAPI Specification](https://spec.openapis.org/oas/latest.html)
-- [Postman Collection](collections/hubstaff.postman_collection.json) — [Postman Collection 2.1](https://schema.getpostman.com/json/collection/v2.1.0/collection.json)
-- [Open Collection](collections/hubstaff.opencollection.json) — [Open Collection 1.0](https://schema.opencollection.com/opencollection/v1.0.0.json)
+#### Collections (20)
 
-### Hubstaff Timesheets and Time Entries API
+Postman and Open Collection request collections.
 
-Create time entries for users, list organization timesheets (aggregate approval records), move timesheets through the open, submitted, approved, and denied statuses, and audit manual time edits via time edit logs. Note that manual time entries that require approval cannot be added through the API.
+- [Hubstaff API](https://apis.io/collections/hubstaff/open-hubstaff/)
+- [Hubstaff Activities API](https://apis.io/collections/hubstaff/open-hubstaff-activities-api/)
+- [Hubstaff Activities App & URL Tracking API](https://apis.io/collections/hubstaff/open-hubstaff-app-url-tracking-api/)
+- [Hubstaff Activities Attendance API](https://apis.io/collections/hubstaff/open-hubstaff-attendance-api/)
+- [Hubstaff Activities Client Invoices API](https://apis.io/collections/hubstaff/open-hubstaff-client-invoices-api/)
+- [Hubstaff Activities Clients API](https://apis.io/collections/hubstaff/open-hubstaff-clients-api/)
+- [Hubstaff Activities Invites API](https://apis.io/collections/hubstaff/open-hubstaff-invites-api/)
+- [Hubstaff Activities Members API](https://apis.io/collections/hubstaff/open-hubstaff-members-api/)
+- [Hubstaff Activities Organizations API](https://apis.io/collections/hubstaff/open-hubstaff-organizations-api/)
+- [Hubstaff Activities Projects API](https://apis.io/collections/hubstaff/open-hubstaff-projects-api/)
+- [Hubstaff Activities Screenshots API](https://apis.io/collections/hubstaff/open-hubstaff-screenshots-api/)
+- [Hubstaff Activities Tasks API](https://apis.io/collections/hubstaff/open-hubstaff-tasks-api/)
+- [Hubstaff Activities Team Payments API](https://apis.io/collections/hubstaff/open-hubstaff-team-payments-api/)
+- [Hubstaff Activities Teams API](https://apis.io/collections/hubstaff/open-hubstaff-teams-api/)
+- [Hubstaff Activities Time Edit Logs API](https://apis.io/collections/hubstaff/open-hubstaff-time-edit-logs-api/)
+- [Hubstaff Activities Time Entries API](https://apis.io/collections/hubstaff/open-hubstaff-time-entries-api/)
+- [Hubstaff Activities Time Off API](https://apis.io/collections/hubstaff/open-hubstaff-time-off-api/)
+- [Hubstaff Activities Timesheets API](https://apis.io/collections/hubstaff/open-hubstaff-timesheets-api/)
+- [Hubstaff Activities Users API](https://apis.io/collections/hubstaff/open-hubstaff-users-api/)
+- [Hubstaff Activities Webhooks API](https://apis.io/collections/hubstaff/open-hubstaff-webhooks-api/)
 
-- **Human URL:** [https://developer.hubstaff.com/docs/hubstaff_v2](https://developer.hubstaff.com/docs/hubstaff_v2)
-- **Base URL:** `https://api.hubstaff.com/v2`
+#### Security (3)
 
-#### Tags
+Authentication, trust centre, and vulnerability disclosure.
 
-- Timesheets
-- Time Entries
-- Approvals
+- [Hubstaff Authentication](https://apis.io/security/hubstaff/hubstaff-authentication/)
+- [Hubstaff Domain Security](https://apis.io/security/hubstaff/hubstaff-domain-security/)
+- [Hubstaff Vulnerability Disclosure](https://apis.io/security/hubstaff/hubstaff-vulnerability-disclosure/)
 
-#### Properties
+#### Plans and pricing (1)
 
-- [API Reference](https://developer.hubstaff.com/docs/hubstaff_v2)
-- [OpenAPI](openapi/hubstaff-openapi.yml)
-- [Postman Collection](collections/hubstaff.postman_collection.json)
-- [Open Collection](collections/hubstaff.opencollection.json)
+Published plans, tiers and prices.
 
-### Hubstaff Organizations and Teams API
+- [Hubstaff Plans Pricing](https://apis.io/plans/hubstaff/hubstaff-plans-pricing/)
 
-Manage organizations, seats, members and their pay and bill rates, teams and team membership, and invites - the workforce structure that all tracked time hangs off of.
+#### Rate limits (1)
 
-- **Human URL:** [https://developer.hubstaff.com/docs/hubstaff_v2](https://developer.hubstaff.com/docs/hubstaff_v2)
-- **Base URL:** `https://api.hubstaff.com/v2`
+Published request limits.
 
-#### Tags
+- [Hubstaff Rate Limits](https://apis.io/rate-limits/hubstaff/hubstaff-rate-limits/)
 
-- Organizations
-- Teams
-- Members
-- Workforce Management
+#### FinOps (1)
 
-#### Properties
+What the API costs to run, by operation.
 
-- [API Reference](https://developer.hubstaff.com/docs/hubstaff_v2)
-- [OpenAPI](openapi/hubstaff-openapi.yml)
-- [Postman Collection](collections/hubstaff.postman_collection.json)
-- [Open Collection](collections/hubstaff.opencollection.json)
+- [Hubstaff Finops](https://apis.io/finops/hubstaff/hubstaff-finops/)
 
-### Hubstaff Projects and Tasks API
+## Where to find this API
 
-Create and manage projects (including budgets and project members) and tasks (to-dos) at the project and organization level. Tasks synced from third-party integrations are read-only through the API and must be changed in the integrated tool.
+Links to the company's own pages. This repository publishes no copy of their specifications — the canonical document is theirs and lives at the URLs below.
 
-- **Human URL:** [https://developer.hubstaff.com/docs/hubstaff_v2](https://developer.hubstaff.com/docs/hubstaff_v2)
-- **Base URL:** `https://api.hubstaff.com/v2`
-
-#### Tags
-
-- Projects
-- Tasks
-- Project Management
-
-#### Properties
-
-- [API Reference](https://developer.hubstaff.com/docs/hubstaff_v2)
-- [OpenAPI](openapi/hubstaff-openapi.yml)
-- [Postman Collection](collections/hubstaff.postman_collection.json)
-- [Open Collection](collections/hubstaff.opencollection.json)
-
-### Hubstaff Users API
-
-Retrieve the authenticated user (`/users/me`) and individual user profiles by ID.
-
-- **Human URL:** [https://developer.hubstaff.com/docs/hubstaff_v2](https://developer.hubstaff.com/docs/hubstaff_v2)
-- **Base URL:** `https://api.hubstaff.com/v2`
-
-#### Tags
-
-- Users
-- Profiles
-
-#### Properties
-
-- [API Reference](https://developer.hubstaff.com/docs/hubstaff_v2)
-- [OpenAPI](openapi/hubstaff-openapi.yml)
-- [Postman Collection](collections/hubstaff.postman_collection.json)
-- [Open Collection](collections/hubstaff.opencollection.json)
-
-### Hubstaff Time Off and Attendance API
-
-Time off requests with approval workflow and balance previews, time off policies and balances, attendance schedules (expected shifts, including repeating schedules), actual clock-in and clock-out attendance shifts, and organization holidays.
-
-- **Human URL:** [https://developer.hubstaff.com/docs/hubstaff_v2](https://developer.hubstaff.com/docs/hubstaff_v2)
-- **Base URL:** `https://api.hubstaff.com/v2`
-
-#### Tags
-
-- Time Off
-- Attendance
-- Scheduling
-- Workforce Management
-
-#### Properties
-
-- [API Reference](https://developer.hubstaff.com/docs/hubstaff_v2)
-- [OpenAPI](openapi/hubstaff-openapi.yml)
-- [Postman Collection](collections/hubstaff.postman_collection.json)
-- [Open Collection](collections/hubstaff.opencollection.json)
-
-### Hubstaff Clients, Invoices, and Payments API
-
-Manage the clients projects are billed to, list client invoices, and list team payments (payroll) generated from tracked time.
-
-- **Human URL:** [https://developer.hubstaff.com/docs/hubstaff_v2](https://developer.hubstaff.com/docs/hubstaff_v2)
-- **Base URL:** `https://api.hubstaff.com/v2`
-
-#### Tags
-
-- Clients
-- Invoicing
-- Payroll
-
-#### Properties
-
-- [API Reference](https://developer.hubstaff.com/docs/hubstaff_v2)
-- [OpenAPI](openapi/hubstaff-openapi.yml)
-- [Postman Collection](collections/hubstaff.postman_collection.json)
-- [Open Collection](collections/hubstaff.opencollection.json)
-
-### Hubstaff Screenshots and App Tracking API
-
-Retrieve screenshots captured while tracking time, application and URL usage (raw and daily aggregates), and read or update the organization's app and URL tracking settings.
-
-- **Human URL:** [https://developer.hubstaff.com/docs/hubstaff_v2](https://developer.hubstaff.com/docs/hubstaff_v2)
-- **Base URL:** `https://api.hubstaff.com/v2`
-
-#### Tags
-
-- Screenshots
-- Activity Monitoring
-- App Tracking
-
-#### Properties
-
-- [API Reference](https://developer.hubstaff.com/docs/hubstaff_v2)
-- [OpenAPI](openapi/hubstaff-openapi.yml)
-- [Postman Collection](collections/hubstaff.postman_collection.json)
-- [Open Collection](collections/hubstaff.opencollection.json)
-
-### Hubstaff Webhooks API
-
-Subscribe to real-time HTTP event notifications at the organization, project, or user level - timer.start, timer.stop, project.create, task.create, task.assign, schedule and shift events, work breaks, and billing seat snapshots - with an X-Hook-Secret verification and activation handshake and signed deliveries.
-
-- **Human URL:** [https://developer.hubstaff.com/docs/hubstaff_v2](https://developer.hubstaff.com/docs/hubstaff_v2)
-- **Base URL:** `https://api.hubstaff.com/v2`
-
-#### Tags
-
-- Webhooks
-- Events
-- Notifications
-
-#### Properties
-
-- [API Reference](https://developer.hubstaff.com/docs/hubstaff_v2)
-- [OpenAPI](openapi/hubstaff-openapi.yml)
-- [Postman Collection](collections/hubstaff.postman_collection.json)
-- [Open Collection](collections/hubstaff.opencollection.json)
-
-## Common Properties
-
-- [GitHub Organization](https://github.com/NetsoftHoldings)
-- [LinkedIn](https://www.linkedin.com/company/hubstaff)
 - [Website](https://hubstaff.com)
 - [Documentation](https://developer.hubstaff.com/)
 - [Pricing](https://hubstaff.com/pricing)
 - [Support](https://support.hubstaff.com/)
 - [Blog](https://hubstaff.com/blog)
-- [Plans](plans/hubstaff-plans-pricing.yml)
-- [Rate Limits](rate-limits/hubstaff-rate-limits.yml)
-- [Fin Ops](finops/hubstaff-finops.yml)
+- [GitHub](https://github.com/NetsoftHoldings)
 
-## Access Model
+## API Evangelist rating
 
-The Hubstaff API is public and documented, but it is an account-holder API rather than an anonymous one - every request operates on the organizations the authenticated user belongs to. There is no separate API subscription: API access comes with a Hubstaff account (paid plans start at $4.99/user/month billed annually, with a 14-day free trial and a single-user free tier). OAuth 2.0 / OpenID Connect is used for apps acting on behalf of users; personal access tokens (90-day refresh tokens exchanged for access tokens) cover server-side scripts.
+**Kin Score 32.1** — thin · rubric 0.25.0 · scored 2026-10-23
 
-## Maintainers
+| Facet | Score |
+|---|---|
+| Discoverability | 68.3 |
+| Contract quality | 50.2 |
+| Contract governance | 0.0 |
+| Operational transparency | 21.1 |
+| Developer ergonomics | 35.7 |
+| Access clarity | 18.4 |
 
-**FN:** Kin Lane
-**Email:** kin@apievangelist.com
+**Agent readiness 39.7** — agent-ready (gated down from agent-native)
+
+| Agent-readiness dimension | Result |
+|---|---|
+| Spec Presence | yes |
+| Agentic Access | derived (partial credit) |
+| Reversibility Documented | — |
+| MCP Server | verified |
+| Auth Clarity | served (partial credit) |
+| Idempotency | — |
+| Error Semantics | — |
+| OpenAPI Examples | — |
+| Rate Limit Signal | derived (partial credit) |
+| Event Surface Described | — |
+| Agent Skills | — |
+| Well Known Catalog | — |
+| Consent Identity | — |
+| Agent Card | — |
+| Dry Run Mode | — |
+| Delegated Identity | served (partial credit) |
+| Protected Resource Metadata | verified |
+| Dynamic Client Registration | — |
+| Agentic Commerce | — |
+| Pagination Ratio | na |
+| Operation Distinctiveness | distinct |
+
+**Regulatory alignment 17.6** — Employment & Payroll
+
+The rubric is published at [github.com/api-evangelist/kin-score](https://github.com/api-evangelist/kin-score). The per-check breakdown behind these numbers — which checks were earned, partial or missed — along with score history and how this provider compares to its peers, is available at [apis.io/providers/hubstaff/](https://apis.io/providers/hubstaff/).
+
+## How this profile is made
+
+API Evangelist profiles a company's public API surface the way a developer would find it: the website, developer portal and documentation, the specifications it publishes, its public repositories, and its pricing, status and changelog pages. From that it derives the properties above — contracts split per API, workflows, schemas, collections, governance rules, plans and rate limits — and scores them against the published [Kin Score rubric](https://github.com/api-evangelist/kin-score).
+
+The artifacts are published on [APIs.io](https://apis.io), not in this repository. This repository is the public record for Hubstaff: the place to say something is wrong, missing or out of date, and to ask for a re-score or a removal.
+
+## Open an issue
+
+- **Something about this listing** — a wrong description, a missing API, a stale artifact or a question about the rating: [open an issue on this repository](https://github.com/api-evangelist/hubstaff/issues/new).
+- **A new API, or one that is not in the catalog yet** — [submit it on APIs.io](https://apis.io/add/).
+- **Anything else** — [the APIs.io inbox](https://github.com/api-search/inbox/issues/new) or [info@apievangelist.com](mailto:info@apievangelist.com).
